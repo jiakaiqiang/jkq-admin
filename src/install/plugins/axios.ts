@@ -6,9 +6,9 @@ import axios, {
     type AxiosResponse,
     type InternalAxiosRequestConfig
 } from 'axios'
-
+import { useUserStore } from "@/store/modules/user";
 import RequestConfig from '@/RequestConfig/index'
-
+import { AxiosCanceler } from "./helper/axiosCancel";
 export interface customAxiosRequestConfig extends InternalAxiosRequestConfig {
     loading?: boolean,
     cancel?: boolean
@@ -20,7 +20,7 @@ const config = {
     timeout: RequestConfig.timeout as number,
     withCredentials: true
 }
-
+const axiosCanceler = new AxiosCanceler();
 //创建实例
 export class Axios {
     instance:AxiosInstance
@@ -28,14 +28,24 @@ export class Axios {
         this.instance = axios.create(config)
         this.instance.interceptors.request.use((config:customAxiosRequestConfig)=>{
             //获取用户的数据
-            
+            //获取用户的缓存数据token
             const userStore = useUserStore();
+            config.cancel&&axiosCanceler.addPending(config);
 
 
-        return config
+            return config;
         },(error: AxiosError) => {
             return Promise.reject(error);
-          })
+        })
+
+        //相应拦截器
+        this.instance.interceptors.response.use((response: AxiosResponse & { config: customAxiosRequestConfig })=>{
+            const { data, config } = response;
+
+            return data 
+        },(error: AxiosError) => {
+            return Promise.reject(error);
+        })
     }
    
 

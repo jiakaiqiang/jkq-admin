@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "isolatedModules": true,
+    "moduleResolution": "node",
       "baseUrl": ".",
       "paths": {
         "@/*": ["./src/*"]
@@ -12,7 +13,7 @@
     "skipLibCheck": true,
 
     /* Bundler mode */
-    "moduleResolution": "bundler",
+   
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "noEmit": true,
