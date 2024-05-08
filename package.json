@@ -18,6 +18,7 @@
     "sass": "^1.75.0",
     "unplugin-auto-import": "^0.17.5",
     "unplugin-vue-components": "^0.26.0",
+    "unplugin-vue-setup-extend-plus": "^1.0.1",
     "vite-plugin-html": "^3.2.2",
     "vite-plugin-style-import": "^2.0.0",
     "vite-plugin-svg-icons": "^2.0.1",
