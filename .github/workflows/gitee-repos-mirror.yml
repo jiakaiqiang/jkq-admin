@@ -9,4 +9,4 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.GITEE_PRIVATE_KEY }}
         with:
           source-repo: "git@github.com:jiakaiqiang/jkq-admin.git" # github仓库地址
-          destination-repo: "git@gitee.com:jiakaiqiang/jkq-admin.git" # gitee仓库地址
+          destination-repo: "git@gitee.com:jiakaiqiang/jkq-admin-template.git" # gitee仓库地址
