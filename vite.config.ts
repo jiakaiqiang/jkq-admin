@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { fileURLToPath, URL } from 'url'
-import {SYSTEM_NAME} from './config'
+import {SYSTEM_NAME} from './src/config'
 import { resolve } from "path";
 //自动import 
 import AutoImport from 'unplugin-auto-import/vite'

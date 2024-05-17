@@ -7,6 +7,10 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    403: typeof import('./src/components/ErrorMessage/403.vue')['default']
+    404: typeof import('./src/components/ErrorMessage/404.vue')['default']
+    500: typeof import('./src/components/ErrorMessage/500.vue')['default']
+    ElButton: typeof import('element-plus/es')['ElButton']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
