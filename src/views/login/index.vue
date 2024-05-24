@@ -10,12 +10,12 @@
         <div class="form-content">
           <el-form>
             <el-form-item>
-              <el-input  :prefix-icon="UserFilled" placeholder="请输入用户名称">
+              <el-input  v-model="formData.username" :prefix-icon="UserFilled" placeholder="请输入用户名称">
 
               </el-input>
             </el-form-item>
             <el-form-item>
-              <el-input :prefix-icon="Message" type="password" placeholder="请输入密码">
+              <el-input v-model="formData.password" :prefix-icon="Message" type="password" placeholder="请输入密码" show-password>
 
               </el-input>
             </el-form-item>
@@ -33,6 +33,10 @@
 
 <script lang='ts' setup>
 import {  Message,UserFilled } from '@element-plus/icons-vue';
+let formData = reactive({
+  username: '',
+  password: ''
+})
 </script>
 
 <style scoped lang='scss'>
@@ -56,8 +60,8 @@ import {  Message,UserFilled } from '@element-plus/icons-vue';
     align-items: center;
 
     img {
-      width: 51%;
-      height: 59%
+      width: 800px;
+      
     }
 
     .form-container {
