@@ -6,5 +6,6 @@ export const useUserStore = defineStore({
     id: 'app-user',
     state: (): UserState => {
         return  {token:''}
-    }
+    },
+    
 })

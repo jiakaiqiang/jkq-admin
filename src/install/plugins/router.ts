@@ -1,6 +1,6 @@
 import { createRouter ,createWebHashHistory,} from "vue-router";
 import { staticRouter, errorRouter } from "@/router/staticRouter";
-import { useUserStore } from "@/store/modules/user";
+// import { useUserStore } from "@/store/modules/user";
 import { useAuthStore } from "@/store/modules/auth";
 import NProgress from "@/config/nprogress";
 import {SYSTEM_NAME,ROUTER_WHITE_LIST}  from '@/config/index'
@@ -28,7 +28,8 @@ import {SYSTEM_NAME,ROUTER_WHITE_LIST}  from '@/config/index'
   });
 //路由全局守卫
 router.beforeEach((to, from, next) => {
-  const userStore = useUserStore();
+  // const userStore = useUserStore();
+  const token =  sessionStorage.getItem('token');
   const authStore = useAuthStore();
   // 1.设置状态
   NProgress.start();
@@ -36,14 +37,14 @@ router.beforeEach((to, from, next) => {
   document.title = to.meta.title?`${SYSTEM_NAME}-${to.meta.title} `:`${SYSTEM_NAME}`;
   //1.判断是否有token 没有则跳转到登录页面
   if(to.path.toLocaleLowerCase()=='/login'){
-    if(userStore.token)   return next(from.fullPath)
+    if(token)   return next(from.fullPath)
       resetRouter();
     return next();
     }
    // 4.判断访问页面是否在路由白名单地址(静态路由)中，如果存在直接放行
    if (ROUTER_WHITE_LIST.includes(to.path)) return next();
    //5.没有token 直接跳转 到登录页面
-   if (!userStore.token) return next({ path: '/login', replace: true });
+   if (!token) return next({ path: '/login', replace: true });
     // 6.如果没有菜单列表，就重新请求菜单列表并添加动态路由
   // if (!authStore.authMenuListGet.length) {
   //   await initDynamicRouter();
