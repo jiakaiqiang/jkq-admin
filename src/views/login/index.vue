@@ -21,7 +21,7 @@
             </el-form-item>
             <el-form-item class='button-option'>
               <el-button type="" class="button">注册1</el-button>
-              <el-button type="primary" class="button">登录</el-button>
+              <el-button type="primary" class="button">登录1</el-button>
             </el-form-item>
           </el-form>
         </div>
