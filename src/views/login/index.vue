@@ -5,7 +5,7 @@
       <img src="/public/login.png" mode="scaleToFill" />
       <div class="form-container">
         <div class="title">
-          欢迎登录
+          欢迎登录1
         </div>
         <div class="form-content">
           <el-form>
