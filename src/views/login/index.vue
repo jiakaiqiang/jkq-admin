@@ -19,8 +19,14 @@
 
               </el-input>
             </el-form-item>
+            <el-form-item clas="capche-img">
+              <el-input v-model="formData.code" style="width:300px;margin-right:10px"  >
+
+              </el-input>
+              <div v-html="codeUrl" width="100px" height="50px" @click="getImage()"> </div>
+            </el-form-item>
             <el-form-item class='button-option'>
-              <el-button type="" class="button">注册</el-button>
+            
               <el-button type="primary" class="button" @click='login'>登录</el-button>
             </el-form-item>
           </el-form>
@@ -34,15 +40,27 @@
 <script lang='ts' setup>
 import {  Message,UserFilled } from '@element-plus/icons-vue';
 import { ElMessage } from 'element-plus'
-
+let codeUrl =  ref('')
 let formData = reactive({
   username: '',
-  password: ''
+  password: '',
+  code: ''
 })
 console.log(getCurrentInstance())
 const $request =  getCurrentInstance().appContext.config.globalProperties.$request
 const $router =  getCurrentInstance().appContext.config.globalProperties.$router
 
+//获取验证码
+const getImage = ()=>{
+  $request.get('/auth/captchaImage').then(res=>{
+    console.log(res)
+    if(res.success){
+      codeUrl.value = res.data.img
+      
+    }
+  })
+}
+getImage()
 const login = ()=>{
   $request.post('/auth',formData).then(res=>{
     if(res.success){
@@ -113,10 +131,10 @@ const login = ()=>{
        :deep .el-form-item__content {
           display: flex;
 
-          justify-content: space-between;
+         
 
           .button {
-            width: 40%;
+            width:100%;
             height:50px
 
           }

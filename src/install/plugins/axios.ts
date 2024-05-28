@@ -8,7 +8,7 @@ import axios, {
 } from 'axios'
 import qs from 'qs';
 import { useUserStore } from "@/store/modules/user";
-
+import { ElMessage } from 'element-plus'
 import { AxiosCanceler } from "./helper/axiosCancel";
 export interface customAxiosRequestConfig extends InternalAxiosRequestConfig {
     loading?: boolean,
@@ -43,11 +43,22 @@ export class Axios {
 
         //相应拦截器
         this.instance.interceptors.response.use((response: AxiosResponse & { config: customAxiosRequestConfig })=>{
+             
             
             const { data, config } = response;
-
+          
             return data 
         },(error: AxiosError) => {
+         let response =  error.response
+         let status =  responsesssssssssssssssssssssssssssssssssssss.status
+         console.log(status,'-wefwfe000')
+         ElMessage({
+            type:'error',
+            message:status==401?'登录已过期':status==500 ? '服务器内部错误': response.data.message
+         })
+
+
+
             return Promise.reject(error);
         })
     }
@@ -59,8 +70,10 @@ export class Axios {
 
        return new Promise((resolve,reject)=>{
            this.instance.request(config).then((res)=>{
+       
                resolve(res)
            }).catch((err)=>{
+            console.log(err,'-wefwfe000')
                reject(err)
            })
        })

@@ -36,12 +36,12 @@ router.beforeEach((to, from, next) => {
   //2.动态设置标题
   document.title = to.meta.title?`${SYSTEM_NAME}-${to.meta.title} `:`${SYSTEM_NAME}`;
   //1.判断是否有token 没有则跳转到登录页面
-  if(to.path.toLocaleLowerCase()=='/login' ||  to.path.toLocaleLowerCase()=='/' ){
+  if(to.path.toLocaleLowerCase()=='/login' ){
     if(token)   {
      
       return next('/workspace')
     }
-      resetRouter();
+      //resetRouter();
     return next();
     }
    // 4.判断访问页面是否在路由白名单地址(静态路由)中，如果存在直接放行
