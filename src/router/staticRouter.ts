@@ -44,6 +44,14 @@ export const errorRouter = [
       meta: {
         title: "登录"
       }
+    },
+    {
+      path: '/workspace',
+      name: "workspace",
+      component: () => import("@/views/workspace/index.vue"),
+      meta: {
+        title: "工作台"
+      }
     }
    
   ];

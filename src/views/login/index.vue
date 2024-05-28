@@ -5,7 +5,7 @@
       <img src="/public/login.png" mode="scaleToFill" />
       <div class="form-container">
         <div class="title">
-          欢迎登录1
+          欢迎登录
         </div>
         <div class="form-content">
           <el-form>
@@ -20,8 +20,8 @@
               </el-input>
             </el-form-item>
             <el-form-item class='button-option'>
-              <el-button type="" class="button">注册1</el-button>
-              <el-button type="primary" class="button">登录1</el-button>
+              <el-button type="" class="button">注册</el-button>
+              <el-button type="primary" class="button" @click='login'>登录</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -33,10 +33,32 @@
 
 <script lang='ts' setup>
 import {  Message,UserFilled } from '@element-plus/icons-vue';
+import { ElMessage } from 'element-plus'
+
 let formData = reactive({
   username: '',
   password: ''
 })
+console.log(getCurrentInstance())
+const $request =  getCurrentInstance().appContext.config.globalProperties.$request
+const $router =  getCurrentInstance().appContext.config.globalProperties.$router
+
+const login = ()=>{
+  $request.post('/auth',formData).then(res=>{
+    if(res.success){
+      localStorage.setItem('token',res.data.access_token)
+      ElMessage({message:'登录成功',type:'success'})
+      $router.push('/workspace')
+    }else{
+      ElMessage({message:res.message,type:'error'})
+      
+    }
+
+
+
+  })
+}
+
 </script>
 
 <style scoped lang='scss'>

@@ -29,15 +29,18 @@ import {SYSTEM_NAME,ROUTER_WHITE_LIST}  from '@/config/index'
 //路由全局守卫
 router.beforeEach((to, from, next) => {
   // const userStore = useUserStore();
-  const token =  sessionStorage.getItem('token');
+  const token =  localStorage.getItem('token');
   const authStore = useAuthStore();
   // 1.设置状态
   NProgress.start();
   //2.动态设置标题
   document.title = to.meta.title?`${SYSTEM_NAME}-${to.meta.title} `:`${SYSTEM_NAME}`;
   //1.判断是否有token 没有则跳转到登录页面
-  if(to.path.toLocaleLowerCase()=='/login'){
-    if(token)   return next(from.fullPath)
+  if(to.path.toLocaleLowerCase()=='/login' ||  to.path.toLocaleLowerCase()=='/' ){
+    if(token)   {
+     
+      return next('/workspace')
+    }
       resetRouter();
     return next();
     }
