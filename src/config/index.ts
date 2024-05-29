@@ -9,3 +9,7 @@ export const ROUTER_WHITE_LIST: string[] = ["/500"];
 
 //请求前缀
 export const REQUEST_PREFIX:string = '/api'
+
+//不需要token的请求
+export const NO_TOKEN_URL:string[] = ['/auth','/auth/captchaImage']
+

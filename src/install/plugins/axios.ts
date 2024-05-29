@@ -10,6 +10,7 @@ import qs from 'qs';
 import { useUserStore } from "@/store/modules/user";
 import { ElMessage } from 'element-plus'
 import { AxiosCanceler } from "./helper/axiosCancel";
+import {NO_TOKEN_URL} from "@/config/index.ts"
 export interface customAxiosRequestConfig extends InternalAxiosRequestConfig {
     loading?: boolean,
     cancel?: boolean
@@ -33,6 +34,9 @@ export class Axios {
                 config.headers['Content-Type']= 'application/x-www-form-urlencoded'
                 config.data = qs.stringify(config.data);
 
+            }
+            if(!NO_TOKEN_URL.includes(config.url as string)){
+                config.headers['Authorization'] = 'Bearer ' + localStorage.getItem('token')
             }
 
 

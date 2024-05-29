@@ -46,7 +46,7 @@ let formData = reactive({
   password: '',
   code: ''
 })
-console.log(getCurrentInstance())
+
 const $request =  getCurrentInstance().appContext.config.globalProperties.$request
 const $router =  getCurrentInstance().appContext.config.globalProperties.$router
 
@@ -60,12 +60,26 @@ const getImage = ()=>{
     }
   })
 }
+
 getImage()
+//获取菜单列表
+const  getMenu=()=>{
+  $request.post('/menu').then(res=>{
+   if(res.success){
+    //存储
+     localStorage.setItem('menu',JSON.stringify(res.data))
+   }
+  })
+}
+
+
+
 const login = ()=>{
   $request.post('/auth',formData).then(res=>{
     if(res.success){
       localStorage.setItem('token',res.data.access_token)
       ElMessage({message:'登录成功',type:'success'})
+      getMenu()
       $router.push('/workspace')
     }else{
       ElMessage({message:res.message,type:'error'})

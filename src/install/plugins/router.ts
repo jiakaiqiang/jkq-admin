@@ -35,14 +35,18 @@ router.beforeEach((to, from, next) => {
   NProgress.start();
   //2.动态设置标题
   document.title = to.meta.title?`${SYSTEM_NAME}-${to.meta.title} `:`${SYSTEM_NAME}`;
+  console.log(to)
   //1.判断是否有token 没有则跳转到登录页面
-  if(to.path.toLocaleLowerCase()=='/login' ){
+  if(to.path.toLocaleLowerCase()=='/login'){
     if(token)   {
      
       return next('/workspace')
     }
       //resetRouter();
     return next();
+    }
+    if(to.path=='/'&&token){
+      return next('/workspace')
     }
    // 4.判断访问页面是否在路由白名单地址(静态路由)中，如果存在直接放行
    if (ROUTER_WHITE_LIST.includes(to.path)) return next();
