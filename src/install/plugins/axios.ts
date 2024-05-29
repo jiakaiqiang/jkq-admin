@@ -50,7 +50,7 @@ export class Axios {
             return data 
         },(error: AxiosError) => {
          let response =  error.response
-         let status =  responsesssssssssssssssssssssssssssssssssssss.status
+         let status =  response.status
          console.log(status,'-wefwfe000')
          ElMessage({
             type:'error',
