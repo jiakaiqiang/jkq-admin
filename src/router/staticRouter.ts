@@ -1,4 +1,5 @@
 import {RouteRecordRaw} from "vue-router";
+import Layout from "@/layout/index.vue";
 export const errorRouter = [
     {
       path: "/403",
@@ -32,11 +33,7 @@ export const errorRouter = [
   ];
   export const staticRouter: RouteRecordRaw[] = [
     
-    {
-      path: '/',
-      name: "login",
-      redirect: "/login",
-    },
+    
     {
       path: '/login',
       name: "login",
@@ -46,12 +43,16 @@ export const errorRouter = [
       }
     },
     {
-      path: '/workspace',
-      name: "workspace",
-      component: () => import("@/views/workspace/index.vue"),
+      path: '/',
+      name: "",
+      component: Layout,
       meta: {
         title: "工作台"
+      },
+      children:[{path: 'workspace',name: "index",component: () => import("@/views/workspace/index.vue"),meta: {
+        title: "工作台"
       }
+      }]
     }
    
   ];

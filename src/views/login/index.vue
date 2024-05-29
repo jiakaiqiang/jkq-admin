@@ -20,7 +20,7 @@
               </el-input>
             </el-form-item>
             <el-form-item clas="capche-img">
-              <el-input v-model="formData.code" style="width:300px;margin-right:10px"  >
+              <el-input v-model="formData.code" style="width:300px;margin-right:10px"  placeholder="请输入验证码" >
 
               </el-input>
               <div v-html="codeUrl" width="100px" height="50px" @click="getImage()"> </div>
