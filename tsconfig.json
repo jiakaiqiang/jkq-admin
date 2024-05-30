@@ -36,7 +36,8 @@
       "src/**/*.vue",
       "components.d.ts",
       "auto-imports.d.ts",
-      "typings/**/*.d.ts"
+      "typings/**/*.d.ts",
+      "shims-tsx.d.ts"
     ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

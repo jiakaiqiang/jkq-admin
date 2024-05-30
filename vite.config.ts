@@ -12,9 +12,11 @@ import { createHtmlPlugin } from "vite-plugin-html";
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 import vueSetupExtend from "unplugin-vue-setup-extend-plus/vite";
 import {viteMockServe} from 'vite-plugin-mock'
+
+import vueJsx from '@vitejs/plugin-vue-jsx'
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue(),
+  plugins: [vue(),vueJsx(),
      AutoImport({ imports: ['vue', 'vue-router','pinia'] ,dts:false}),
      Components({ resolvers:[ElementPlusResolver()]}),
      createHtmlPlugin({

@@ -15,11 +15,12 @@
 </template>
 
 <script lang='ts' setup>
+import logo from './components/logo'
 </script>
 
 <style scoped lang='scss' >
 .aside{
-    width:200px;
+    width:210px;
     background: #f3efef;
     height: 100vh;
 }
