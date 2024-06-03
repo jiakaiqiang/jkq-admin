@@ -1,4 +1,4 @@
-import { RouteRecordRaw } from "vue-router";
+import {customRouteRecordRaw} from '@/globalType/router.ts'
 import Layout from "@/layout/index.vue";
 export const errorRouter = [
   {
@@ -31,12 +31,17 @@ export const errorRouter = [
     component: () => import("@/components/ErrorMessage/404.vue")
   }
 ];
-export const staticRouter: RouteRecordRaw[] = [
+
+
+
+//使用类型交集进行类的扩展
+export const staticRouter: Array<customRouteRecordRaw> = [
 
 
   {
     path: '/login',
     name: "login",
+    isMenu: false,
     component: () => import("@/views/login/index.vue"),
     meta: {
       title: "登录"
@@ -45,11 +50,19 @@ export const staticRouter: RouteRecordRaw[] = [
   {
     path: '/workspace',
     name: "",
+    isMenu: true,
     component: Layout,
+    meta: {
+      title: '工作台',
+      name: "workspace",
+    },
+    isShowChidren: false,
     redirect: '/workspace/index',
+  
     children: [{
       path: '/workspace/index', name: "index", component: () => import("@/views/workspace/index.vue"), meta: {
-        title: "工作台"
+        title: "工作台",
+        name: "index"
       }
     }]
   },
@@ -58,7 +71,23 @@ export const staticRouter: RouteRecordRaw[] = [
     name: "",
     component: Layout,
     redirect: '/editor/index',
-    children:[{path:'/editor/index',name:'editor',component:()=>import('@/views/editor/index.vue'),meta:{title:'编辑器'}}]
+    meta: {
+      title: '编辑器',
+      name: "editor",
+
+    },
+    isMenu: true,
+    children: [
+      { path: '/editor/index', name: 'editor', component: () => import('@/views/editor/index.vue'), meta: { title: '编辑器', name: 'index' } },
+      {  path: '/editor/editor1', name: 'editor1', redirect:"/editor/editor1/index",  meta: { title: '编辑器1', name: 'editor1' },children:[
+      {path:'/editor/editor1/index',name:'editor1',component:()=>import('@/views/editor/editor1/index.vue'),meta:{title:'编辑器1',name:'editor1'}},
+
+
+
+      ] },
+    
+    
+    ]
   }
 
 ];

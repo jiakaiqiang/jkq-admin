@@ -39,6 +39,7 @@
 
 <script lang='ts' setup>
 import {  Message,UserFilled } from '@element-plus/icons-vue';
+import {Default_Login_Success_Redirect}from '@/config/index.ts'
 import { ElMessage } from 'element-plus'
 let codeUrl =  ref('')
 let formData = reactive({
@@ -80,7 +81,7 @@ const login = ()=>{
       localStorage.setItem('token',res.data.access_token)
       ElMessage({message:'登录成功',type:'success'})
       getMenu()
-      $router.push('/workspace')
+      $router.push(Default_Login_Success_Redirect)
     }else{
       ElMessage({message:res.message,type:'error'})
       

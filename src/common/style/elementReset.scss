@@ -1,0 +1,15 @@
+// 重置elelemnt ui 样式
+
+
+// 折叠菜单时隐藏文字
+.el-menu--collapse{
+
+    .el-sub-menu,.el-menu-item{
+      span,.el-sub-menu__icon-arrow{
+        display: none;
+      }
+    }
+  }
+  .el-menu{
+    width:100%;
+  }

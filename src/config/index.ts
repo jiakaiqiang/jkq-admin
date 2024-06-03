@@ -12,4 +12,6 @@ export const REQUEST_PREFIX:string = '/api'
 
 //不需要token的请求
 export const NO_TOKEN_URL:string[] = ['/auth','/auth/captchaImage']
+//默认登录成功后的地址
+export const Default_Login_Success_Redirect:string = '/workspace/index'
 

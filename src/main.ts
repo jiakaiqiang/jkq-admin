@@ -5,6 +5,11 @@ import ElementPlus from "element-plus";
 import install from './install/index'
 // element css
 import "element-plus/dist/index.css";
+
+import '@/common/style/elementReset.scss';
+
+//引入字体图标库
+import '@/styles/iconfont.css';
 // element dark css
 import "element-plus/theme-chalk/dark/css-vars.css";
 import './styles/variables.scss';
