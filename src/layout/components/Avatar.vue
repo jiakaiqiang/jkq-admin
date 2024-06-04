@@ -5,17 +5,21 @@
     </div>
       <template #dropdown>
         <el-dropdown-menu>
-          <el-dropdown-item>Action 1</el-dropdown-item>
-          <el-dropdown-item>Action 2</el-dropdown-item>
-          <el-dropdown-item>Action 3</el-dropdown-item>
-          <el-dropdown-item>Action 4</el-dropdown-item>
-          <el-dropdown-item>Action 5</el-dropdown-item>
+          <el-dropdown-item>密码修改</el-dropdown-item>
+          <el-dropdown-item>个人信息</el-dropdown-item>
+          <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
+         
         </el-dropdown-menu>
       </template>
     </el-dropdown>
 </template>
 
 <script lang='ts' setup>
+let logout=()=>{
+ localStorage.clear()
+  location.reload()
+}
+
 </script>
 
 <style scoped lang='scss' >

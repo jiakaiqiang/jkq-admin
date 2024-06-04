@@ -1,5 +1,5 @@
 <template>
-  <div style="display: flex;justify-content: space-between;align-items: center;">
+  <div style="display: flex;justify-content: space-between;align-items: center;padding-right:20px">
   
     <div class="top-container">
       <div class="colleaspace-icon" @click="handleCollapse">
@@ -12,7 +12,7 @@
     
   </el-breadcrumb>
     </div>
-    <!-- <Avatar></Avatar> -->
+    <Avatar></Avatar>
     <!-- Your code here -->
   </div>
 </template>
@@ -40,7 +40,7 @@ let routerList =computed(()=>{
 <style scoped lang='scss' >
 .top-container{
     display:flex;
-    background:#fff;
+   // background:#fff;
     align-items: center;
    
     height: 100%;

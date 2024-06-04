@@ -4,6 +4,9 @@ import { staticRouter, errorRouter } from "@/router/staticRouter";
 import { useAuthStore } from "@/store/modules/auth";
 import NProgress from "@/config/nprogress";
 import {SYSTEM_NAME,ROUTER_WHITE_LIST}  from '@/config/index'
+import {useSystemStore} from '@/store/modules/system.ts'
+import {customRouteRecordRaw} from '@/globalType/router.ts'
+
 /**
  * @description 📚 路由参数配置简介
  * @param path ==> 路由菜单访问路径
@@ -45,6 +48,7 @@ router.beforeEach((to, from, next) => {
       //resetRouter();
     return next();
     }
+    
     if(to.path=='/'&&token){
       return next('/workspace')
     }
@@ -52,6 +56,9 @@ router.beforeEach((to, from, next) => {
    if (ROUTER_WHITE_LIST.includes(to.path)) return next();
    //5.没有token 直接跳转 到登录页面
    if (!token) return next({ path: '/login', replace: true });
+   if(to.path=='/workspace'){
+
+   }
     // 6.如果没有菜单列表，就重新请求菜单列表并添加动态路由
   // if (!authStore.authMenuListGet.length) {
   //   await initDynamicRouter();
@@ -62,6 +69,7 @@ router.beforeEach((to, from, next) => {
   // authStore.setRouteName(to.name as string);
 
   // 8.正常访问页面
+  handldMenuItem(to)
       next();
   
 })
@@ -87,4 +95,31 @@ router.afterEach(() => {
 });
 
   export default router;
+ export  function handldMenuItem(item:customRouteRecordRaw){
+ 
+  let tabList:Array<customRouteRecordRaw> = []
+ 
+  //获取存储的tab信息
+  let tabListStr = localStorage.getItem('tabList')
+  if(tabListStr){
+    tabList = JSON.parse(tabListStr)
+  }
+  //判断tabList中是否已经存在该路由
+  let isExist = tabList.some((tabItem:customRouteRecordRaw)=>{
+    return tabItem.path === item.path
+  })
+  if(!isExist){
+    if(item.meta.isShowChidren==false){
+    this.tabList.push(item.children[0])
+
+  }else{
+    this.tabList.push(item)
+  }
   
+    //存储tab信息
+    localStorage.setItem('tabList',JSON.stringify(tabList))
+  
+  }
+
+ 
+}

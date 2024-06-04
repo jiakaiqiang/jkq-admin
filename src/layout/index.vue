@@ -1,5 +1,5 @@
 <template>
-  <div style="display: flex;min-width: 600px">
+  <section style="display: flex;min-width: 600px">
     <aside class="aside"  :style="{ width: collapse ? '65px' : '210px' }">
         <logo :collapse="collapse"></logo>
         <Menu></Menu>
@@ -10,13 +10,14 @@
         <header>
             <Top></Top>
         </header>
+        <Nav></Nav>
     <div class="container">
         <router-view></router-view>
     </div>
     </main>
    
    
-  </div>
+  </section>
 </template>
 
 <script lang='ts' setup>
@@ -25,6 +26,7 @@ import { computed, onBeforeUnmount, ref } from 'vue';
 import logo from './components/logo';
 import Menu  from './menu/index.vue';
 import Top  from './components/top.vue';
+import Nav  from './components/nav.vue';
 import { useDebounceFn } from "@vueuse/core";
 import {useSystemStore} from '@/store/modules/system.ts'
 
@@ -37,7 +39,7 @@ const collapse = computed(() => systemStore.collapse);
 const screenWidth = ref(0);
 const listeningWindow = useDebounceFn(() => {
   screenWidth.value = document.body.clientWidth;
-  console.log('-wewe',collapse.value)
+
   if (!collapse.value && screenWidth.value < 1200) systemStore.setGlobalState("collapse", true);
   if (collapse.value&& screenWidth.value > 1200) systemStore.setGlobalState("collapse", false);
 }, 100);
@@ -53,11 +55,17 @@ onBeforeUnmount(() => {
     width:210px;
     background: #f3efef;
     height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 main{
     flex: 1;
     background: #f3efef;
     height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    
 }
 header{
     height: 60px;
@@ -68,10 +76,10 @@ header{
     border-bottom:1px solid #f3efef
 }
 .container{
-    height:calc(100vh - 60px);
-    overflow: auto;
-    padding: 20px;
-    box-sizing: border-box;
+    flex: 1;
+ 
+    margin: 20px;
+ 
     background: #fff;
 }
 

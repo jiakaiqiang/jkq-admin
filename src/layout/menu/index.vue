@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <el-container   class="side-menu">
+   <el-container   class="side-menu">
     <el-menu
         active-text-color="black"
         background-color="white"
@@ -21,7 +20,6 @@
         
       </el-menu>
     </el-container>
-  </div>
 </template>
 
 <script lang='ts' setup>
@@ -45,7 +43,7 @@ let $route =  getCurrentInstance()?.appContext.config.globalProperties.$route;
 
 .side-menu{
   border-top:1px solid #e6e6e6;
-  height:calc(100vh - 60px);
+  flex:1;
   overflow-y: auto;
   overflow-x: hidden;
   border-right: 1px solid #e6e6e6;

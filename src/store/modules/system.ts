@@ -4,7 +4,18 @@ export const useSystemStore = defineStore("system", {
     state:()=>{
         return {
             collapse:false, // 侧边栏是否折叠
+            tabsList:[], // 标签页列表
         }
+    },
+    getters:{
+      tabsListData:(state)=>{
+          // 获取标签页列表
+          let tabListStr = localStorage.getItem('tabList')
+          if(tabListStr){
+            state.tabsList = JSON.parse(tabListStr)
+          }
+          return state.tabsList
+      }
     },
     actions:{
         changeCollapse(){
@@ -16,6 +27,7 @@ export const useSystemStore = defineStore("system", {
             if(state === 'collapse'){
                 this.collapse = value
             }
-        }
+        },
+       
     }
 })

@@ -14,7 +14,7 @@ function install(app:any){
 
     //注册routers
     Object.keys(plugins).forEach(item=>{
-  
+       console.log(item,'-fewfwf')
       app.use(plugins[item].default)
     })
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-menu-item :index="item.path" v-if="!item.children||item.isShowChidren===false">
+    <el-menu-item :index="item.path" v-if="!item.children||item.isShowChidren===false" @click="handldMenuItem(item)">
       <el-icon><setting /></el-icon>
      <span>{{item.meta.title}}</span>
    </el-menu-item>
@@ -26,12 +26,15 @@ import {
 } from '@element-plus/icons-vue'
 import { defineProps } from 'vue'
 import {customRouteRecordRaw} from '@/globalType/router.ts'
+
 defineProps<{
   item: {
     type: customRouteRecordRaw,
     required: true
   }
 }>()
+
+
 </script>
 
 <style scoped lang='scss' >
