@@ -9,11 +9,14 @@ export const useSystemStore = defineStore("system", {
     },
     getters:{
       tabsListData:(state)=>{
+        if(state.tabsList.length===0){
+            let tabListStr = localStorage.getItem('tabList')
+            if(tabListStr){
+              state.tabsList = JSON.parse(tabListStr)
+            }
+        }
           // 获取标签页列表
-          let tabListStr = localStorage.getItem('tabList')
-          if(tabListStr){
-            state.tabsList = JSON.parse(tabListStr)
-          }
+         
           return state.tabsList
       }
     },
@@ -28,6 +31,10 @@ export const useSystemStore = defineStore("system", {
                 this.collapse = value
             }
         },
+        changeTabsList(data:any){
+            this.tabsList =  data
+        }
+        
        
     }
 })

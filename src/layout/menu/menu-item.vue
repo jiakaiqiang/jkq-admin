@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-menu-item :index="item.path" v-if="!item.children||item.isShowChidren===false" @click="handldMenuItem(item)">
+    <el-menu-item :index="item.path" v-if="!item.children||item.isShowChidren===false" >
       <el-icon><setting /></el-icon>
      <span>{{item.meta.title}}</span>
    </el-menu-item>

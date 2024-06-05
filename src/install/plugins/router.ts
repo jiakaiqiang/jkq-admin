@@ -69,7 +69,38 @@ router.beforeEach((to, from, next) => {
   // authStore.setRouteName(to.name as string);
 
   // 8.正常访问页面
-  handldMenuItem(to)
+  // handldMenuItem(to)
+
+   const systemStore = useSystemStore()
+  let tabList:Array<customRouteRecordRaw> = []
+ 
+  //获取存储的tab信息
+  let tabListStr = localStorage.getItem('tabList')
+  if(tabListStr){
+    tabList = JSON.parse(tabListStr)
+  }
+  //判断tabList中是否已经存在该路由
+  let isExist = tabList.some((tabItem:customRouteRecordRaw)=>{
+    return tabItem.path === to.path
+  })
+  if(!isExist){
+    if(to.meta.isShowChidren==false){
+    tabList.push(to.children[0])
+
+  }else{
+    tabList.push(to)
+  }
+  
+    //存储tab信息
+    localStorage.setItem('tabList',JSON.stringify(tabList))
+    systemStore.changeTabsList(tabList)
+
+  
+  }
+
+
+
+
       next();
   
 })
@@ -110,10 +141,10 @@ router.afterEach(() => {
   })
   if(!isExist){
     if(item.meta.isShowChidren==false){
-    this.tabList.push(item.children[0])
+    tabList.push(item.children[0])
 
   }else{
-    this.tabList.push(item)
+    tabList.push(item)
   }
   
     //存储tab信息
