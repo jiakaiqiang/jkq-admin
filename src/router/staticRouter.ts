@@ -63,7 +63,7 @@ export const staticRouter: Array<customRouteRecordRaw> = [
     children: [{
       path: '/workspace/index', 
       icon:'icon-gongzuotai',
-      name: "index", component: () => import("@/views/workspace/index.vue"), meta: {
+      name: "workspace-index", component: () => import("@/views/workspace/index.vue"), meta: {
         title: "工作台",
         name: "index"
       }
@@ -215,14 +215,26 @@ export const staticRouter: Array<customRouteRecordRaw> = [
       name: 'about',
     },
     isMenu: true,
+    icon:'icon-guanyuzuozhe',
     children: [
       {
-        path: '/about/index',
-        name: 'index',
-        component: () => import('@/views/about/index.vue'),
+        path: '/about/project',
+        name: 'about-project',
+        icon:'icon-guanyuzuozhe',
+        component: () => import('@/views/about/project.vue'),
+        meta: {
+          title: '关于项目',
+          name: 'project'
+        }
+      },
+      {
+        path: '/about/person',
+        name: 'about-person',
+        icon:'icon-guanyuzuozhe',
+        component: () => import('@/views/about/person.vue'),
         meta: {
           title: '关于作者',
-          name: 'index'
+          name: 'person'
         }
       }
     ]

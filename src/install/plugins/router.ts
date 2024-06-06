@@ -56,9 +56,7 @@ router.beforeEach((to, from, next) => {
    if (ROUTER_WHITE_LIST.includes(to.path)) return next();
    //5.没有token 直接跳转 到登录页面
    if (!token) return next({ path: '/login', replace: true });
-   if(to.path=='/workspace'){
-
-   }
+  
     // 6.如果没有菜单列表，就重新请求菜单列表并添加动态路由
   // if (!authStore.authMenuListGet.length) {
   //   await initDynamicRouter();
@@ -83,7 +81,7 @@ router.beforeEach((to, from, next) => {
   let isExist = tabList.some((tabItem:customRouteRecordRaw)=>{
     return tabItem.path === to.path
   })
-  if(!isExist){
+  if(!isExist&&!to.redirect){
     if(to.meta.isShowChidren==false){
     tabList.push(to.children[0])
 
@@ -94,7 +92,7 @@ router.beforeEach((to, from, next) => {
     //存储tab信息
     localStorage.setItem('tabList',JSON.stringify(tabList))
     systemStore.changeTabsList(tabList)
-
+    
   
   }
 

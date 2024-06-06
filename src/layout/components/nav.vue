@@ -30,14 +30,18 @@
 
 <script lang='ts' setup>
 import { ref, computed } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter,useRoute } from "vue-router";
 import { TabsPaneContext, TabPaneName } from "element-plus";
 import { ArrowDownBold } from "@element-plus/icons-vue";
 import { useSystemStore } from "@/store/modules/system.ts";
 let $router = useRouter();
 
+
+
 const systemStore = useSystemStore();
-const activeName = ref("first");
+const activeName =computed(() => {
+  return $router.currentRoute.value.path;
+});
 
 const handleClick = (tab: TabsPaneContext, event: Event) => {
   $router.push(tab.props.name);
@@ -80,13 +84,17 @@ const handleCloseTab = (type: string) => {
   .el-tabs__nav {
     border: 0 !important;
   }
-  .is-active {
-    border-bottom: 2px solid #409eff !important;
-  }
+ 
   .el-tabs__item {
     border: 0 !important;
   }
 }
+::v-deep .demo-tabs{
+.is-active {
+    border-bottom: 2px solid #409eff !important;
+    
+  }
+} 
 
 .layout-nav {
   background: #fff;
