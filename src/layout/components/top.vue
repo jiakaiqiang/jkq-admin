@@ -12,12 +12,18 @@
     
   </el-breadcrumb>
     </div>
-    <Avatar></Avatar>
+    <div style="display: flex;align-items: center">
+      <Theme style="margin-right:20px"></Theme>
+      <Avatar></Avatar>
+   
+    </div>
+   
     <!-- Your code here -->
   </div>
 </template>
 
 <script lang='ts' setup name="Top">
+import Theme from '@/layout/components/theme.vue';
 import Avatar from '@/layout/components/Avatar.vue';
 import {computed} from 'vue'
 import { ArrowRight } from '@element-plus/icons-vue'
