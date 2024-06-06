@@ -15,8 +15,9 @@
                     <slot :name="'form'-item.values"></slot>
                 </template>
                 <el-form-item v-else :key="item.value" :label="item.label" :prop="item.value">
+                  
                     <!-- 组件 -->
-                    <component :is="item.formType" v-bind="item" :value="formData[item.value]" @update-value="(val)=>{formData[item.value]=val}"
+                    <component :is="itemInput" v-bind="item" :value="formData[item.value]" @update-value="(val)=>{formData[item.value]=val}"
                                :selectList="listTypeInfo[item.list]" @handleEvent="handleEvent"></component>
                 </el-form-item>
             </template>
@@ -26,7 +27,7 @@
 </template>
 
 <script lang="ts" setup>
-    import itemInput from './item/input';
+    import itemInput from './item/input.vue';
     import itemSelect from './item/select.vue'
     import itemTextarea from './item/textarea.vue'
     import itemTimeSelect from './item/timeSelect.vue'
@@ -35,7 +36,7 @@
     import itemSlider from "./item/slider"
     import  itemCheckBox from "./item/checkBox"
     import  itemRadio from "./item/radio"
-    import {defineEmits,defineProps,c} from  'vue'
+    import {defineEmits,defineProps} from  'vue'
     const  props =  defineProps({
        formRef: {
                 type: Object
@@ -88,7 +89,7 @@
                 props.formItem.filter(item => !Object.prototype.hasOwnProperty.call(item, 'show') || (Object.prototype.hasOwnProperty.call(item, 'show') && item.show))
             }
             function handleEvent(event,data){
-                $emit('handleEvent',event,data)
+                emits('handleEvent',event,data)
             }
 
 </script>

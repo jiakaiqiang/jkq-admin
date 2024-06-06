@@ -1,11 +1,9 @@
 <template>
   <div>
-  
-    <span class="iconfont icon-huanfu" style="font-size:20px;cursor: pointer;"></span>
     <!-- Your code here -->
   </div>
 </template>
-  
+
 <script lang='ts' setup>
 </script>
 

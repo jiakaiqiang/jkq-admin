@@ -1,6 +1,5 @@
 <template>
   <div>
-    wewew
     <!-- Your code here -->
   </div>
 </template>

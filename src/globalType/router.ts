@@ -5,6 +5,7 @@ interface customRecordRaw {
     meta?: {
       title: string;
       name?: string;
-    }
+    },
+    icon?:string
   }
   export type customRouteRecordRaw = RouteRecordRaw & customRecordRaw;

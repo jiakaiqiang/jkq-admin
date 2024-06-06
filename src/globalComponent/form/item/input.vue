@@ -5,9 +5,9 @@
 </template>
 
 <script lang='ts' setup>
-import {defineEmits,defineProps} from 'vue'
+import {defineEmits,defineProps,watch} from 'vue'
 const emits=defineEmits(['update-value','handleEvent'])
-const props=defineProps({
+let props=defineProps({
   value:{
     type:String,
     default:""
@@ -15,34 +15,16 @@ const props=defineProps({
 })
 let inputValue =  ref('')
 
-export default {
-name:'inpust',
-data(){
-return {
-  inputValue:''
+inputValue.value=props.value
+watch(()=>inputValue.value,(newValue)=>{
+  emits('update-value',newValue)
+})
+
+const handleEvent=(type:String)=>{
+  emits('handleEvent',type)
 }
-},
-props:{
-  value:{
-    type:String,
-    default:""
-  }
-},
-watch:{
-//监听数据双项修改
-inputValue(value){
-  this.$emit('update-value',value)
-}
-},
-created(){
- this.inputValue=this.value
-},
-methods:{
-  handleEvent(event){
-    this.$emit('handleEvent',event,this.inputValue)
-  }
-}
-}
+
+
 </script>
 <style>
 

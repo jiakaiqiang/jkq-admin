@@ -14,7 +14,7 @@
     </el-dropdown>
     <!-- vue 3 中取消了.sync 的语法糖 取而代之的是通过属性和方法的方式去进行数据的更新 -->
   <Dialog :visible='visible' @update-value='visible = $event' title="密码修改"  :btList="btList">
-  <Form :form-ref="formRef" @update-formRef="formRef = $event" :formItem="formItem"></Form>
+  <Form :form-ref="formRef" @update-formRef="formRef = $event" :formItem="formItem" style="width:400px;margin:0 auto"></Form>
   </Dialog>
 
 </template>
@@ -22,7 +22,7 @@
 <script lang='ts' setup>
 import { ref} from  'vue'
 import Dialog from '@/globalComponent/Dialog/index.vue'
-import Form from "@/globalComponent/Form/index.vue"
+import Form from "@/globalComponent/form/index.vue"
 
 let  visible  =  ref(false)
 let  formRef  =  ref(null)
@@ -48,9 +48,10 @@ let btList =  ref([
 let formItem =  ref([
   {
     label:'原密码',
-    prop:'oldPassword',
+    value:'oldPassword',
     formType:"itemInput",
     placeholder:'请输入原密码',
+
     rules:[
       {
         required:true,
@@ -61,7 +62,7 @@ let formItem =  ref([
   },
   {
     label:'新密码',
-    prop:'newPassword',
+    value:'newPassword',
    formType:"itemInput",
     placeholder:'请输入新密码',
     rules:[
