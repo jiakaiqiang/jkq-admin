@@ -25,7 +25,6 @@
     "vite-plugin-html": "^3.2.2",
     "vite-plugin-mock": "^3.0.2",
     "vite-plugin-style-import": "^2.0.0",
-    "vite-plugin-svg-icons": "^2.0.1",
     "vue": "^3.4.21",
     "vue-router": "^4.3.2"
   },
@@ -35,6 +34,7 @@
     "@vitejs/plugin-vue": "^5.0.4",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
+    "vite-plugin-svg-icons": "^2.0.1",
     "vue-tsc": "^2.0.6"
   }
 }

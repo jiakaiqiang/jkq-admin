@@ -1,7 +1,7 @@
 <template>
     <div :class="['my-dialog',props.customClass?props.customClass:'']" >
         <el-dialog
-                :model-value="props.visible"
+                :model-value="visible"
                 :width="props.width"
                 :fullscreen="props.fullscreen"
                 :top="props.top"
@@ -32,13 +32,15 @@
 
 <script lang='ts' setup name='Dialog'>
 import {CloseBold} from '@element-plus/icons-vue'
-import {defineProps, defineEmits, ref} from "vue";
-
+import {defineProps, defineEmits,defineModel, ref} from "vue";
+let visible =  defineModel<boolean>({
+    default:false
+})
     const props = defineProps({
-        visible: {
-            type: Boolean,
-            default: false
-        },
+        // visible: {
+        //     type: Boolean,
+        //     default: false
+        // },
         title: {
             type: String,
             default: ""
@@ -82,7 +84,7 @@ import {defineProps, defineEmits, ref} from "vue";
     const emit = defineEmits(['update-value','handleClick'])
     const handleClose = (done: () => void) :void=> {
         emit('update-value', false)
-        done()
+      
     }
     const handleClick = (event: string):void => {
         emit('handleClick', event)

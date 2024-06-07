@@ -5,13 +5,14 @@
 </template>
 
 <script lang='ts' setup>
-import {defineEmits,defineProps,watch} from 'vue'
-const emits=defineEmits(['update-value','handleEvent'])
-let props=defineProps({
-  value:{
-    type:String,
-    default:""
-  }
+type valueType = {
+  value:string
+}
+
+import {defineEmits,defineProps,watch} from 'vue';
+const emits=defineEmits(['update-value','handleEvent']);
+const props=withDefaults(defineProps<valueType>(),{
+  value:''
 })
 let inputValue =  ref('')
 

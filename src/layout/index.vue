@@ -12,7 +12,10 @@
         </header>
         <Nav></Nav>
     <div class="container" id="container">
+      <Transition>
         <router-view></router-view>
+       </Transition>
+      
     </div>
     </main>
    
@@ -81,6 +84,15 @@ header{
     margin: 20px;
  
     background: #fff;
+}
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 
 /* Your styles here */

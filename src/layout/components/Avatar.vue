@@ -13,7 +13,7 @@
       </template>
     </el-dropdown>
     <!-- vue 3 中取消了.sync 的语法糖 取而代之的是通过属性和方法的方式去进行数据的更新 -->
-  <Dialog :visible='visible' @update-value='visible = $event' title="密码修改"  :btList="btList">
+  <Dialog v-model='visible' @update-value='visible = $event' title="密码修改"  :btList="btList">
   <Form :form-ref="formRef" @update-formRef="formRef = $event" :formItem="formItem" style="width:400px;margin:0 auto"></Form>
   </Dialog>
 
