@@ -12,10 +12,8 @@
         </header>
         <Nav></Nav>
     <div class="container" id="container">
-      <Transition>
-        <router-view></router-view>
-       </Transition>
-      
+     
+       <router-view></router-view>
     </div>
     </main>
    

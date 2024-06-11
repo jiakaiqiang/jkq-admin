@@ -1,9 +1,7 @@
 <template>
-  <div>
-   <svg>
-    <use :xlink="svgId"></use>
-   </svg>
-  </div>
+  <svg :style="iconStyle" aria-hidden="true">
+    <use :xlink:href="symbolId" />
+  </svg>
 </template>
 
 <script lang='ts' setup>
@@ -14,7 +12,7 @@ interface iconStyle{
         fill?: string;
     }
 interface svgIcon{
-    prefix: string;
+    prefix?: string;
     name:string,
     iconStyle?: iconStyle;
     
@@ -24,7 +22,7 @@ let props = withDefaults(defineProps<svgIcon>(), {
     name:"",
     iconStyle:()=>({ width: "100px", height: "100px" })
 });
-let  svgId =  computed(()=>`#${props.prefix}-${props.name}`)
+let  symbolId =  computed(()=>`#${props.prefix}-${props.name}`)
 // Your code here
 
 </script>

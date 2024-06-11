@@ -13,7 +13,7 @@ import '@/styles/iconfont.css';
 // element dark css
 import "element-plus/theme-chalk/dark/css-vars.css";
 import './styles/variables.scss';
-
+import 'virtual:svg-icons-register' //注册svg图标模块
 const app  = createApp(App)
 app.use(install)
 app.use(ElementPlus)

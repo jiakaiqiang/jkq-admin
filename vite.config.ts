@@ -26,6 +26,7 @@ export default defineConfig({
       }
     }),
      // 使用 svg 图标
+     // 使用 svg 图标
      createSvgIconsPlugin({
       iconDirs: [resolve(process.cwd(), "src/assets/icons")],
       symbolId: "icon-[dir]-[name]"
@@ -34,7 +35,7 @@ export default defineConfig({
      vueSetupExtend({}),
      viteMockServe({
     // supportTs: false, // 打开后，可以读取 ts 文件模块。 请注意，打开后将无法监视.ts 文件更改
-    mockPath: '@/mock', // 设置 mock 文件夹路径
+       mockPath: '@/mock', // 设置 mock 文件夹路径
      })
     ],
   //配置别名

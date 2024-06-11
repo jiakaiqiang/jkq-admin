@@ -215,12 +215,12 @@ export const staticRouter: Array<customRouteRecordRaw> = [
       name: 'about',
     },
     isMenu: true,
-    icon:'icon-guanyuzuozhe',
+    icon:'icon-guanyu',
     children: [
       {
         path: '/about/project',
         name: 'about-project',
-        icon:'icon-guanyuzuozhe',
+        icon:'icon-guanyuxiangmu',
         component: () => import('@/views/about/project.vue'),
         meta: {
           title: '关于项目',
