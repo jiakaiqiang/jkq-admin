@@ -1,39 +1,31 @@
 <template>
 <div class='form-date'>
-    <el-date-picker v-model="dateValue" v-bind="$attrs" @change="handleEvent">
-  </el-date-picker>
+   
+  <el-date-picker
+        v-model="dateValue"
+        type="date"
+        placeholder="请选择"
+       
+      @change="handleEvent"
+      />
+      
+      
 </div>
 
 </template>
+<script lang="ts" setup>
 
-<script>
-export default {
-  name: "itemDateSelect",
-  props: {
-    value: {
-      type: [String,Date,Array],
-      default: "",
-    },
-  },
-  data() {
-    return {
-      dateValue: "",
-    };
-  },
-  watch: {
-      dateValue(val){
-          this.$emit('update:value',val)
-      }
-  },
-  created() {
-    this.dateValue = this.value;
-  },
-    methods:{
-      handleEvent(data){
-          this.$emit('handleEvent','changeDate',data)
-      }
-    }
-};
+
+import { ref,defineProps,defineEmits,watch,defineModel } from 'Vue';
+
+
+const emit = defineEmits(['handleEvent'])
+let dateValue= defineModel()
+
+const handleEvent = (val:any)=>{
+  emit('handleEvent','changeDate',val)
+}
+
 </script>
 
 <style>

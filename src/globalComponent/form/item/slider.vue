@@ -1,28 +1,22 @@
 <template>
     <div class="item-slider">
-        <el-slider v-bind="$attrs" v-model="sliderValue"></el-slider>
+        <el-slider v-bind="$attrs" v-model="model" @change="handleEvent"></el-slider>
     </div>
 </template>
 
-<script>
-    export default {
-        name: "itemSlider",
-        props:{
-            value:{
-                type:Number,
-                default:0
-            }
-        },
-        data(){
-            return {
-                sliderValue:""
-            }
-        },
-        created() {
-            this.sliderValue=this.value
+<script lang="ts" setup>
+import { ref,defineModel,defineEmits } from 'vue';
 
-        }
-    }
+let  model  =  defineModel()
+
+const emit = defineEmits(['handleEvent'])
+const handleEvent = (value: number) => {
+   
+    emit('handleEvent','sliderData', value)
+}
+
+
+
 </script>
 
 <style>

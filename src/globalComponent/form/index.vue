@@ -17,7 +17,7 @@
                 <el-form-item v-else :key="item.value" :label="item.label" :prop="item.value">
                   
                     <!-- 组件 -->
-                    <component :is="itemInput" v-bind="item" :value="formData[item.value]" @update-value="(val)=>{formData[item.value]=val}"
+                    <component :is="itemList[item.formType]" v-bind="item" :value="formData[item.value]" @update-value="(val)=>{formData[item.value]=val}"
                                :selectList="listTypeInfo[item.list]" @handleEvent="handleEvent"></component>
                 </el-form-item>
             </template>
@@ -32,12 +32,23 @@
     import itemTextarea from './item/textarea.vue'
     import itemTimeSelect from './item/timeSelect.vue'
     import itemDateSelect from './item/dateSelect.vue'
-    import itemInputNumber from './item/inputNumber'
-    import itemSlider from "./item/slider"
-    import  itemCheckBox from "./item/checkBox"
-    import  itemRadio from "./item/radio"
+    import itemInputNumber from './item/inputNumber.vue'
+    import itemSlider from "./item/slider.vue"
+    import  itemCheckBox from "./item/checkBox.vue"
+    import  itemRadio from "./item/radio.vue"
     import {defineEmits,defineProps,defineModel} from  'vue'
     import {FormInstance} from 'element-plus'
+    const itemList  = {
+        itemInput,itemSelect,itemTextarea,itemTimeSelect,itemDateSelect,itemInputNumber,itemSlider,itemCheckBox,itemRadio
+    }
+   
+    // const  formData =  defineModel({
+    //     type: Object,
+    //     default: () => {
+    //         return {};
+    //     },
+    //
+    // }
   
     const  form =  ref<FormInstance>()
     
