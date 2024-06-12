@@ -5,6 +5,9 @@ export const useSystemStore = defineStore("system", {
         return {
             collapse:false, // 侧边栏是否折叠
             tabsList:[], // 标签页列表
+            isFullScreen:false, // 是否全屏
+            isLock:false, // 是否锁屏
+            isRefresh:true, // 是否刷新
         }
     },
     getters:{
@@ -33,8 +36,17 @@ export const useSystemStore = defineStore("system", {
         },
         changeTabsList(data:any){
             this.tabsList =  data
+        },
+        changeFullScreen(data:boolean){
+            this.isFullScreen = data
+        },
+        changeLock(data:boolean){
+            this.isLock = data
+
+        },
+        changeRefresh(data:boolean){
+            this.isRefresh = data
         }
-        
        
     }
 })

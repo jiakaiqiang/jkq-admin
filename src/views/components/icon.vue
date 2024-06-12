@@ -8,7 +8,7 @@
       
     >
       <template #append>
-        <el-button :icon="Search"  @click="handleSelectIcon" />
+        <el-button :icon="Search"  @click="handleSelectIconButton" />
       </template>
      
     </el-input>
@@ -19,7 +19,7 @@
     
   >
   <el-scrollbar style="">
-    <div v-for="item in ElementPlusIconsVue" :key="item"  style="margin:10px;cursor: pointer;display: flex;flex-direction: column;align-items: center;justify-content: center;"  >
+    <div v-for="item in ElementPlusIconsVue" :key="item" class="icon-item" style="margin:10px;cursor: pointer;display: flex;flex-direction: column;align-items: center;justify-content: center;"  @click="handleSelectIcon(item)" >
        <el-icon :size="20" :color="'#606266'" >
         <component :is="item" />
       </el-icon>
@@ -38,13 +38,18 @@
 <script lang='ts' setup>
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import {Search} from "@element-plus/icons-vue";
-import { ref } from "vue";
+import { ref} from "vue";
 let iconValue =  ref<string>('')
-let dialogVisible =  ref<boolean>(false)
-const handleSelectIcon  = () => {
-  dialogVisible.value = true
-}
+let  dialogVisible =  ref<boolean>(false)
 
+const  handleSelectIconButton = ()=>{
+  dialogVisible.value = true
+} 
+
+const handleSelectIcon = (item:any)=>{
+  iconValue.value = item.name
+  dialogVisible.value  =  false
+}
 
 </script>
 
@@ -70,6 +75,15 @@ const handleSelectIcon  = () => {
   }
   .el-input {
     width: 300px;
+  }
+}
+.icon-item{
+  &:hover{
+    .title{
+      font-size:28px !important
+    }
+ 
+ 
   }
 }
 /* Your styles here */

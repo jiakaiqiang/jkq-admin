@@ -12,7 +12,7 @@
             <template v-for="(item) in formItem">
                 <!-- slot -->
                 <template v-if="item.formType==='itemSlot'">
-                    <slot :name="'form'-item.values"></slot>
+                    <slot :name="'form'-item.value"></slot>
                 </template>
                 <el-form-item v-else :key="item.value" :label="item.label" :prop="item.value">
                   
@@ -36,11 +36,13 @@
     import itemSlider from "./item/slider"
     import  itemCheckBox from "./item/checkBox"
     import  itemRadio from "./item/radio"
-    import {defineEmits,defineProps} from  'vue'
+    import {defineEmits,defineProps,defineModel} from  'vue'
+    import {FormInstance} from 'element-plus'
+  
+    const  form =  ref<FormInstance>()
+    
     const  props =  defineProps({
-       formRef: {
-                type: Object
-            },
+       
             //表单绑定的数据
             formData: {
                 type: Object,
@@ -82,8 +84,15 @@
             },
     })
     const  emits =  defineEmits(['handleEvent','update-formRef'])
-    watch(()=>props.data,()=>{
-      emits('update-formRef', this.$refs.form)
+    watch(()=>props.formData,(newVal)=>{
+        
+        emits('update-formRef',form)
+
+       
+    
+    },{
+      immediate:true,
+      deep:true
     })
     function handleFormItem() {
                 props.formItem.filter(item => !Object.prototype.hasOwnProperty.call(item, 'show') || (Object.prototype.hasOwnProperty.call(item, 'show') && item.show))

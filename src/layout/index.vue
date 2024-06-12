@@ -11,9 +11,9 @@
             <Top></Top>
         </header>
         <Nav></Nav>
-    <div class="container" id="container">
+    <div class="container" id="container" v-if="systemStore.isRefresh">
      
-       <router-view></router-view>
+       <router-view ></router-view>
     </div>
     </main>
    
@@ -34,6 +34,7 @@ import {useSystemStore} from '@/store/modules/system.ts'
 import {storeToRefs} from 'pinia'
 
 const systemStore = useSystemStore()
+
 const collapse = computed(() => systemStore.collapse);
 
 // 监听窗口大小变化，折叠侧边栏
