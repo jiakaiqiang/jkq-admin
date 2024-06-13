@@ -13,7 +13,10 @@
         <Nav></Nav>
     <div class="container" id="container" v-if="systemStore.isRefresh">
      
-       <router-view ></router-view>
+       <div style="flex:1;background:#fff">
+         <router-view ></router-view>
+        </div>
+     <div style="height:50px;background: #fff;text-align: center;padding-top: 20px;margin-top:10px;line-height: 20px;"> 备案号:陕ICP备2024040409号-1</div>
     </div>
     </main>
    
@@ -82,7 +85,10 @@ header{
  
     margin: 20px;
  
-    background: #fff;
+   
+    display: flex;
+    flex-direction: column;
+   
 }
 .v-enter-active,
 .v-leave-active {

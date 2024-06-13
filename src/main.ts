@@ -7,6 +7,7 @@ import install from './install/index'
 import "element-plus/dist/index.css";
 
 import '@/common/style/elementReset.scss';
+import zhCn from 'element-plus/es/locale/lang/zh-cn';
 
 //引入字体图标库
 import '@/styles/iconfont.css';
@@ -16,7 +17,9 @@ import './styles/variables.scss';
 import 'virtual:svg-icons-register' //注册svg图标模块
 const app  = createApp(App)
 app.use(install)
-app.use(ElementPlus)
+app.use(ElementPlus, {  
+    locale: zhCn,  
+  }); 
 
 app.mount('#app')
 

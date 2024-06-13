@@ -1,6 +1,6 @@
 <template>
   <div class="form-textarea">
-    <el-input  v-bind="$attrs" type='textarea' v-model="textValue"></el-input>
+    <el-input   type='textarea' v-model="textValue"></el-input>
   </div>
 </template>
 

@@ -1,6 +1,6 @@
 <template>
     <div class="item-slider">
-        <el-slider v-bind="$attrs" v-model="model" @change="handleEvent"></el-slider>
+        <el-slider  v-model="model" @change="handleEvent"></el-slider>
     </div>
 </template>
 

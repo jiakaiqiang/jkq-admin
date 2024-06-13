@@ -1,6 +1,6 @@
 <template>
   <div class="form-time-picker">
-   <el-time-picker v-bind="$attrs" v-model="inputValue" @change="handleEvent"></el-time-picker>
+   <el-time-picker  v-model="inputValue" @change="handleEvent"></el-time-picker>
   
   </div>
 </template>

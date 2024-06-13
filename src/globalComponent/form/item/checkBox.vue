@@ -8,15 +8,11 @@
 
 <script lang="ts" setup>
 
-import {defineProps,defineEmits,ref} from 'vue'
-const checkList = ref<any>([])
+import {defineProps,defineEmits,defineModel} from 'vue'
+let  checkList =defineModel()
+
     const props = defineProps({
-        value: {
-            type: Array,
-            default: () => {
-                return []
-            }
-        },
+      
         selectList: {
             type: Array,
             default: () => {
@@ -26,15 +22,13 @@ const checkList = ref<any>([])
     })
   
 
-    const emit = defineEmits(['update:value','handleEvent'])
-    watch(checkList, (val) => {
-        emit('update:value', val)
-    })
+    const emit = defineEmits(['handleEvent'])
+    
     const handleEvent=(data:any)=>{
                 emit('handleEvent','changeCheck',data)
             }
 
-    checkList.value = Array.isArray(props.value) ? props.value : []
+    
    
 </script>
 

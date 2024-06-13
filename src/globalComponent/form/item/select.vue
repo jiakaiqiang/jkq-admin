@@ -11,43 +11,23 @@
   </div>
 </template>
 
-<script>
-export default {
-name:'fromSelect',
-data(){
-return {
-    selectValue:''
-}
-},
-props:{
-  value:{
-    type:String,
-    default:""
-  },
+<script lang='ts' setup>
+import {defineEmits,defineModel,defineProps} from 'vue'
+let  selectValue  =  defineModel()
+const  emits =  defineEmits(['handleEvent'])
+const  props =  defineProps({
   selectList:{
       type:Array,
       default:()=>{
           return []
       }
   }
-},
-watch:{
-//监听数据双项修改
-selectValue(value){
-    console.log(value,this.selectList,'ww')
-  this.$emit('update:value',value)
-},
-},
-created(){
-this.selectValue=this.value
-},
-methods:{
-  handleEvent(data){
-    this.$emit('handleEvent','changeSelect',data)
-  }
-}
-}
+})
 
+
+ const handleEvent=(data)=>{
+    emits('handleEvent','changeSelect',data)
+  }
 </script>
 <style >
 .selectItem{

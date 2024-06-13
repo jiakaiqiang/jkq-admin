@@ -1,6 +1,6 @@
 <template>
   <div class="form-container">
-    <Form class="form" :formData="formData.data" :formRef='formRef' @update-formRef="handleFormRef" :list="typeInfoList" :rules="formData.rules" :formItem="formData.list" :labelWidth="'100px'" :labelPosition="'left'" :size="'small'"></Form>
+    <Form class="form" :formData="formData.data" :formRef='formRef' @update-formRef="handleFormRef" :listTypeInfo="listTypeInfo" :rules="formData.rules" :formItem="formData.list" :labelWidth="'100px'" :labelPosition="'left'" :size="'small'"></Form>
     <!-- Your code here -->
     <el-button type="primary" @click="submitForm">提交验证</el-button>
    
@@ -19,10 +19,10 @@ type formDataType = {
     confirmPassword: string,
     selectData: string,
     radioValue: string,
-    checkboxValue: string,
+    checkboxValue: Array<string>,
     timeValue: string,
-    silderValue: string,
-    inputNumberValue: string
+    silderValue: number,
+    inputNumberValue: number
 };
 type formListType= {
     name:string,
@@ -45,7 +45,23 @@ type formType = {
 type formInfoList ={
   [key: string] : Array<any>
 }
-let typeInfoList = reactive<formInfoList>({})
+let listTypeInfo = reactive<formInfoList>({
+  selectList:[
+    {label:"选项1",value:"1"},
+    {label:"选项2",value:"2"},
+    {label:"选项3",value:"3"},
+  ],
+  radioList:[
+    {label:"选项1",value:"1"},
+    {label:"选项2",value:"2"},
+    {label:"选项3",value:"3"},
+  ],
+  checkboxList:[
+    {label:"选项1",value:"1"},
+    {label:"选项2",value:"2"},
+    {label:"选项3",value:"3"},
+  ]
+})
 
 const  formData =  reactive<formType>({
  data:{
@@ -55,10 +71,10 @@ const  formData =  reactive<formType>({
   confirmPassword:'',
   selectData:'',
   radioValue:'',
-  checkboxValue:'',
+  checkboxValue:[],
   timeValue:'',
-  silderValue:'',
-  inputNumberValue:''
+  silderValue:0,
+  inputNumberValue:0
  },
  
  list:[
@@ -110,6 +126,7 @@ const  submitForm=()=>{
   console.log(formRef.value.value)
 
   formRef.value.value.validate((valid:boolean)=>{
+    console.log(formData.data)
     if(valid){
       console.log('验证通过');
     }else{

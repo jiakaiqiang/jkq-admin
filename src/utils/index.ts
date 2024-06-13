@@ -1,3 +1,6 @@
+
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+
 //防抖
 export function fangdou(fn: Function, delay: number){
   //定义一个变量，用于保存定时器
@@ -61,4 +64,10 @@ function add(){
  return  result
     
   }
+
+  //获取所有的图表
+
+export const getAllElementIcon = () => {
+   return ElementPlusIconsVue
+}
 

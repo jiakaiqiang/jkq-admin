@@ -17,7 +17,7 @@
                 <el-form-item v-else :key="item.value" :label="item.label" :prop="item.value">
                   
                     <!-- 组件 -->
-                    <component :is="itemList[item.formType]" v-bind="item" :value="formData[item.value]" @update-value="(val)=>{formData[item.value]=val}"
+                    <component :is="itemList[item.formType]" v-bind="item" v-model="formData[item.value]"
                                :selectList="listTypeInfo[item.list]" @handleEvent="handleEvent"></component>
                 </el-form-item>
             </template>
@@ -103,7 +103,8 @@
     
     },{
       immediate:true,
-      deep:true
+     
+      once:true
     })
     function handleFormItem() {
                 props.formItem.filter(item => !Object.prototype.hasOwnProperty.call(item, 'show') || (Object.prototype.hasOwnProperty.call(item, 'show') && item.show))
