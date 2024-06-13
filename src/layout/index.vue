@@ -13,10 +13,11 @@
         <Nav></Nav>
     <div class="container" id="container" v-if="systemStore.isRefresh">
      
-       <div style="flex:1;background:#fff">
-         <router-view ></router-view>
+       <div style="flex:1; padding:20px 20px 10px 20px ;  overflow-y: auto;">
+        <router-view ></router-view>
         </div>
-     <div style="height:50px;background: #fff;text-align: center;padding-top: 20px;margin-top:10px;line-height: 20px;"> 备案号:陕ICP备2024040409号-1</div>
+     <div style="height:50px;background: var(--el-bg-color-page);text-align: center;padding-top: 20px;margin-top:10px;line-height: 20px;margin-bottom:10px"> 备案号:陕ICP备2024040409号-1</div>
+    
     </div>
     </main>
    
@@ -58,14 +59,14 @@ onBeforeUnmount(() => {
 <style scoped lang='scss' >
 .aside{
     width:210px;
-    background: #f3efef;
+     background:var(--el-bg-color-page);
     height: 100vh;
     display: flex;
     flex-direction: column;
 }
 main{
     flex: 1;
-    background: #f3efef;
+    background:var(--main-bg-color-page);
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -74,20 +75,22 @@ main{
 }
 header{
     height: 60px;
-    background: #fff;
+    background:var(--el-bg-color-page);
     line-height: 60px;
     padding-left: 20px;
     box-sizing: border-box;
-    border-bottom:1px solid #f3efef
+    border-bottom:1px solid var(--el-border-color)
 }
 .container{
     flex: 1;
  
-    margin: 20px;
+
  
    
     display: flex;
     flex-direction: column;
+  
+   
    
 }
 .v-enter-active,

@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div style="background:var(--el-bg-color-page);padding:20px">
     <!-- Your code here -->
-    <Table v-model:data ="tableData"  :refresh='refresh' :fieldList='fieldList' :handle="handle"> </Table>
+    <Table v-model:data ="tableData"  :refresh='refresh' :fieldList='fieldList' :height="0" :handle="handle"> </Table>
   </div>
 </template>
 

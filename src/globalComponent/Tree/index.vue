@@ -23,7 +23,7 @@
 </template>
 
 <script>
-    import {post,get} from '@/util/request.js'
+  
 
     export default {
         name: "Jkqtree",
@@ -157,9 +157,9 @@
             /*懒加载的节点*/
             loadNode(node,reslove){
                 if(this.dataType===2&&this.lazy&&this.api){
-                    post(this.api,node.data.id).then(res=>{
-                        res&&res.data&&reslove(res.data)
-                    })
+                    // post(this.api,node.data.id).then(res=>{
+                    //     res&&res.data&&reslove(res.data)
+                    // })
 
                 }else{
                     throw new Error('参数传递不正确')
@@ -179,7 +179,7 @@
             padding:0;
             width: 100px;
             text-align:center;
-            background-color: #fff1fa;
+            background-color: var(--el-bg-color-page);
             list-style: none;
             border-radius: 3px;
             li{

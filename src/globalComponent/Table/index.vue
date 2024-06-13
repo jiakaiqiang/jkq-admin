@@ -10,7 +10,8 @@
       border
       style="width:100%"
       tooltip-effect="dark"
-      max-height="maxheight"
+      
+      :height="maxheight"
     >
       <!--check选择-->
       <el-table-column v-if="showCheck" type="selection" fixed align="left"></el-table-column>
@@ -201,7 +202,7 @@ watchEffect(() => {
 
 const getTableHeight = () => {
   //获取浏览器可视区域的高度
-  return document.body.clientHeight - props.height
+  return document.body.clientHeight - 294 - props.height 
  
 };
 maxheight.value = getTableHeight()

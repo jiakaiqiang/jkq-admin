@@ -7,9 +7,12 @@
     :size="size"
     border
   >
-  <div  class="title" slot='title'>
+  <template v-slot:title>
+    <div  class="title">
     项目依赖数据
   </div>
+  </template>
+ 
     <el-descriptions-item :label="index" v-for="(item,index) in projectData ">{{item}}</el-descriptions-item>
     </el-descriptions>
   </div>

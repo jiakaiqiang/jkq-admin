@@ -8,6 +8,7 @@ export const useSystemStore = defineStore("system", {
             isFullScreen:false, // 是否全屏
             isLock:false, // 是否锁屏
             isRefresh:true, // 是否刷新
+            isShowSetting:false, // 是否显示设置
         }
     },
     getters:{
@@ -46,6 +47,9 @@ export const useSystemStore = defineStore("system", {
         },
         changeRefresh(data:boolean){
             this.isRefresh = data
+        },
+        changeSetting(){
+            this.isShowSetting = !this.isShowSetting
         }
        
     }

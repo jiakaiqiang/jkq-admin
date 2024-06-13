@@ -35,7 +35,7 @@ import svgIcon from '@/globalComponent/SvgIcon/index.vue';
 
 <style scoped lang='scss' >
 .svg-container{
-
+  background:var(--el-bg-color-page);
   box-sizing: border-box;
     display: flex;
     flex-wrap: wrap;

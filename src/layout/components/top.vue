@@ -15,7 +15,7 @@
     <div style="display: flex;align-items: center">
       <Refresh style="margin-right:20px"></Refresh>
       <FullScreen style="margin-right:20px;"></FullScreen>
-      <Theme style="margin-right:20px"></Theme>
+      <Settng style="margin-right:20px" ></Settng>
     
       <Avatar></Avatar>
    
@@ -26,7 +26,7 @@
 </template>
 
 <script lang='ts' setup name="Top">
-import Theme from '@/layout/components/theme.vue';
+import Settng from '@/layout/components/Settng.vue';
 import Avatar from '@/layout/components/Avatar.vue';
 import Refresh from '@/layout/components/Refresh.vue';
 import FullScreen from '@/layout/components/FullScreen.vue';

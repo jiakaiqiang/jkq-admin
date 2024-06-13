@@ -97,7 +97,7 @@ const handleCloseTab = (type: string) => {
 } 
 
 .layout-nav {
-  background: #fff;
+  background: var(--el-bg-color-page);
 
   padding-left: 20px;
   box-sizing: border-box;
@@ -113,8 +113,8 @@ const handleCloseTab = (type: string) => {
   .avatar {
     width: 44px;
     line-height: 42px;
-    border-left: 1px solid #ecebeb;
-    border-right: 1px solid #ecebeb;
+    border-left: 1px solid var(--el-border-color);
+    border-right: 1px solid var(--el-border-color);
     text-align: center;
   }
 }

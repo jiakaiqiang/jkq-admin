@@ -1,7 +1,7 @@
 <template>
   <el-container class="side-menu">
-    <el-menu ref='menuRef' active-text-color="black" background-color="white" :collapse="collapse"
-      :collapse-transition="false" :default-active="defaultActive" text-color="black" :router="true">
+    <el-menu ref='menuRef'  :collapse="collapse"
+      :collapse-transition="false" :default-active="defaultActive"  :router="true">
       <template v-for="item in staticRouter.filter(item => item.isMenu == true)" :key="item.path">
         <MenuItem :item="item">
         </MenuItem>
@@ -38,16 +38,16 @@ const { collapse } = storeToRefs(systemStore)
 
 <style scoped lang='scss'>
 .side-menu {
-  border-top: 1px solid #e6e6e6;
+  border-top: 1px solid var(--el-border-color);
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  border-right: 1px solid #e6e6e6;
+  border-right: 1px solid var(--el-border-color);
 }
 
 ::v-deep .el-menu-item.is-active {
-  background: #409eff;
-  color: #fff
+  background:var(--el-color-primary);
+  color: var(--el-text-color-regular)
 }
 
 

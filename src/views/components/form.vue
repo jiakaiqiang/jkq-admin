@@ -143,7 +143,7 @@ const  submitForm=()=>{
  
   padding:20px;
 
- 
+  background:var(--el-bg-color-page);
   .form{
    
    

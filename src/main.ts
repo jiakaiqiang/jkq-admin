@@ -15,6 +15,11 @@ import '@/styles/iconfont.css';
 import "element-plus/theme-chalk/dark/css-vars.css";
 import './styles/variables.scss';
 import 'virtual:svg-icons-register' //注册svg图标模块
+import '@/common/style/dark.scss';
+
+import '@/common/style/light.scss';
+//添加默认主题模式
+document.documentElement.classList.add('light')
 const app  = createApp(App)
 app.use(install)
 app.use(ElementPlus, {  

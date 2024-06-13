@@ -21,6 +21,7 @@
     "pinia": "^2.1.7",
     "qs": "^6.12.1",
     "sass": "^1.75.0",
+    "three": "^0.165.0",
     "unplugin-auto-import": "^0.17.5",
     "unplugin-vue-components": "^0.26.0",
     "unplugin-vue-setup-extend-plus": "^1.0.1",

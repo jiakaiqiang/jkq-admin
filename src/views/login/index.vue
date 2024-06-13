@@ -126,7 +126,7 @@ ElNotification({
   box-sizing: border-box;
 
   padding: 32px;
-  background: #eee;
+  background: var(--el-bg-color-page);
 
   .login-main {
     background: $main_Color;
