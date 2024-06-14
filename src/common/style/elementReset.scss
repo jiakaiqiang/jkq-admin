@@ -15,14 +15,14 @@
   }
   //滚动条的宽度
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-  background-color: #e4e4e4;
+  width: 6px;
+  height:6px;
+  background-color: #e0e0e0;
   border-radius: 3px;
 }
 //滚动条的滑块
 ::-webkit-scrollbar-thumb {
-  background-color: #a1a3a9;
+  background-color: #f4f4f5;
   border-radius: 3px;
 }
 //表单
@@ -30,6 +30,9 @@
 .el-form{
   .form-input {
     width:320px !important
+  }
+  .el-form-item{
+    width: 100%;
   }
 }
 

@@ -41,7 +41,7 @@ import svgIcon from '@/globalComponent/SvgIcon/index.vue';
     flex-wrap: wrap;
     justify-content: space-between;
     width: 100%;
-    padding: 40px 100px 0;
+    padding: 40px 10px 10px 10px;
     .el-alert{
       margin-bottom:10px
     }

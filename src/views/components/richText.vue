@@ -1,9 +1,9 @@
 <template>
-  <div class="card content-box" style='background:var(--el-bg-color-page);'>
+  <div class="card content-box" style='background:var(--el-bg-color-page);padding:10px'>
     <span class="text">富文本编辑器 🍓🍇🍈🍉</span>
     <WangEditor v-model:value="content" height="400px" />
     <el-button type="primary" @click="dialogVisible = true"> 内容预览 </el-button>
-    <el-descriptions title="配置项 📚" :column="1" border>
+    <!-- <el-descriptions title="配置项 📚" :column="1" border>
       <el-descriptions-item label="value"> 双向绑定的 value 值，使用示例： v-model:value="content"> </el-descriptions-item>
       <el-descriptions-item label="toolbarConfig">
         富文本 ToolBar区域 配置：
@@ -17,7 +17,7 @@
       <el-descriptions-item label="mode"> 富文本模式，默认为 default（"default" | "simple"） </el-descriptions-item>
       <el-descriptions-item label="hideToolBar"> 隐藏 ToolBar 区域，默认为 false </el-descriptions-item>
       <el-descriptions-item label="disabled"> 禁用富文本编辑器，默认为 false </el-descriptions-item>
-    </el-descriptions>
+    </el-descriptions> -->
     <el-dialog v-model="dialogVisible" title="富文本内容预览" width="1300px" top="50px">
       <div class="view" v-html="content"></div>
     </el-dialog>
@@ -40,6 +40,17 @@ const dialogVisible = ref(false);
 :deep(.el-dialog__body) {
   height: 700px !important;
   overflow: auto;
+}
+.content-box{
+  .text{
+ 
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 20px;
+  }
 }
 
 </style>

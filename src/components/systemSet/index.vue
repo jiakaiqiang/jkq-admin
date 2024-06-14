@@ -24,6 +24,16 @@
     <el-divider content-position="center">布局设置</el-divider>
     <el-divider content-position="center">全局主题</el-divider>
     <el-divider content-position="center">界面设置</el-divider>
+    <el-form-item label="备案信息">
+        <el-switch
+    v-model="icp"
+    active-text="开"
+    inactive-text="关"
+   size="small"
+    style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
+     @change="changeICP"
+  />
+  </el-form-item>
     </el-form>
    
   </el-drawer>
@@ -32,11 +42,14 @@
 
 <script lang='ts' setup >
 import {ref,defineModel} from 'vue';
+import {useSystemStore} from '@/store/modules/system'
+const systemStore = useSystemStore()
 let  drawerValue  =  defineModel<boolean>({
   default:false});
 
   let color = ref('#409eff');
   let theme = ref(false);
+  let  icp =  ref(true)
   const  colorChange =(e:string)=>{
  const el = document.documentElement
 // const el = document.getElementById('xxx')
@@ -47,7 +60,10 @@ getComputedStyle(el).getPropertyValue(`--el-color-primary`)
 // 设置 css 变量
 el.style.setProperty('--el-color-primary', e)
   }
-
+  const changeICP = (e:boolean)=>{
+  console.log(e,'------')
+  systemStore.changeICP(e)
+}
   const themeChange =(e:boolean)=>{
     if(e){
       document.documentElement.classList.remove('light')

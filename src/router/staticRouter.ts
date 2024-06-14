@@ -106,12 +106,12 @@ export const staticRouter: Array<customRouteRecordRaw> = [
           name: "Tree"
         }
       },
-      {
-        path: '/components/TreeSelect', icon:'icon-shuxuanze',name: "TreeSelect", component: () => import("@/views/components/treeSelect.vue"), meta: {
-          title: "树选择组件",
-          name: "Tree"
-        }
-      },
+      // {
+      //   path: '/components/TreeSelect', icon:'icon-shuxuanze',name: "TreeSelect", component: () => import("@/views/components/treeSelect.vue"), meta: {
+      //     title: "树选择组件",
+      //     name: "Tree"
+      //   }
+      // },
       {
         path: '/components/TreeTable', name: "TreeTable",icon:'icon-shuxuanze', component: () => import("@/views/components/TreeTable.vue"), meta: {
           title: "树表格组件",
@@ -129,7 +129,8 @@ export const staticRouter: Array<customRouteRecordRaw> = [
           title: "搜索组件",
           name: "Icon"
         }
-      }, {
+      }, 
+      {
         path: '/components/svg',icon:"icon-SVG", name: "svg", component: () => import("@/views/components/svg.vue"), meta: {
           title: "svg图标",
           name: "Icon"

@@ -16,7 +16,7 @@
        <div style="flex:1; padding:20px 20px 10px 20px ;  overflow-y: auto;">
         <router-view ></router-view>
         </div>
-     <div style="height:50px;background: var(--el-bg-color-page);text-align: center;padding-top: 20px;margin-top:10px;line-height: 20px;margin-bottom:10px"> 备案号:陕ICP备2024040409号-1</div>
+     <div v-if="systemStore.isShowICP" style="height:50px;background: var(--el-bg-color-page);text-align: center;padding-top: 20px;margin-top:10px;line-height: 20px;margin-bottom:10px"> 备案号:陕ICP备2024040409号-1</div>
     
     </div>
     </main>
@@ -89,6 +89,8 @@ header{
    
     display: flex;
     flex-direction: column;
+    overflow-x:hidden;
+    overflow-y:auto;
   
    
    
