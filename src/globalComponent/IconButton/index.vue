@@ -1,8 +1,6 @@
 <template>
   <div>
-    <button :title="props.title" @click="handleClick">
-
-    </button>
+   <el-button @click="handleClick" :title="props.title" :size="props.size" :type="props.type" :icon="props.icon" :circle="props.circle" :plain="props.plain" >{{title}}</el-button>
   </div>
 </template>
 
@@ -19,6 +17,26 @@ const props = defineProps({
   title:{
     type:String,
     default:''
+  },
+  size:{
+    type:String,
+    default:'small'
+  },
+  type:{
+    type:String,
+    default:'primary'
+  },
+  icon:{
+    type:String,
+    default:''
+  },
+  circle:{
+    type:Boolean,
+    default:false
+  },
+  plain:{
+    type:Boolean,
+    default:false
   }
   // Your props here
 })
