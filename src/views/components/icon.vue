@@ -68,6 +68,7 @@ const handleSelectIcon = (item:any)=>{
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background:var(--el-bg-color-page);
   .title {
     font-size: 24px;
     font-weight: bold;
