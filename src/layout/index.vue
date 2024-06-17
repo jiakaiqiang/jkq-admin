@@ -1,5 +1,5 @@
 <template>
-  <section style="display: flex;min-width: 600px">
+  <section style="display: flex;min-width: 1200px">
     <aside class="aside"  :style="{ width: collapse ? '65px' : '210px' }">
         <logo :collapse="collapse"></logo>
         <Menu></Menu>

@@ -2,7 +2,7 @@
 
   <div style="background:var(--el-bg-color-page);padding:20px">
 
-    <Table v-model:data="tableData" :refresh='refresh'  :treeParam='treeParam' :searchData="searchData" :filterFieldList='searchFieldList' :fieldList='fieldList' :height="0" :listTypeInfo="listTypeInfo" :handle="handle"> </Table>
+    <Table v-model:data="tableData" :optionList='optionList' :refresh='refresh'  :treeParam='treeParam' :searchData="searchData" :filterFieldList='searchFieldList' :fieldList='fieldList' :height="0" :listTypeInfo="listTypeInfo" :handle="handle"> </Table>
   </div>
 </template>
 
@@ -10,7 +10,22 @@
 
 import Table from '@/globalComponent/Table/index.vue'
 
+
 import { ref, reactive } from 'vue'
+//操作栏
+let optionList = reactive([
+  {
+    title: "新增",
+    icon: "Plus",
+   
+  },
+  {
+    title: "删除",
+    icon: "Delete",
+   
+  }])
+
+
 type listTypeInfoType = {
   [key: string]: Array<{ label: string, value: string }>,
 }

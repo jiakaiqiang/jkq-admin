@@ -1,6 +1,6 @@
 <template>
     <Search :fieldList="props.filterFieldList" :listTypeInfo="props.listTypeInfo"  :searchData="props.searchData" :treeParam="props.treeParam"  ref="search" @handleEvent="handleEvent"></Search>
-
+  <OperationList :optionList='props.optionList' v-if="props.optionList.length > 0" @handleClick="handleClick"> </OperationList>
   <div class="my-table">
 
     <el-table :data="data" @selection-change="selectChange" v-loading="loading" element-loading-text="拼命加载中" :header-cell-style="{backgroundColor:'var( --my-table-header-bg-color)',color:'#666'}"
@@ -60,25 +60,19 @@ import {
 
 import { useSystemStore } from '@/store/modules/system.ts'
 import Search from '@/globalComponent/Search/index.vue'
+import OperationList from  '@/globalComponent/operationList/index.vue'
+import {optionType,fieldItemType} from "@/globalComponent/types"
 let systemStore = useSystemStore()
 let icons = getAllElementIcon()
 type paramsType = {
   [key: string]: unknown;
 };
-type fieldItemType ={
-    label:string,
-    value:string,
-    type:string,
-    list?:string,
-    placeholder?:string,
-    isShow?:boolean,
 
-}
 const emits = defineEmits(["handleClick","handleEvent"]);
 const props = defineProps({
   //搜索数据
   filterFieldList:{
-   type:Array<fieldItemType>,
+   type:Array  as PropType<fieldItemType>,
    default:()=>{
     return []
    }
@@ -104,6 +98,14 @@ const props = defineProps({
      type:Object,
      default:()=>{}
   },
+//操作栏数据  
+optionList:{
+    type:Array as PropType<optionType>,
+    default:()=>{
+        return []
+    }
+},
+
   listTypeInfo:{
      type:Object,
      default:()=>{}
@@ -223,7 +225,7 @@ const getTableHeight = () => {
 
   
   //获取浏览器可视区域的高度 294
-  return document.body.clientHeight - props.height - (systemStore.isShowICP ? 294 : 224)  
+  return document.body.clientHeight - props.height - (systemStore.isShowICP ? 294 : 224)  - ( props.optionList.length>0 ?'50' :0 )
 
 };
 watchEffect(() => {

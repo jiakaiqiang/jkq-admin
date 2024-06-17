@@ -240,6 +240,52 @@ export const staticRouter: Array<customRouteRecordRaw> = [
       }
     ]
   },
+  {
+    path: '/ppt',
+    name: "ppt",
+    isMenu: true,
+    component: Layout,
+    isShowChidren: false,
+    icon:'icon-gongzuotai',
+    meta: {
+      title: 'ppt幻灯片',
+      name: "ppt",
+    },
+   
+    redirect: '/ppt/index',
+
+    children: [{
+      path: '/ppt/index', 
+      icon:'icon-gongzuotai',
+      name: "ppt-index", component: () => import("@/views/ppt/index.vue"), meta: {
+        title: "ppt幻灯片",
+        name: "index"
+      }
+    }]
+  },
+  {
+    path: '/mind-map',
+    name: "mindMap",
+    isMenu: true,
+    component: Layout,
+    isShowChidren: false,
+    icon:'icon-gongzuotai',
+    meta: {
+      title: '思维导图',
+      name: "mindMap",
+    },
+   
+    redirect: '/mindMap/index',
+
+    children: [{
+      path: '/mindMap/index', 
+      icon:'icon-gongzuotai',
+      name: "mindMap-index", component: () => import("@/views/mindMap/index.vue"), meta: {
+        title: "思维导图",
+        name: "index"
+      }
+    }]
+  },
 
  
 ];
