@@ -20,13 +20,14 @@
     
     </div>
     </main>
-   
+   <loading v-if="systemStore.isLoading"></loading>
    
   </section>
 </template>
 
 <script lang='ts' setup>
 import { computed, onBeforeUnmount, ref } from 'vue';
+import loading from '@/globalComponent/loading/index.vue'
 
 import logo from './components/logo';
 import Menu  from './menu/index.vue';

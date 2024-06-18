@@ -11,9 +11,12 @@ import { useUserStore } from "@/store/modules/user";
 import { ElMessage } from 'element-plus'
 import { AxiosCanceler } from "./helper/axiosCancel";
 import {NO_TOKEN_URL} from "@/config/index.ts"
+import { useSystemStore } from '@/store/modules/system';
+
 export interface customAxiosRequestConfig extends InternalAxiosRequestConfig {
     loading?: boolean,
-    cancel?: boolean
+    cancel?: boolean,
+    isLoading?: boolean,
 }
 
 
@@ -22,9 +25,11 @@ const axiosCanceler = new AxiosCanceler();
 export class Axios {
     instance:AxiosInstance
     constructor(config:AxiosRequestConfig){
+     
         this.instance = axios.create(config)
         this.instance.interceptors.request.use((config:customAxiosRequestConfig)=>{
-          
+            const useSystemdata = useSystemStore()
+            !config.isLoading&&useSystemdata.changeLoading(true)
             //获取用户的数据
             //获取用户的缓存数据token
             //const userStore = useUserStore();
@@ -47,7 +52,8 @@ export class Axios {
 
         //相应拦截器
         this.instance.interceptors.response.use((response: AxiosResponse & { config: customAxiosRequestConfig })=>{
-             
+            const useSystemdata = useSystemStore()
+            !config.isLoading&&useSystemdata.changeLoading(false)
             
             const { data, config } = response;
           

@@ -1,21 +1,20 @@
 <template>
-  <div class="loading-position">
-    <div class="loading">
-      <div class="my-loading">
-        <div class="eat">
-          <div class="header"></div>
-        </div>
-        <div class="eat eatbottm">
-          <div class="header bottom"></div>
-        </div>
-      </div>
-      <div class="item">
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-    </div>
-  </div>
+ <div class="loading-box">
+  <div class="loading loading-1">
+  <span>l</span>
+  <span>o</span>
+  <span>a</span>
+  <span>d</span>
+  <span>i</span>
+  <span>n</span>
+  <span>g</span>
+  <span>.</span>
+  <span>.</span>
+  <span>.</span>
+</div>
+ </div>
+
+
 </template>
 
 <script>
@@ -25,102 +24,51 @@ export default {
 </script>
 
 <style lang="scss">
-.loading-position {
+.loading-box{
   position: absolute;
-  background-color: black;
-  opacity: 0.2;
-  top: 0;
-  bottom: 0;
   left: 0;
-  right: 0;
-  z-index: 99999;
-
-  .loading {
-    display: flex;
-    align-items: center;
-    .my-loading {
-      position: relative;
-      .eat {
-        width: 50px;
-        height: 25px;
-        overflow: hidden;
-        animation: headeram 1s ease infinite;
-        transform-origin: 50% 100%;
-      }
-      .eatbottm {
-        transform-origin: 50% 0%;
-        animation: bottomam 1s ease infinite;
-      }
-
-      .header {
-        height: 50px;
-        width: 50px;
-        background-color: pink;
-        border-radius: 50%;
-      }
-      .bottom {
-        transform: translateY(-50%);
-      }
-      @keyframes headeram {
-        0% {
-          transform: rotate(0deg);
-        }
-        50% {
-          transform: rotate(-45deg);
-        }
-        100% {
-          transform: rotate(0deg);
-        }
-      }
-      @keyframes bottomam {
-        0% {
-          transform: rotate(0deg);
-        }
-        50% {
-          transform: rotate(45deg);
-        }
-        100% {
-          transform: rotate(0deg);
-        }
-      }
-
-      /*定义一个动画*/
-    }
-    .item {
-      display: flex;
-      div {
-        width: 16px;
-        height: 16px;
-        display: flex;
-        margin-left: 16px;
-        background-color: green;
-        border-radius: 50%;
-        animation: itemam 1s ease infinite;
-      }
-    }
-
-    .item div:nth-child(1) {
-      animation-delay: 0.2s;
-    }
-    .item div:nth-child(2) {
-      animation-delay: 0.4s;
-    }
-    .item div:nth-child(3) {
-      animation-delay: 0.6s;
-    }
-
-    //定义item的动画
-    @keyframes itemam {
-      0% {
-        opacity: 1;
-        margin-left: 16px;
-      }
-
-      100% {
-        opacity: 0;
-        margin-left: 0px;
-      }
-    }
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 15, 15, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index:99999;
+  color:var(--el-color-primary)
+}
+.loading {
+  margin: 100px;
+  height: 100px;
+  line-height: 100px;
+}
+.loading > span {
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  animation: loadingWord 800ms ease-in infinite alternate;
+}
+/* 10个字母，每一个的延迟都不同 */
+.loading-1 > span:nth-of-type(1){ animation-delay: 200ms; }
+.loading-1 > span:nth-of-type(2){ animation-delay: 300ms; }
+.loading-1 > span:nth-of-type(3){ animation-delay: 400ms; }
+.loading-1 > span:nth-of-type(4){ animation-delay: 500ms; }
+.loading-1 > span:nth-of-type(5){ animation-delay: 600ms; }
+.loading-1 > span:nth-of-type(6){ animation-delay: 700ms; }
+.loading-1 > span:nth-of-type(7){ animation-delay: 800ms; }
+.loading-1 > span:nth-of-type(8){ animation-delay: 900ms; }
+.loading-1 > span:nth-of-type(9){ animation-delay: 1000ms; }
+.loading-1 > span:nth-of-type(10){ animation-delay: 1100ms; }
+@keyframes loadingWord {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-16px);
   }
 }
+
 </style>

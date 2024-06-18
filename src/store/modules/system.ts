@@ -9,6 +9,7 @@ export const useSystemStore = defineStore("system", {
             isLock:false, // 是否锁屏
             isRefresh:true, // 是否刷新
             isShowSetting:false, // 是否显示设置
+            isLoading:false, // 是否显示loading
             isShowICP:true //是否显示备案信息
         }
     },
@@ -55,6 +56,9 @@ export const useSystemStore = defineStore("system", {
         //修改是否显示icp 的信息
         changeICP(data:boolean){
             this.isShowICP = data
+        },
+        changeLoading(data:boolean){
+            this.isLoading = data
         }
        
     }
