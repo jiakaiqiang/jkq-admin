@@ -322,7 +322,7 @@ const goProject = (data: projectType) => {
     }
 
     .weather-box {
-        background-color: #fff;
+        background-color: var(--el-bg-color);
         padding: 10px;
         margin-bottom: 10px;
         border-radius: 10px;
