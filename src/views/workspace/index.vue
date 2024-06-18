@@ -99,9 +99,12 @@
                 </div>
                 <div class="col-item top top-first">
                     <div class="project-title">每日一句</div>
-                    <div>
-                       <div></div>
+                    <div class="weather-box">
+    
+    <div>{{ poetryData.content }}</div>
 
+    <div style="display:flex;justify-content:flex-end"><div>--《{{ poetryData.origin }}》-</div>
+    <div>{{ poetryData.author }}</div></div>
                     </div>
                    
                 </div>
