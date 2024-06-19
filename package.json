@@ -6,7 +6,13 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "git": "git add . && git cz"
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-customizable"
+    }
   },
   "dependencies": {
     "@vitejs/plugin-vue-jsx": "^3.1.0",
@@ -19,7 +25,6 @@
     "mock": "^0.1.1",
     "nprogress": "^0.2.0",
     "pinia": "^2.1.7",
-   
     "qs": "^6.12.1",
     "sass": "^1.75.0",
     "three": "^0.165.0",
@@ -36,6 +41,8 @@
     "@types/js-cookie": "^3.0.6",
     "@types/node": "^20.12.7",
     "@vitejs/plugin-vue": "^5.0.4",
+    "commitizen": "^4.3.0",
+    "cz-customizable": "^7.0.0",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
     "vite-plugin-svg-icons": "^2.0.1",
