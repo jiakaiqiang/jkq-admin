@@ -5,28 +5,30 @@
 </template>
 
 <script lang='ts' setup>
-import { defineProps ,CSSProperties ,computed} from 'vue';
-interface iconStyle{
-        width: string;
-        height: string;
-        fill?: string;
-    }
-interface svgIcon{
-    prefix?: string;
-    name:string,
-    iconStyle?: iconStyle;
-    
+import { defineProps, computed } from 'vue';
+
+interface  iconStyle  {
+  width: string;
+  height: string;
+  fill?: string;
+}
+
+interface svgIcon  {
+  prefix?: string;
+  name: string,
+  iconStyle?: iconStyle;
+
 }
 let props = withDefaults(defineProps<svgIcon>(), {
-    prefix: 'icon',
-    name:"",
-    iconStyle:()=>({ width: "100px", height: "100px" })
+  prefix: 'icon',
+  name: "",
+  iconStyle: () => ({ width: "100px", height: "100px" })
 });
-let  symbolId =  computed(()=>`#${props.prefix}-${props.name}`)
+let symbolId = computed(() => `#${props.prefix}-${props.name}`)
 // Your code here
 
 </script>
 
-<style scoped lang='scss' >
+<style scoped lang='scss'>
 /* Your styles here */
 </style>

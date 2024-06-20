@@ -9,7 +9,7 @@ export default defineComponent({
 
   setup(props) {
 
-    let systemStore =  useSystemStore();
+    const systemStore =  useSystemStore();
     return{
       systemStore,
     }

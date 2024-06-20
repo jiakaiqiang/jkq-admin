@@ -1,14 +1,8 @@
 <template>
   <div class="layout-nav">
-    <el-tabs
-      v-model="activeName"
-      closable
-      type="card"
-      class="demo-tabs"
-      @tab-click="handleClick"
-      @tab-remove="handleTabRemove"
-    >
-      <template v-for="item in tabList" :key="item.path">
+    <el-tabs v-model="activeName" closable type="card" class="demo-tabs" @tab-click="handleClick"
+      @tab-remove="handleTabRemove">
+      <template v-for="item in tabList">
         <el-tab-pane :label="item.meta.title" :name="item.path"></el-tab-pane>
       </template>
     </el-tabs>
@@ -30,7 +24,7 @@
 
 <script lang='ts' setup>
 import { ref, computed } from "vue";
-import { useRouter,useRoute } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { TabsPaneContext, TabPaneName } from "element-plus";
 import { ArrowDownBold } from "@element-plus/icons-vue";
 import { useSystemStore } from "@/store/modules/system.ts";
@@ -39,7 +33,7 @@ let $router = useRouter();
 
 
 const systemStore = useSystemStore();
-const activeName =computed(() => {
+const activeName = computed(() => {
   return $router.currentRoute.value.path;
 });
 
@@ -77,24 +71,26 @@ const handleCloseTab = (type: string) => {
 };
 </script>
 
-<style scoped lang='scss' >
+<style scoped lang='scss'>
 ::v-deep .el-tabs__header {
   margin: 0;
   border: 0 !important;
+
   .el-tabs__nav {
     border: 0 !important;
   }
- 
+
   .el-tabs__item {
     border: 0 !important;
   }
 }
-::v-deep .demo-tabs{
-.is-active {
+
+::v-deep .demo-tabs {
+  .is-active {
     border-bottom: 2px solid #409eff !important;
-    
+
   }
-} 
+}
 
 .layout-nav {
   background: var(--el-bg-color-page);
@@ -110,6 +106,7 @@ const handleCloseTab = (type: string) => {
   .demo-tabs {
     width: calc(100% - 44px);
   }
+
   .avatar {
     width: 44px;
     line-height: 42px;

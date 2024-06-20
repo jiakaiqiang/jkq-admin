@@ -1,65 +1,65 @@
-import { defineStore } from "pinia"; 
+import { defineStore } from "pinia";
 
 export const useSystemStore = defineStore("system", {
-    state:()=>{
+    state: () => {
         return {
-            collapse:false, // 侧边栏是否折叠
-            tabsList:[], // 标签页列表
-            isFullScreen:false, // 是否全屏
-            isLock:false, // 是否锁屏
-            isRefresh:true, // 是否刷新
-            isShowSetting:false, // 是否显示设置
-            isLoading:false, // 是否显示loading
-            isShowICP:true //是否显示备案信息
+            collapse: false, // 侧边栏是否折叠
+            tabsList: [], // 标签页列表
+            isFullScreen: false, // 是否全屏
+            isLock: false, // 是否锁屏
+            isRefresh: true, // 是否刷新
+            isShowSetting: false, // 是否显示设置
+            isLoading: false, // 是否显示loading
+            isShowICP: true //是否显示备案信息
         }
     },
-    getters:{
-      tabsListData:(state)=>{
-        if(state.tabsList.length===0){
-            let tabListStr = localStorage.getItem('tabList')
-            if(tabListStr){
-              state.tabsList = JSON.parse(tabListStr)
+    getters: {
+        tabsListData: (state) => {
+            if (state.tabsList.length === 0) {
+                const tabListStr = localStorage.getItem('tabList')
+                if (tabListStr) {
+                    state.tabsList = JSON.parse(tabListStr)
+                }
             }
+            // 获取标签页列表
+
+            return state.tabsList
         }
-          // 获取标签页列表
-         
-          return state.tabsList
-      }
     },
-    actions:{
-        changeCollapse(){
+    actions: {
+        changeCollapse() {
             this.collapse = !this.collapse
         },
-        setGlobalState(state:string,value:boolean){
+        setGlobalState(state: string, value: boolean) {
             // 修改全局状态
             // 修改侧边栏折叠状态
-            if(state === 'collapse'){
+            if (state === 'collapse') {
                 this.collapse = value
             }
         },
-        changeTabsList(data:any){
-            this.tabsList =  data
+        changeTabsList(data: any) {
+            this.tabsList = data
         },
-        changeFullScreen(data:boolean){
+        changeFullScreen(data: boolean) {
             this.isFullScreen = data
         },
-        changeLock(data:boolean){
+        changeLock(data: boolean) {
             this.isLock = data
 
         },
-        changeRefresh(data:boolean){
+        changeRefresh(data: boolean) {
             this.isRefresh = data
         },
-        changeSetting(){
+        changeSetting() {
             this.isShowSetting = !this.isShowSetting
         },
         //修改是否显示icp 的信息
-        changeICP(data:boolean){
+        changeICP(data: boolean) {
             this.isShowICP = data
         },
-        changeLoading(data:boolean){
+        changeLoading(data: boolean) {
             this.isLoading = data
         }
-       
+
     }
 })

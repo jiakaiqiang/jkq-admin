@@ -1,11 +1,11 @@
-import { createRouter ,createWebHashHistory,} from "vue-router";
+import { createRouter, createWebHashHistory, } from "vue-router";
 import { staticRouter, errorRouter } from "@/router/staticRouter";
 // import { useUserStore } from "@/store/modules/user";
 import { useAuthStore } from "@/store/modules/auth";
 import NProgress from "@/config/nprogress";
-import {SYSTEM_NAME,ROUTER_WHITE_LIST}  from '@/config/index'
-import {useSystemStore} from '@/store/modules/system.ts'
-import {customRouteRecordRaw} from '@/globalType/router.ts'
+import { SYSTEM_NAME, ROUTER_WHITE_LIST } from '@/config/index'
+import { useSystemStore } from '@/store/modules/system.ts'
+import { customRouteRecordRaw } from '@/globalType/router.ts'
 
 /**
  * @description 📚 路由参数配置简介
@@ -23,41 +23,41 @@ import {customRouteRecordRaw} from '@/globalType/router.ts'
  * @param meta.isAffix ==> 菜单是否固定在标签页中 (首页通常是固定项)
  * @param meta.isKeepAlive ==> 当前路由是否缓存
  * */
-  const router = createRouter({
-    history:createWebHashHistory(),
-    routes: [...staticRouter, ...errorRouter],
-    strict: false,
-    scrollBehavior: () => ({ left: 0, top: 0 })
-  });
+const router = createRouter({
+  history: createWebHashHistory(),
+  routes: [...staticRouter, ...errorRouter],
+  strict: false,
+  scrollBehavior: () => ({ left: 0, top: 0 })
+});
 //路由全局守卫
 router.beforeEach((to, from, next) => {
   // const userStore = useUserStore();
-  const token =  localStorage.getItem('token');
-  const authStore = useAuthStore();
+  const token = localStorage.getItem('token');
+  // const authStore = useAuthStore();
   // 1.设置状态
   NProgress.start();
   //2.动态设置标题
-  document.title = to.meta.title?`${SYSTEM_NAME}-${to.meta.title} `:`${SYSTEM_NAME}`;
+  document.title = to.meta.title ? `${SYSTEM_NAME}-${to.meta.title} ` : `${SYSTEM_NAME}`;
   console.log(to)
   //1.判断是否有token 没有则跳转到登录页面
-  if(to.path.toLocaleLowerCase()=='/login'){
-    if(token)   {
-     
+  if (to.path.toLocaleLowerCase() == '/login') {
+    if (token) {
+
       return next('/workspace')
     }
-      //resetRouter();
+    //resetRouter();
     return next();
-    }
-    
-    if(to.path=='/'&&token){
-      return next('/workspace')
-    }
-   // 4.判断访问页面是否在路由白名单地址(静态路由)中，如果存在直接放行
-   if (ROUTER_WHITE_LIST.includes(to.path)) return next();
-   //5.没有token 直接跳转 到登录页面
-   if (!token) return next({ path: '/login', replace: true });
-  
-    // 6.如果没有菜单列表，就重新请求菜单列表并添加动态路由
+  }
+
+  if (to.path == '/' && token) {
+    return next('/workspace')
+  }
+  // 4.判断访问页面是否在路由白名单地址(静态路由)中，如果存在直接放行
+  if (ROUTER_WHITE_LIST.includes(to.path)) return next();
+  //5.没有token 直接跳转 到登录页面
+  if (!token) return next({ path: '/login', replace: true });
+
+  // 6.如果没有菜单列表，就重新请求菜单列表并添加动态路由
   // if (!authStore.authMenuListGet.length) {
   //   await initDynamicRouter();
   //   return next({ ...to, replace: true });
@@ -69,38 +69,38 @@ router.beforeEach((to, from, next) => {
   // 8.正常访问页面
   // handldMenuItem(to)
 
-   const systemStore = useSystemStore()
-  let tabList:Array<customRouteRecordRaw> = []
- 
+  const systemStore = useSystemStore()
+  const tabList: Array<customRouteRecordRaw> = []
+
   //获取存储的tab信息
-  let tabListStr = localStorage.getItem('tabList')
-  if(tabListStr){
+  const tabListStr = localStorage.getItem('tabList')
+  if (tabListStr) {
     tabList = JSON.parse(tabListStr)
   }
   //判断tabList中是否已经存在该路由
-  let isExist = tabList.some((tabItem:customRouteRecordRaw)=>{
+  const isExist = tabList.some((tabItem: customRouteRecordRaw) => {
     return tabItem.path === to.path
   })
-  if(!isExist&&!to.redirect){
-    if(to.meta.isShowChidren==false){
-    tabList.push(to.children[0])
+  if (!isExist && !to.redirect) {
+    if (to.meta.isShowChidren == false) {
+      tabList.push(to.children[0])
 
-  }else{
-    tabList.push(to)
-  }
-  
+    } else {
+      tabList.push(to)
+    }
+
     //存储tab信息
-    localStorage.setItem('tabList',JSON.stringify(tabList))
+    localStorage.setItem('tabList', JSON.stringify(tabList))
     systemStore.changeTabsList(tabList)
-    
-  
+
+
   }
 
 
 
 
-      next();
-  
+  next();
+
 })
 //在路由表中删除已有的路由
 export function resetRouter() {
@@ -109,7 +109,7 @@ export function resetRouter() {
     const { name } = route;
     if (name && router.hasRoute(name)) router.removeRoute(name);
   });
-  
+
 }
 /**
  * @description 路由跳转错误
@@ -123,32 +123,32 @@ router.afterEach(() => {
   NProgress.done();
 });
 
-  export default router;
- export  function handldMenuItem(item:customRouteRecordRaw){
- 
-  let tabList:Array<customRouteRecordRaw> = []
- 
+export default router;
+export function handldMenuItem(item: customRouteRecordRaw) {
+
+  let tabList: Array<customRouteRecordRaw> = []
+
   //获取存储的tab信息
-  let tabListStr = localStorage.getItem('tabList')
-  if(tabListStr){
+  const tabListStr = localStorage.getItem('tabList')
+  if (tabListStr) {
     tabList = JSON.parse(tabListStr)
   }
   //判断tabList中是否已经存在该路由
-  let isExist = tabList.some((tabItem:customRouteRecordRaw)=>{
+  const isExist = tabList.some((tabItem: customRouteRecordRaw) => {
     return tabItem.path === item.path
   })
-  if(!isExist){
-    if(item.meta.isShowChidren==false){
-    tabList.push(item.children[0])
+  if (!isExist) {
+    if (item.meta.isShowChidren == false) {
+      tabList.push(item.children[0])
 
-  }else{
-    tabList.push(item)
-  }
-  
+    } else {
+      tabList.push(item)
+    }
+
     //存储tab信息
-    localStorage.setItem('tabList',JSON.stringify(tabList))
-  
+    localStorage.setItem('tabList', JSON.stringify(tabList))
+
   }
 
- 
+
 }

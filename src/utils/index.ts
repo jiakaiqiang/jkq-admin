@@ -39,7 +39,7 @@ export function jieliu(fn: Function, delay: number){
 function add(){
   const aa  = [10,9,2,5,3,7,101,18]
   //定义存储的最长子序列 
-  let result= []
+  const result= []
   for(let i = 0; i < aa.length; i++){
    if(aa[i]>result[result.length-1]){
      result.push(i)
