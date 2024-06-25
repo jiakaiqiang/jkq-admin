@@ -1,5 +1,7 @@
 import { MaterialType, MaterialProps, GroupEnum } from './type.ts'
 
+
+
 export const commonentsData: MaterialProps[] = [
     {
         name: '文本',
@@ -9,6 +11,7 @@ export const commonentsData: MaterialProps[] = [
             pladeholder: '请输入文本',
             value: '文本'
         },
+      
         events: {
             onChange: (e: any) => {
                 console.log(e)
@@ -37,19 +40,22 @@ export const commonentsData: MaterialProps[] = [
         icon: "icon-tupian",
         id: 2,
         className: "image-class",
+        component:Image,
         type: MaterialType.Image,
         group: GroupEnum.Basic,
         props: {
-            width: '100px',
-            height: '100px',
+           
             alt: "图片",
             title: "图",
-            src: 'https://img.alicdn.com/imgextra/i4/O1CN011y73J41Ffwj6h324i_!!6000000001489-2-tps-100-100.svg'
+            src: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg'
         },
         events: {
             onChange: (e: any) => {
                 console.log(e)
             }
+        },style:{
+            width: '100px',
+            height: '100px',
         }
 
     },
@@ -95,7 +101,7 @@ export const commonentsData: MaterialProps[] = [
             height: '100px',
             alt: "图片",
             title: "图",
-            src: 'https://img.alicdn.com/imgextra/i4/O1CN011y73J41Ffwj6h324i_!!6000000001489-2-tps-100-100.svg'
+            src: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg'
         },
         events: {
             onChange: (e: any) => {
@@ -116,7 +122,7 @@ export const commonentsData: MaterialProps[] = [
             height: '100px',
             alt: "图片",
             title: "图",
-            src: 'https://img.alicdn.com/imgextra/i4/O1CN011y73J41Ffwj6h324i_!!6000000001489-2-tps-100-100.svg'
+            src: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg'
         },
         events: {
             onChange: (e: any) => {
@@ -137,7 +143,7 @@ export const commonentsData: MaterialProps[] = [
             height: '100px',
             alt: "图片",
             title: "图",
-            src: 'https://img.alicdn.com/imgextra/i4/O1CN011y73J41Ffwj6h324i_!!6000000001489-2-tps-100-100.svg'
+            src: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg'
         },
         events: {
             onChange: (e: any) => {

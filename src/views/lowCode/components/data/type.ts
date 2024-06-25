@@ -1,21 +1,21 @@
 // 物料类型定义
 export enum MaterialType {
     // 容器
-    Container = 'container',
+    Container = 'Container',
     // 文本
-    Text = 'text',
+    Text = 'Text',
     // 图片
-    Image = 'image',
+    Image = 'Image',
     // 按钮
-    Button = 'button',
+    Button = 'Button',
     // 表单
-    Form = 'form',
+    Form = 'Form',
     // 表格           
-    Table = 'table',
+    Table = 'Table',
     // 列表
-    List = 'list',
+    List = 'List',
     //图表
-    Chart = 'chart',
+    Chart = 'Chart',
     // 表单
 }
 
@@ -23,6 +23,7 @@ export enum MaterialType {
 export interface MaterialProps {
     // 物料类型
     type: MaterialType;
+    component?: any;
     // 物料名称
     name: string;
     //物料分组

@@ -1,25 +1,24 @@
 <template>
-    <div @drop="handleDragOver">
+    <div >
         渲染区
         <!-- Your code here -->
+        <div v-for="item in props.dataList" > 
+            <component :is="item.commonent" :key="item.key" :data="item"></component>
+        </div>
     </div>
 </template>
 
 <script lang='ts' setup>
+import {defineProps,ref,watch} from 'vue'
+import Image from './formItem/Image.vue'
+const props =  defineProps(['dataList','key'])
 
-const dragenter = (event: { dataTransfer: { dropEffect: string } }) => {
-    console.log('wefwfw')
-    event.dataTransfer.dropEffect = 'move'
-}
-const dragover = (event: { dataTransfer: { dropEffect: string } }) => {
-    event.dataTransfer.dropEffect = 'none'
-}
-const handleDragOver = (event: { preventDefault: () => any }) => event.preventDefault();
-const drop = (event: { dataTransfer: { getData: (arg0: string) => any; }; }) => {
-    const data = event.dataTransfer.getData('text/plain')
-    // 处理拖拽元素的数据
-    console.log(data)
-}
+
+
+
+ 
+
+
 </script>
 
 <style scoped lang='scss'>

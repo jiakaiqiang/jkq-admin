@@ -33,6 +33,7 @@
     "unplugin-auto-import": "^0.17.5",
     "unplugin-vue-components": "^0.26.0",
     "unplugin-vue-setup-extend-plus": "^1.0.1",
+    "uuid": "^10.0.0",
     "vite-plugin-html": "^3.2.2",
     "vite-plugin-mock": "^3.0.2",
     "vite-plugin-style-import": "^2.0.0",

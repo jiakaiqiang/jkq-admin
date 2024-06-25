@@ -1,15 +1,15 @@
 <template>
     <div class="lowCode-container">
         <div class="container-top">
-            <codeTop @dragstart="dragstart"></codeTop>
+            <codeTop ></codeTop>
         </div>
         <div class="container-main">
             <div class="container-left">
-                <codeComponent @drop="drop"></codeComponent>
+                <codeComponent  @dragstart="dragstart" @dragend="drageEnd"></codeComponent>
             </div>
             <div class="container-content" ref='dragRef'>
 
-                <codePlan></codePlan>
+                <codePlan  :dataList="componentsListData" :key="key"></codePlan>
             </div>
             <div class="container-right">
                 <codeParams></codeParams>
@@ -26,18 +26,32 @@
 
 <script lang='ts' setup>
 import { ref } from 'vue';
+import { v4 as uuidv4 } from "uuid";
 import codeComponent from './components/codeComponent.vue';
 import codeParams from './components/codeParams.vue';
 import codePlan from './components/codePlan.vue';
 import codeTop from './components/codeTop.vue';
+const componentsListData =ref([]);
 const dragRef = ref(null)
+
+//创建当前的组件
+let currentComponent =  ref(null)
 const dragstart = (data, e) => {
-    console.log('www', dragRef.value)
+
+  currentComponent.value =  data
     dragRef.value.addEventListener('drop', drop)
     dragRef.value.addEventListener('dragover', dragover)
     dragRef.value.addEventListener('dragenter', dragenter)
+ 
+   
 
+}
 
+const drageEnd = (e) => {
+     dragRef.value.addEventListener('drop', drop)
+    dragRef.value.addEventListener('dragover', dragover)
+    dragRef.value.addEventListener('dragenter', dragenter)
+    currentComponent.value =  null
 
 }
 const dragenter = (event: { dataTransfer: { dropEffect: string } }) => {
@@ -47,14 +61,20 @@ const dragenter = (event: { dataTransfer: { dropEffect: string } }) => {
 const dragover = (event: { dataTransfer: { dropEffect: string } }) => {
     //组织浏览器的默认行为
     event.preventDefault()
-    console.log('wefwef----------')
+ 
     // event.dataTransfer.dropEffect = 'none'
 }
 
-const drop = (event: { dataTransfer: { getData: (arg0: string) => any; }; }) => {
+const drop = async (event: { dataTransfer: { getData: (arg0: string) => any; }; }) => {
     const data = event.dataTransfer.getData('text/plain')
     // 处理拖拽元素的数据
-    console.log(data)
+    let  componentData =  JSON.parse(currentComponent.value)
+     let commonent =  await import(`./components/formItem/${componentData.type}.vue`)
+
+
+    componentsListData.value.push({...componentData,key:uuidv4(),commonent:commonent.default}) //通过这种方式加载的组件得在default 中获取
+    currentComponent.value =  null
+       
 }
 
 </script>
