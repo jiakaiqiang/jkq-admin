@@ -10,7 +10,6 @@
     "prepare": "husky install",
     "commit-all": "git add . && git-cz && git push",
     "commit": "git-cz && git push"
-  
   },
   "config": {
     "commitizen": {
