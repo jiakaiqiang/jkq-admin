@@ -25,7 +25,7 @@
 </template>
 
 <script lang='ts' setup>
-import { ref, shallowRef } from 'vue';
+import { ref, shallowRef, provide, readonly } from 'vue';
 import { v4 as uuidv4 } from "uuid";
 import codeComponent from './components/codeComponent.vue';
 import codeParams from './components/codeParams.vue';
@@ -33,6 +33,9 @@ import codePlan from './components/codePlan.vue';
 import codeTop from './components/codeTop.vue';
 const componentsListData = ref([]);
 const dragRef = ref(null)
+
+//将画布的数据抛出
+provide('componentsListData', readonly(componentsListData.value))
 
 //创建当前的组件
 let currentComponent = ref(null)

@@ -206,40 +206,7 @@ export const staticRouter: Array<customRouteRecordRaw> = [
       }
     ]
   },
-  {
-    path: '/about',
-    name: '',
-    component: Layout,
-    redirect: '/about/index',
-    meta: {
-      title: '关于',
-      name: 'about',
-    },
-    isMenu: true,
-    icon: 'icon-guanyu',
-    children: [
-      {
-        path: '/about/project',
-        name: 'about-project',
-        icon: 'icon-guanyuxiangmu',
-        component: () => import('@/views/about/project.vue'),
-        meta: {
-          title: '关于项目',
-          name: 'project'
-        }
-      },
-      {
-        path: '/about/person',
-        name: 'about-person',
-        icon: 'icon-guanyuzuozhe',
-        component: () => import('@/views/about/person.vue'),
-        meta: {
-          title: '关于作者',
-          name: 'person'
-        }
-      }
-    ]
-  },
+
   {
     path: '/lowCode',
     name: 'lowCode',
@@ -265,17 +232,18 @@ export const staticRouter: Array<customRouteRecordRaw> = [
         }
 
       },
-      {
-        path: '/lowCode/preview',
-        name: 'lowCode-preview',
-        icon: 'icon-yulan',
-        component: () => import('@/views/lowCode/preview.vue'),
-        meta: {
-          title: '页面预览',
-          name: 'preview'
-        }
+      // {
+      //   path: '/lowCode/preview',
+      //   name: 'lowCode-preview',
+      //   icon: 'icon-yulan',
+      //   component: () => import('@/views/lowCode/preview.vue'),
+      //   meta: {
+      //     title: '页面预览',
+      //     name: 'preview'
+      //   }
 
-      }, {
+      // },
+      {
         path: '/lowCode/echarts',
         name: 'lowCode-echarts',
         icon: 'icon-tubiao-zhexiantu',
@@ -337,6 +305,39 @@ export const staticRouter: Array<customRouteRecordRaw> = [
       }
     }]
   },
-
+  {
+    path: '/about',
+    name: '',
+    component: Layout,
+    redirect: '/about/index',
+    meta: {
+      title: '关于',
+      name: 'about',
+    },
+    isMenu: true,
+    icon: 'icon-guanyu',
+    children: [
+      {
+        path: '/about/project',
+        name: 'about-project',
+        icon: 'icon-guanyuxiangmu',
+        component: () => import('@/views/about/project.vue'),
+        meta: {
+          title: '关于项目',
+          name: 'project'
+        }
+      },
+      {
+        path: '/about/person',
+        name: 'about-person',
+        icon: 'icon-guanyuzuozhe',
+        component: () => import('@/views/about/person.vue'),
+        meta: {
+          title: '关于作者',
+          name: 'person'
+        }
+      }
+    ]
+  },
 
 ];

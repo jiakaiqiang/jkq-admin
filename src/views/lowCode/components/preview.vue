@@ -1,6 +1,6 @@
 <template>
     <div>
-        <!-- Your code here -->
+
     </div>
 </template>
 
