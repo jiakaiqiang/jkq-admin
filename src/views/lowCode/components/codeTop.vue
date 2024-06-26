@@ -22,7 +22,16 @@ const optionList = reactive([{
     title: "保存",
     icon: 'Files'
 
-}, {
+},
+{
+    type: 'primary',
+    size: 'mini',
+    event: 'view',
+    title: "预览",
+    icon: 'View'
+
+},
+{
     type: 'primary',
     size: 'mini',
     event: 'click',

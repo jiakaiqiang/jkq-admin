@@ -4,12 +4,13 @@
         <div class="code-component">
             <div v-for="item in commonentsData" :key="item.id" draggable="true" @dragstart="drag($event, item)">
                 <i :class="`iconfont ${item.icon}`"> </i>
+                <span class="text">{{ item.name }}</span>
             </div>
         </div>
 
         <el-divider content-position="left">布局组件库</el-divider>
         <div class="code-component">
-            <div v-for="item in commonentsData" :key="item.id">
+            <div v-for="item in layOutData" :key="item.id">
                 <i :class="`iconfont ${item.icon}`"> </i>
             </div>
         </div>
@@ -27,7 +28,7 @@ import { defineEmits } from 'vue'
 const emits = defineEmits(['dragstart'])
 
 
-import { commonentsData } from './data/component.ts'
+import { commonentsData, layOutData } from './data/component.ts'
 
 const drag = (e, data) => {
     console.log('-wefwe')
@@ -46,20 +47,30 @@ console.log(commonentsData)
 
     .code-component {
         display: flex;
-
-
         flex-wrap: wrap;
 
         div {
-            width: 20%;
+
+            width: 42%;
+            margin: 10px;
             height: 50px;
             display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #ccc;
+
+            border-radius: 5px;
+            background-color: #f5f5f5;
             cursor: pointer;
             justify-content: center;
 
+            .text {
+                font-size: 12px;
+            }
 
             i {
-                font-size: 30px;
+                font-size: 20px;
             }
         }
     }

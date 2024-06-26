@@ -1,17 +1,17 @@
 import { MaterialType, MaterialProps, GroupEnum } from './type.ts'
 
 
-
+//基础组件
 export const commonentsData: MaterialProps[] = [
     {
         name: '文本',
         id: 1,
         icon: "icon-wenjian1",
         props: {
-            pladeholder: '请输入文本',
-            value: '文本'
+            placeholder: '请输入文本',
+            value: ''
         },
-      
+
         events: {
             onChange: (e: any) => {
                 console.log(e)
@@ -40,11 +40,11 @@ export const commonentsData: MaterialProps[] = [
         icon: "icon-tupian",
         id: 2,
         className: "image-class",
-        component:Image,
+        component: Image,
         type: MaterialType.Image,
         group: GroupEnum.Basic,
         props: {
-           
+
             alt: "图片",
             title: "图",
             src: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg'
@@ -53,8 +53,8 @@ export const commonentsData: MaterialProps[] = [
             onChange: (e: any) => {
                 console.log(e)
             }
-        },style:{
-            width: '100px',
+        }, style: {
+            width: '100%',
             height: '100px',
         }
 
@@ -74,7 +74,7 @@ export const commonentsData: MaterialProps[] = [
         },
         events: {
             onClick: (e: any) => {
-                console.log(e)
+                console.log(e, '-----')
             }
 
         },
@@ -89,69 +89,34 @@ export const commonentsData: MaterialProps[] = [
         },
 
     },
+
+
+
+
+]
+
+//布局组件
+
+export const layOutData: MaterialProps[] = [
     {
-        name: '图片',
-        icon: "icon-tupian",
-        id: 4,
-        className: "image-class",
-        type: MaterialType.Image,
-        group: GroupEnum.Basic,
+        name: "栅格",
+        id: 1,
+        icon: "icon-grid",
+        type: MaterialType.Grid,
+        group: GroupEnum.Layout,
         props: {
-            width: '100px',
-            height: '100px',
-            alt: "图片",
-            title: "图",
-            src: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg'
+            gutter: 0,
+            justify: 'start',
+            align: 'top',
+
         },
         events: {
-            onChange: (e: any) => {
-                console.log(e)
-            }
-        }
 
-    },
-    {
-        name: '图片',
-        icon: "icon-tupian",
-        id: 5,
-        className: "image-class",
-        type: MaterialType.Image,
-        group: GroupEnum.Basic,
-        props: {
-            width: '100px',
-            height: '100px',
-            alt: "图片",
-            title: "图",
-            src: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg'
         },
-        events: {
-            onChange: (e: any) => {
-                console.log(e)
-            }
-        }
+        style: {
 
-    },
-    {
-        name: '图片',
-        icon: "icon-tupian",
-        id: 6,
-        className: "image-class",
-        type: MaterialType.Image,
-        group: GroupEnum.Basic,
-        props: {
-            width: '100px',
-            height: '100px',
-            alt: "图片",
-            title: "图",
-            src: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg'
+
         },
-        events: {
-            onChange: (e: any) => {
-                console.log(e)
-            }
-        }
 
-    },
-
-
+    }
 ]
