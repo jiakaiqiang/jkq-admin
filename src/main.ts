@@ -3,6 +3,9 @@ import '@/common/style/global.scss'
 import App from './App.vue'
 import ElementPlus from "element-plus";
 import install from './install/index'
+
+import VueCropper from "vue-cropper";
+import 'vue-cropper/dist/index.css'
 // element css
 import "element-plus/dist/index.css";
 
@@ -20,11 +23,12 @@ import '@/common/style/dark.scss';
 import '@/common/style/light.scss';
 //添加默认主题模式
 document.documentElement.classList.add('light')
-const app  = createApp(App)
+const app = createApp(App)
 app.use(install)
-app.use(ElementPlus, {  
-    locale: zhCn,  
-  }); 
+app.use(VueCropper)
+app.use(ElementPlus, {
+  locale: zhCn,
+});
 
 app.mount('#app')
 

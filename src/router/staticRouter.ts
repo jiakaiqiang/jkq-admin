@@ -146,6 +146,12 @@ export const staticRouter: Array<customRouteRecordRaw> = [
           title: "富文本编译器",
           name: "richText"
         }
+      },
+      {
+        path: '/components/cropper', icon: 'icon-fuwenbenkuang', name: "cropper", component: () => import("@/views/components/cropper.vue"), meta: {
+          title: "图片裁剪",
+          name: "cropper"
+        }
       }
     ]
   },
