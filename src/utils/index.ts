@@ -1,5 +1,6 @@
 
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+//定义一些公共的方法
 
 //防抖
 export function fangdou(fn: Function, delay: number){
