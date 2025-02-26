@@ -77,30 +77,31 @@ const  getMenu=()=>{
 
 
 const login = ()=>{
-  $request.post('/auth',formData).then(res=>{
-    if(res.success){
-      localStorage.setItem('token',res.data.access_token)
-      localStorage.setItem('userInfo',JSON.stringify(res.data))
-     
-      getMenu()
-    
-let userInfo = JSON.parse(localStorage.getItem('userInfo') as string)
-
-ElNotification({
-    title: '登录成功',
-    message: `欢迎${userInfo.username}`,
-    type: 'success',
-  })
-      $router.push(Default_Login_Success_Redirect)
-    }else{
-      ElMessage({message:res.message,type:'error'})
-      getImage()
-      
-    }
-
-
-
-  })
+  $router.push(Default_Login_Success_Redirect)
+//   $request.post('/auth',formData).then(res=>{
+//     if(res.success){
+//       localStorage.setItem('token',res.data.access_token)
+//       localStorage.setItem('userInfo',JSON.stringify(res.data))
+//
+//       getMenu()
+//
+// let userInfo = JSON.parse(localStorage.getItem('userInfo') as string)
+//
+// ElNotification({
+//     title: '登录成功',
+//     message: `欢迎${userInfo.username}`,
+//     type: 'success',
+//   })
+//       $router.push(Default_Login_Success_Redirect)
+//     }else{
+//       ElMessage({message:res.message,type:'error'})
+//       getImage()
+//
+//     }
+//
+//
+//
+//   })
 }
 
 </script>

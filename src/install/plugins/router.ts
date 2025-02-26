@@ -32,7 +32,7 @@ import {customRouteRecordRaw} from '@/globalType/router.ts'
 //路由全局守卫
 router.beforeEach((to, from, next) => {
   // const userStore = useUserStore();
-  const token =  localStorage.getItem('token');
+  const token =  localStorage.getItem('token') || 'token';
   const authStore = useAuthStore();
   // 1.设置状态
   NProgress.start();
