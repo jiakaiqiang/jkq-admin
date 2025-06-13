@@ -3,12 +3,14 @@
     <Form class="form" :formData="formData.data" :formRef='formRef' @update-formRef="handleFormRef" :listTypeInfo="listTypeInfo" :rules="formData.rules" :formItem="formData.list" :labelWidth="'100px'" :labelPosition="'left'" :size="'small'"></Form>
     <!-- Your code here -->
     <el-button type="primary" @click="submitForm">提交验证</el-button>
+    <el-button @click="resetForm">测试嵌套跳转</el-button>
    
   </div>
 </template>
 
 <script lang='ts' setup>
 import {FormInstance} from 'element-plus'
+import {useRoute,useRouter} from 'vue-router'
 
 import Form from '@/globalComponent/form/index.vue';
 const formRef =  ref(null)
@@ -45,6 +47,7 @@ type formType = {
 type formInfoList ={
   [key: string] : Array<any>
 }
+const router =  useRouter()
 let listTypeInfo = reactive<formInfoList>({
   selectList:[
     {label:"选项1",value:"1"},
@@ -133,6 +136,9 @@ const  submitForm=()=>{
       console.log('验证失败');
     }
   })
+}
+const resetForm = ()=>{
+  router.push('/components/Form/Form3')
 }
 </script>
 

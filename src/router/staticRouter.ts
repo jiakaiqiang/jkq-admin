@@ -46,30 +46,12 @@ export const staticRouter: Array<customRouteRecordRaw> = [
       title: "登录"
     }
   },
-  {
-    path: '/workspace',
-    name: "workspace",
-    isMenu: true,
-    component: Layout,
-    isShowChidren: false,
-    icon: 'icon-gongzuotai',
-    meta: {
-      title: '工作台',
-      name: "workspace",
-    },
 
-    redirect: '/workspace/index',
-
-    children: [{
-      path: '/workspace/index',
-      icon: 'icon-gongzuotai',
-      name: "workspace-index", component: () => import("@/views/workspace/index.vue"), meta: {
-        title: "工作台",
-        name: "index"
-      }
-    }]
-  },
-
+  {path: '/components/Form/Form3', icon: "icon-17", name: "Form3", component: () => import("@/views/components/form3.vue"), meta: {
+    title: "基础表单",
+    name: "Form3",
+    isFullScreen:true
+  }},
   {
     path: '/components',
 
@@ -80,13 +62,26 @@ export const staticRouter: Array<customRouteRecordRaw> = [
       title: "常用组件",
     },
     icon: "icon-zujian",
-    redirect: '/components/Form',
+ 
     children: [
       {
-        path: '/components/Form', icon: "icon-17", name: "Form", component: () => import("@/views/components/form.vue"), meta: {
+        path:"/Form",
+   
+        icon: "icon-17", name: "Form", meta: {
           title: "表单组件",
           name: "Form"
-        }
+        },
+        children:[
+         
+          {path: '/components/Form/Form', icon: "icon-17", name: "Form", component: () => import("@/views/components/form.vue"), meta: {
+            title: "基础表单",
+            name: "Form"
+          }},
+          // {path: '/components/Form/Form3', icon: "icon-17", name: "Form3", component: () => import("@/views/components/form3.vue"), meta: {
+          //   title: "基础表单",
+          //   name: "Form3"
+          // }}
+        ]
       },
       {
         path: '/components/Table', icon: "icon-biaoge", name: "Table", component: () => import("@/views/components/table.vue"), meta: {
@@ -149,97 +144,7 @@ export const staticRouter: Array<customRouteRecordRaw> = [
       }
     ]
   },
-  {
-    path: '/dashboard',
-    name: 'dashboard',
-    component: Layout,
-    redirect: '/dashboard/echarts',
-    meta: {
-      title: '可视化数据',
-      name: 'dashboard',
-    },
-    icon: "icon-keshihua",
-    isMenu: true,
-    children: [
-      {
-        path: '/dashboard/echarts',
-        name: 'dashboard',
-        component: () => import('@/views/dashboard/echarts.vue'),
-        icon: 'icon-echartstat',
-        meta: {
-          title: '可视化数据',
-          name: 'dashboard'
-        }
-      },
-      {
-        path: '/dashboard/threeJs',
-        name: 'threeJs',
-        icon: "icon-sanweishujujianmo",
-        component: () => import('@/views/dashboard/threeJs.vue'),
-        meta: {
-          title: '三维数据可视化',
-          name: 'threeJs'
-
-        }
-      },
-      {
-        path: '/dashboard/cesium',
-        name: 'cesium',
-        icon: 'icon-WebGIS',
-        component: () => import('@/views/dashboard/cesium.vue'),
-        meta: {
-          title: 'webgis',
-          name: 'cesium'
-
-        }
-      },
-      {
-        path: '/dashboard/webRTC',
-        name: 'webRTC',
-        icon: 'icon-rtc',
-        component: () => import('@/views/dashboard/webRTC.vue'),
-        meta: {
-          title: 'webRTC',
-          name: 'webRTC'
-
-        }
-      }
-    ]
-  },
-  {
-    path: '/about',
-    name: '',
-    component: Layout,
-    redirect: '/about/index',
-    meta: {
-      title: '关于',
-      name: 'about',
-    },
-    isMenu: true,
-    icon: 'icon-guanyu',
-    children: [
-      {
-        path: '/about/project',
-        name: 'about-project',
-        icon: 'icon-guanyuxiangmu',
-        component: () => import('@/views/about/project.vue'),
-        meta: {
-          title: '关于项目',
-          name: 'project'
-        }
-      },
-      {
-        path: '/about/person',
-        name: 'about-person',
-        icon: 'icon-guanyuzuozhe',
-        component: () => import('@/views/about/person.vue'),
-        meta: {
-          title: '关于作者',
-          name: 'person'
-        }
-      }
-    ]
-  },
+ 
   {
     path: '/lowCode',
     name: 'lowCode',
@@ -262,7 +167,7 @@ export const staticRouter: Array<customRouteRecordRaw> = [
         meta: {
           title: '低代码设计器',
           name: 'index'
-        }
+        }    
 
       },
       {

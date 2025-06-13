@@ -4,10 +4,10 @@
       <i :class="`iconfont ${item.icon}`"></i>
      <span style="margin-left: 10px">{{item.meta.title}}</span>
    </el-menu-item>
-   <el-menu-item :index="item.path" v-else-if="item.children&&item.children.length==1" >
+   <!-- <el-menu-item :index="item.path" v-else-if="item.children&&item.children.length==1" >
       <i :class="`iconfont ${item.children[0].icon}`"></i>
      <span style="margin-left: 10px">{{item.children[0].meta.title}}</span>
-   </el-menu-item>
+   </el-menu-item> -->
    
   
    <el-sub-menu :index="item.path" v-else>
@@ -15,13 +15,14 @@
       <i :class="`iconfont ${item.icon}`"></i>
        <span style="margin-left: 10px">{{item.meta.title}}</span>
      </template>
-    <template v-for="subItem in item.children" :key="subItem.path">
+    <template v-for="subItem in item.children.filter(item=>item.hasOwnProperty('hidden')&&item.hidden||!item.hasOwnProperty('hidden'))" :key="subItem.path">
         <MenuItem :item="subItem"></MenuItem>
     </template>
    
      </el-sub-menu>
   </div>
 </template>
+
 
 <script lang='ts' setup>
 import {

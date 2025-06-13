@@ -1,5 +1,8 @@
 <template>
-  <section style="display: flex;min-width: 1200px">
+   <div v-if="route.meta.isFullScreen">
+   </div>
+   <div v-else>
+    <section style="display: flex;min-width: 1200px">
     <aside class="aside"  :style="{ width: collapse ? '65px' : '210px' }">
         <logo :collapse="collapse"></logo>
         <Menu></Menu>
@@ -23,6 +26,7 @@
    <loading v-if="systemStore.isLoading"></loading>
    
   </section>
+   </div>
 </template>
 
 <script lang='ts' setup>
@@ -37,6 +41,10 @@ import { useDebounceFn } from "@vueuse/core";
 import {useSystemStore} from '@/store/modules/system.ts'
 
 import {storeToRefs} from 'pinia'
+import {useRoute} from 'vue-router'
+
+const route = useRoute()
+
 
 const systemStore = useSystemStore()
 

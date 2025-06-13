@@ -29,10 +29,15 @@ import {customRouteRecordRaw} from '@/globalType/router.ts'
     strict: false,
     scrollBehavior: () => ({ left: 0, top: 0 })
   });
+ 
+
+
 //路由全局守卫
 router.beforeEach((to, from, next) => {
-  // const userStore = useUserStore();
+  console.log(to,from,'---------beforeEach',router.getRoutes())
   const token =  localStorage.getItem('token');
+ 
+
   const authStore = useAuthStore();
   // 1.设置状态
   NProgress.start();

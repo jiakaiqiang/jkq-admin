@@ -42,6 +42,8 @@ function init() {
     "/webstorm.png",
   ]);
   
+  
+  scene.environment = texts;
 
   //将物体添加到场景中
   //    scene.add(mesh)
@@ -70,12 +72,12 @@ function init() {
   );
 
   //设置相机位置
-  camera.position.z = 200;
+  camera.position.set(-100, 100, 100);
   //光照
-   //创建一个平行光
-  const directionalLight = new THREE.DirectionalLight(0xffffff);
-  //设置光源位置
-  directionalLight.position.set(100, 100, 100).normalize();
+//    //创建一个平行光
+//   const directionalLight = new THREE.DirectionalLight(0xffffff);
+//   //设置光源位置
+//   directionalLight.position.set(100, 100, 100).normalize();
   //将光源添加到场景中
 
   // var ambientLight = new THREE.AmbientLight(0x404040);
@@ -86,7 +88,6 @@ function init() {
   scene.add(directionalLight);
 
   var renderer = new THREE.WebGLRenderer();
-  renderer.setClearColor('pink');
   renderer.setSize(thress.value.clientWidth, thress.value.clientHeight);
   thress.value.appendChild(renderer.domElement);
   renderer.render(scene, camera);

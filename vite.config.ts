@@ -14,10 +14,13 @@ import vueSetupExtend from "unplugin-vue-setup-extend-plus/vite";
 import {viteMockServe} from 'vite-plugin-mock'
 
 import vueJsx from '@vitejs/plugin-vue-jsx'
+ 
+import cesium from 'vite-plugin-cesium' 
+
 // https://vitejs.dev/config/
 export default defineConfig({
   
-  plugins: [vue(),vueJsx(),
+  plugins: [vue(), cesium(),vueJsx(),
      AutoImport({ imports: ['vue', 'vue-router','pinia'] ,dts:false}),
      Components({ resolvers:[ElementPlusResolver()]}),
      createHtmlPlugin({
