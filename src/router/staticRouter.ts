@@ -91,7 +91,19 @@ export const staticRouter: Array<customRouteRecordRaw> = [
       {
         path: '/components/Table',icon:"icon-biaoge", name: "Table", component: () => import("@/views/components/table.vue"), meta: {
           title: "表格组件",
-          name: "Form"
+          name: "table"
+        }
+      },
+      {
+        path: '/components/dyTable',icon:"icon-biaoge", name: "dyTable", component: () => import("@/views/components/dyTable.vue"), meta: {
+          title: "动态表格组件",
+          name: "dyTable"
+        }
+      },
+      {
+        path: '/components/AiAssistant',icon:"icon-biaoge", name: "AiAssistant", component: () => import("@/views/components/AiAssistant.vue"), meta: {
+          title: "ai助手",
+          name: "AiAssistant"
         }
       },
       {
@@ -145,6 +157,13 @@ export const staticRouter: Array<customRouteRecordRaw> = [
         path: '/components/richText',icon:'icon-fuwenbenkuang', name: "richText", component: () => import("@/views/components/richText.vue"), meta: {
           title: "富文本编译器",
           name: "richText"
+        }
+      }
+      ,
+         {
+        path: '/components/VirtualList',icon:'icon-fuwenbenkuang', name: "VirtualList", component: () => import("@/views/components/VirtualList.vue"), meta: {
+          title: "虚拟列表方案",
+          name: "VirtualList"
         }
       }
     ]
