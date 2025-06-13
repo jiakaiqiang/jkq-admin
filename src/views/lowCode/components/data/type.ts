@@ -16,6 +16,7 @@ export enum MaterialType {
     List = 'List',
     //图表
     Chart = 'Chart',
+    Grid = 'Grid',
     // 表单
 }
 

@@ -1,6 +1,7 @@
 <template>
   <div>
-   <el-button @click="handleClick" :title="props.title" :size="props.size" :type="props.type" :icon="props.icon" :circle="props.circle" :plain="props.plain" >{{title}}</el-button>
+    <el-button @click="handleClick" :title="props.title" :size="props.size" :type="props.type" :icon="props.icon"
+      :circle="props.circle" :plain="props.plain">{{ title }}</el-button>
   </div>
 </template>
 
@@ -12,31 +13,31 @@
  * 
  * 
 */
-import {ref,defineProps,defineEmits} from 'vue'
+import { ref, defineProps, defineEmits } from 'vue'
 const props = defineProps({
-  title:{
-    type:String,
-    default:''
+  title: {
+    type: String,
+    default: ''
   },
-  size:{
-    type:String,
-    default:'small'
+  size: {
+    type: String,
+    default: 'small'
   },
-  type:{
-    type:String,
-    default:'primary'
+  type: {
+    type: String,
+    default: 'primary'
   },
-  icon:{
-    type:String,
-    default:''
+  icon: {
+    type: [String, Object],
+    default: ''
   },
-  circle:{
-    type:Boolean,
-    default:false
+  circle: {
+    type: Boolean,
+    default: false
   },
-  plain:{
-    type:Boolean,
-    default:false
+  plain: {
+    type: Boolean,
+    default: false
   }
   // Your props here
 })
@@ -46,6 +47,6 @@ const handleClick = () => {
 }
 </script>
 
-<style scoped lang='scss' >
+<style scoped lang='scss'>
 /* Your styles here */
 </style>

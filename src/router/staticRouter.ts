@@ -141,10 +141,73 @@ export const staticRouter: Array<customRouteRecordRaw> = [
           title: "富文本编译器",
           name: "richText"
         }
+      },
+      {
+        path: '/components/cropper', icon: 'icon-fuwenbenkuang', name: "cropper", component: () => import("@/views/components/cropper.vue"), meta: {
+          title: "图片裁剪",
+          name: "cropper"
+        }
       }
     ]
   },
- 
+  {
+    path: '/dashboard',
+    name: 'dashboard',
+    component: Layout,
+    redirect: '/dashboard/echarts',
+    meta: {
+      title: '可视化数据',
+      name: 'dashboard',
+    },
+    icon: "icon-keshihua",
+    isMenu: true,
+    children: [
+      {
+        path: '/dashboard/echarts',
+        name: 'dashboard',
+        component: () => import('@/views/dashboard/echarts.vue'),
+        icon: 'icon-echartstat',
+        meta: {
+          title: '可视化数据',
+          name: 'dashboard'
+        }
+      },
+      {
+        path: '/dashboard/threeJs',
+        name: 'threeJs',
+        icon: "icon-sanweishujujianmo",
+        component: () => import('@/views/dashboard/threeJs.vue'),
+        meta: {
+          title: '三维数据可视化',
+          name: 'threeJs'
+
+        }
+      },
+      {
+        path: '/dashboard/cesium',
+        name: 'cesium',
+        icon: 'icon-WebGIS',
+        component: () => import('@/views/dashboard/cesium.vue'),
+        meta: {
+          title: 'webgis',
+          name: 'cesium'
+
+        }
+      },
+      {
+        path: '/dashboard/webRTC',
+        name: 'webRTC',
+        icon: 'icon-rtc',
+        component: () => import('@/views/dashboard/webRTC.vue'),
+        meta: {
+          title: 'webRTC',
+          name: 'webRTC'
+
+        }
+      }
+    ]
+  },
+
   {
     path: '/lowCode',
     name: 'lowCode',
@@ -170,17 +233,18 @@ export const staticRouter: Array<customRouteRecordRaw> = [
         }    
 
       },
-      {
-        path: '/lowCode/preview',
-        name: 'lowCode-preview',
-        icon: 'icon-yulan',
-        component: () => import('@/views/lowCode/preview.vue'),
-        meta: {
-          title: '页面预览',
-          name: 'preview'
-        }
+      // {
+      //   path: '/lowCode/preview',
+      //   name: 'lowCode-preview',
+      //   icon: 'icon-yulan',
+      //   component: () => import('@/views/lowCode/preview.vue'),
+      //   meta: {
+      //     title: '页面预览',
+      //     name: 'preview'
+      //   }
 
-      }, {
+      // },
+      {
         path: '/lowCode/echarts',
         name: 'lowCode-echarts',
         icon: 'icon-tubiao-zhexiantu',
@@ -242,6 +306,39 @@ export const staticRouter: Array<customRouteRecordRaw> = [
       }
     }]
   },
-
+  {
+    path: '/about',
+    name: '',
+    component: Layout,
+    redirect: '/about/index',
+    meta: {
+      title: '关于',
+      name: 'about',
+    },
+    isMenu: true,
+    icon: 'icon-guanyu',
+    children: [
+      {
+        path: '/about/project',
+        name: 'about-project',
+        icon: 'icon-guanyuxiangmu',
+        component: () => import('@/views/about/project.vue'),
+        meta: {
+          title: '关于项目',
+          name: 'project'
+        }
+      },
+      {
+        path: '/about/person',
+        name: 'about-person',
+        icon: 'icon-guanyuzuozhe',
+        component: () => import('@/views/about/person.vue'),
+        meta: {
+          title: '关于作者',
+          name: 'person'
+        }
+      }
+    ]
+  },
 
 ];
