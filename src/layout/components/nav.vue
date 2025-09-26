@@ -34,6 +34,7 @@ import { useRouter,useRoute } from "vue-router";
 import { TabsPaneContext, TabPaneName } from "element-plus";
 import { ArrowDownBold } from "@element-plus/icons-vue";
 import { useSystemStore } from "@/store/modules/system.ts";
+
 let $router = useRouter();
 
 
@@ -43,17 +44,17 @@ const activeName =computed(() => {
   return $router.currentRoute.value.path;
 });
 
-const handleClick = (tab: TabsPaneContext, event: Event) => {
+const handleClick = (tab:any, event: Event) => {
   $router.push(tab.props.name);
 };
 let tabList = computed(() => {
   return systemStore.tabsListData;
 });
-
+let isShowAI =  computed(()=>systemStore.isAIShow)
 const handleTabRemove = (name: TabPaneName) => {
   let list = localStorage.getItem("tabList");
-  let tabList = JSON.parse(list);
-  let index = tabList.findIndex(item => item.path == name);
+  let tabList = list?JSON.parse(list):[];
+  let index = tabList.findIndex((item:any) => item.path == name);
   tabList.splice(index, 1);
   localStorage.setItem("tabList", JSON.stringify(tabList));
   systemStore.changeTabsList(tabList);

@@ -23,7 +23,7 @@
                 <slot></slot>
             </div>
             <span slot="footer" class="dialog-footer">
-            <el-button v-for="(item,index) in props.btList" :type="item.type" :size="item.size?item.size:''" :key='index'
+            <el-button v-for="(item,index) in props.btList" :type="item.type" :size="item.size ? item.size:''" :key='index'
                    @click="handleClick(item.event)">{{item.label}}</el-button>
   </span>
         </el-dialog>
@@ -74,7 +74,7 @@ let visible =  defineModel<boolean>({
             default: "30px"
         },
         btList: {
-            type: Array,
+            type: Array<any>,
             default: () => {
                 return []
             }
@@ -82,9 +82,9 @@ let visible =  defineModel<boolean>({
     })
     
     const emit = defineEmits(['update-value','handleClick'])
-    const handleClose = (done: () => void) :void=> {
+    const handleClose = () :void=> {
         emit('update-value', false)
-      
+       
     }
     const handleClick = (event: string):void => {
         emit('handleClick', event)

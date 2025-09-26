@@ -10,7 +10,9 @@ export const useSystemStore = defineStore("system", {
             isRefresh:true, // 是否刷新
             isShowSetting:false, // 是否显示设置
             isLoading:false, // 是否显示loading
-            isShowICP:true //是否显示备案信息
+            isShowICP:true, //是否显示备案信息
+            isAIShow:false, // 是否显示AI
+
         }
     },
     getters:{
@@ -59,7 +61,10 @@ export const useSystemStore = defineStore("system", {
         },
         changeLoading(data:boolean){
             this.isLoading = data
-        }
+        },
+        changeAIShow(data:boolean){
+            this.isAIShow = data
+        },
        
     }
 })

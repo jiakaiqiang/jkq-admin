@@ -17,7 +17,8 @@
         <router-view ></router-view>
         </div>
      <div v-if="systemStore.isShowICP" style="height:50px;background: var(--el-bg-color-page);text-align: center;padding-top: 20px;margin-top:10px;line-height: 20px;margin-bottom:10px"> 备案号:陕ICP备2024040409号-1</div>
-    
+      <!-- 智能助手 -->
+     <Dialog  :title="aiDialogInfo.title" v-model="systemStore.isAIShow"  @update-value="updateAIshow"></Dialog>
     </div>
     </main>
    <loading v-if="systemStore.isLoading"></loading>
@@ -28,6 +29,7 @@
 <script lang='ts' setup>
 import { computed, onBeforeUnmount, ref } from 'vue';
 import loading from '@/globalComponent/loading/index.vue'
+import Dialog from '@/globalComponent/Dialog/index.vue'
 
 import logo from './components/logo';
 import Menu  from './menu/index.vue';
@@ -35,8 +37,13 @@ import Top  from './components/top.vue';
 import Nav  from './components/nav.vue';
 import { useDebounceFn } from "@vueuse/core";
 import {useSystemStore} from '@/store/modules/system.ts'
+let aiDialogInfo = ref({
+  title:"智能助手"
+})
+const updateAIshow = () => {
 
-import {storeToRefs} from 'pinia'
+  systemStore.changeAIShow(false);
+}
 
 const systemStore = useSystemStore()
 

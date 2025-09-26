@@ -10,9 +10,10 @@
     <el-breadcrumb-item v-for ="item in routerList" :to="{ path: item.path }">{{item.meta.title}}</el-breadcrumb-item>
   
     
-  </el-breadcrumb>
+    </el-breadcrumb>
     </div>
-    <div style="display: flex;align-items: center">
+    <div style="display: flex;align-items: center;cursor: pointer;">
+      <AiRobot style="margin-right:20px"> </AiRobot>
       <Refresh style="margin-right:20px"></Refresh>
       <FullScreen style="margin-right:20px;"></FullScreen>
       <Settng style="margin-right:20px" ></Settng>
@@ -33,6 +34,7 @@ import FullScreen from '@/layout/components/FullScreen.vue';
 import {computed} from 'vue'
 import { ArrowRight } from '@element-plus/icons-vue'
 import {useSystemStore} from '@/store/modules/system';
+import  AiRobot  from '@/layout/components/AiRobot.vue'
 import {  useRoute} from 'vue-router';
 const route = useRoute();
 let systemStore =  useSystemStore();
