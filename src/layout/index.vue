@@ -18,7 +18,9 @@
         </div>
      <div v-if="systemStore.isShowICP" style="height:50px;background: var(--el-bg-color-page);text-align: center;padding-top: 20px;margin-top:10px;line-height: 20px;margin-bottom:10px"> 备案号:陕ICP备2024040409号-1</div>
       <!-- 智能助手 -->
-     <Dialog  :title="aiDialogInfo.title" v-model="systemStore.isAIShow"  @update-value="updateAIshow"></Dialog>
+     <Dialog  :title="aiDialogInfo.title" v-model="systemStore.isAIShow"  @update-value="updateAIshow">
+       <AiAssistant />
+     </Dialog> 
     </div>
     </main>
    <loading v-if="systemStore.isLoading"></loading>
@@ -30,6 +32,7 @@
 import { computed, onBeforeUnmount, ref } from 'vue';
 import loading from '@/globalComponent/loading/index.vue'
 import Dialog from '@/globalComponent/Dialog/index.vue'
+import AiAssistant from '@/views/components/AiAssistant.vue'
 
 import logo from './components/logo';
 import Menu  from './menu/index.vue';
