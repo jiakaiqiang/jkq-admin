@@ -25,10 +25,14 @@
 
     <!-- 选中状态的操作栏 -->
     <div v-if="selected && !previewMode" class="component-actions">
-      <el-button-group size="small">
-        <el-button icon="el-icon-copy-document" @click="handleCopy" title="复制"></el-button>
-        <el-button icon="el-icon-delete" @click="handleDelete" title="删除"></el-button>
-      </el-button-group>
+      <div @click="handleCopy" title="复制">
+        <el-icon><DocumentCopy /></el-icon>
+      </div>
+
+      <div @click="handleDelete" title="删除">
+       <el-icon><CloseBold /></el-icon>
+      </div>
+     
     </div>
 
     <!-- 组件边框 -->
@@ -60,6 +64,7 @@
 <script setup lang="ts">
 import { computed, defineEmits, defineProps, ref } from 'vue'
 import { ElMessage } from 'element-plus'
+import { CloseBold, DocumentCopy } from '@element-plus/icons-vue'
 
 // 导入组件
 import TextComponent from './TextComponent.vue'
@@ -186,9 +191,12 @@ const handleComponentClick = (event: Event) => {
     // 预览模式下可以处理组件事件
     event.stopPropagation()
   } else {
+    //出发选中
+    emit('select', props.component.id)
     // 编辑模式下阻止默认行为，只选择组件
     event.preventDefault()
     event.stopPropagation()
+
   }
 }
 
@@ -267,11 +275,14 @@ const handleDragEnd = () => {
 <style scoped lang="scss">
 .component-wrapper {
   position: relative;
-  display: inline-block;
+  display: block;
   min-width: 20px;
   min-height: 20px;
   cursor: pointer;
   transition: all 0.2s ease;
+  margin: 0;
+  padding: 0;
+  line-height: 0;
 
   &:hover:not(.preview-mode) {
     .component-content {
@@ -305,14 +316,24 @@ const handleDragEnd = () => {
 
 .component-actions {
   position: absolute;
-  top: -32px;
+  top: -24px;
   right: 0;
   z-index: 10;
-  background: #409eff;
-  border-radius: 4px;
+ 
+ 
   padding: 4px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-
+  display: flex;
+  align-items: flex-end;
+  >div{
+    margin-left:4px;
+  }
+  >div:nth-of-type(1){
+    color:#409eff
+  }
+ >div:nth-of-type(2){
+    color:red
+  }
   :deep(.el-button) {
     background: transparent;
     border: none;

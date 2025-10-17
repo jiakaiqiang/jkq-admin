@@ -492,6 +492,7 @@ watch(() => props.component, () => {
 
 .attribute-form {
   padding: 16px;
+  overflow-y: auto;
 }
 
 .attribute-section {

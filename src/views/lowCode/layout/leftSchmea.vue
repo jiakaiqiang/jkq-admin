@@ -35,6 +35,7 @@
 <script setup lang="ts">
 import { ref, defineEmits } from 'vue'
 
+
 interface Component {
   id: string
   name: string

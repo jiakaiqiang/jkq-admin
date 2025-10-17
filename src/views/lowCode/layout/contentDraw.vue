@@ -14,7 +14,7 @@
       </div>
       <div class="canvas-actions">
         <el-button size="small" @click="adjustCanvasSize('mobile')">手机</el-button>
-        <el-button size="small" @click="adjustCanvasSize('tablet')">平板</el-button>
+      
         <el-button size="small" @click="adjustCanvasSize('desktop')">桌面</el-button>
         <el-button size="small" @click="adjustCanvasSize('full')">全屏</el-button>
       </div>
@@ -93,15 +93,15 @@ const canvasSize = ref<{
   height: number | string
 }>({
   width: 1200,
-  height: 800
+  height: 580
 })
 
 // 预设尺寸
 const presetSizes = {
   mobile: { width: 375, height: 667 },
-  tablet: { width: 768, height: 1024 },
-  desktop: { width: 1200, height: 800 },
-  full: { width: 1200, height: 800 }
+
+  desktop: { width: 1200, height:580 },
+  full: { width: 1200, height: 580 }
 }
 
 // 画布样式

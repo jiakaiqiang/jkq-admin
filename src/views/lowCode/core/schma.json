@@ -43,8 +43,8 @@
             "text": "点击按钮",
             "type": "primary",
             "size": "medium",
-            "width": 120,
-            "height": 40,
+            "width": "auto",
+            "padding":20,
             "backgroundColor": "#409EFF",
             "borderColor": "#409EFF",
             "borderRadius": 4

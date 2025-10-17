@@ -48,7 +48,9 @@
     <div class="main-content">
       <!-- 左侧物料区 -->
       <div class="left-panel">
+       <leftTool @change-active="changeActive"></leftTool>
         <LeftSchema 
+        v-if="activeChange === 'component'"
           :schema="schema" 
           @drag-start="handleDragStart"
           @drag-end="handleDragEnd"
@@ -129,7 +131,7 @@ import LeftSchema from './layout/leftSchmea.vue'
 import ContentDraw from './layout/contentDraw.vue'
 import RightAttribute from './layout/rightAttribute.vue'
 import schema from './core/schma.json'
-
+import leftTool from './layout/leftTool.vue'
 // 组件接口定义
 interface Component {
   id: string
@@ -164,7 +166,10 @@ const draggingComponentId = ref<string>('')
 const selectedComponent = computed(() => {
   return findComponentById(components.value, selectedId.value)
 })
-
+let activeChange =  ref('component')
+let  changeActive =  (val:string)=>{
+   activeChange.value = val
+}
 // 查找组件
 const findComponentById = (components: Component[], id: string): Component | null => {
   for (const component of components) {
@@ -510,7 +515,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .low-code-platform {
-  height: 100vh;
+  height: calc(100vh - 260px);
   display: flex;
   flex-direction: column;
   background: #f5f7fa;
@@ -541,14 +546,15 @@ onMounted(() => {
 .main-content {
   flex: 1;
   display: flex;
-  height: calc(100vh - 50px);
+  height: calc(100vh - 240px);
 }
 
 .left-panel {
-  width: 280px;
+  width: 340px;
   background: #fff;
   border-right: 1px solid #e4e7ed;
   overflow: hidden;
+  display: flex;
 }
 
 .center-panel {
