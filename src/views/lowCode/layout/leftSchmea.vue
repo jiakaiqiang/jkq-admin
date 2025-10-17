@@ -57,7 +57,7 @@ interface Schema {
   groups: Group[]
 }
 
-const props = defineProps<{
+defineProps<{
   schema: Schema
 }>()
 
