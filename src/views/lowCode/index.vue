@@ -428,6 +428,7 @@ const handlePreviewClose = () => {
 
 // 处理组件拖拽移动
 const handleComponentDrag = (id: string, event: DragEvent) => {
+  console.log('envent','wefwf',event,id)
   draggingComponentId.value = id
   
   // 获取画布容器位置

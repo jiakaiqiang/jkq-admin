@@ -126,6 +126,7 @@ const adjustCanvasSize = (size: keyof typeof presetSizes) => {
 
 // 处理拖拽放置
 const handleDrop = (event: DragEvent) => {
+  console.log(event,'eventeventeventeventevent')
   event.preventDefault()
   
   // 检查是否是组件移动
