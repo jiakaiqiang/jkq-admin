@@ -118,6 +118,7 @@ const componentMap: Record<string, any> = {
 
 // 当前组件类型
 const componentType = computed(() => {
+  console.log(props.component.type,'props.component.type')
   return componentMap[props.component.type] || TextComponent
 })
 
@@ -260,6 +261,7 @@ const handleDragStart = (event: DragEvent) => {
 const handleDrag = (event: DragEvent) => {
   if (props.previewMode) return
   
+  event.preventDefault()
   emit('drag', props.component.id, event)
 }
 
@@ -304,6 +306,7 @@ const handleDragEnd = () => {
   &.dragging {
     opacity: 0.5;
     transform: rotate(2deg);
+    cursor: move;
   }
 }
 
@@ -319,14 +322,21 @@ const handleDragEnd = () => {
   top: -24px;
   right: 0;
   z-index: 10;
- 
- 
+  background: #fff;
   padding: 4px;
+  border-radius: 4px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   display: flex;
   align-items: flex-end;
+  transition: all 0.2s ease;
   >div{
     margin-left:4px;
+    padding: 2px;
+    border-radius: 2px;
+    transition: all 0.2s ease;
+  }
+  >div:hover {
+    background: #f0f2f5;
   }
   >div:nth-of-type(1){
     color:#409eff

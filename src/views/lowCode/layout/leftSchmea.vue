@@ -4,7 +4,24 @@
       <h3>组件库</h3>
     </div>
     <div class="schema-content">
-      <el-collapse v-model="activeGroups" accordion>
+      <div v-for="group in schemaTree.children">
+         <div style="font-size: 16px; font-weight: bold;background-color: #f5f5f5;padding: 5px;">
+          {{ group.name }}
+         </div>
+         <div style="display: flex;flex-wrap: wrap;">
+            <div v-for="item in group.children" :key="item.id" 
+              class="component-item"
+              draggable="true"
+              @dragstart="handleDragStart($event, item)"
+              @dragend="handleDragEnd">
+           <div class="component-icon">
+                <i :class="item.icon"></i>
+              </div>
+              <div class="component-name">{{ item.name }}</div>
+         </div>
+         </div>
+      </div>
+      <!-- <el-collapse v-model="activeGroups" accordion>
         <el-collapse-item 
           v-for="group in schema.groups" 
           :key="group.id"
@@ -27,25 +44,31 @@
             </div>
           </div>
         </el-collapse-item>
-      </el-collapse>
+      </el-collapse> -->
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, defineEmits } from 'vue'
+import {schemaTree,componentTypeMap} from '../core/basicSchmaTree.ts'
 
 
 interface Component {
   id: string
-  name: string
+ 
   type: string
   icon: string
-  category: string
+ 
   defaultProps: Record<string, any>
   schema: Record<string, any>
 }
-
+interface itemType {
+  icon:string,
+      id: string,
+      name: string,
+      type: string
+}
 interface Group {
   id: string
   name: string
@@ -66,15 +89,68 @@ const emit = defineEmits<{
   dragStart: [component: Component, event: DragEvent]
   dragEnd: []
 }>()
-
+2
 const activeGroups = ref<string[]>([])
-
-const handleDragStart = (event: DragEvent, component: Component) => {
+// 吸附对齐辅助函数
+const applySnap = (x: number, y: number, componentId: string, componentWidth: number, componentHeight: number) => {
+  const SNAP_THRESHOLD = 10 // 吸附阈值（像素）
+  let snappedX = x
+  let snappedY = y
+  
+  // 获取画布尺寸
+  const canvasContent = document.querySelector('.canvas-content') as HTMLElement
+  const canvasRect = canvasContent.getBoundingClientRect()
+  const canvasWidth = canvasRect.width
+  const canvasHeight = canvasRect.height
+  
+  // 检查画布边界吸附
+  if (Math.abs(x) < SNAP_THRESHOLD) {
+    snappedX = 0 // 左边界
+  } else if (Math.abs((x + componentWidth) - canvasWidth) < SNAP_THRESHOLD) {
+    snappedX = canvasWidth - componentWidth // 右边界
+  }
+  
+  if (Math.abs(y) < SNAP_THRESHOLD) {
+    snappedY = 0 // 上边界
+  } else if (Math.abs((y + componentHeight) - canvasHeight) < SNAP_THRESHOLD) {
+    snappedY = canvasHeight - componentHeight // 下边界
+  }
+  
+  // 检查其他组件的吸附
+  for (const otherComponent of components.value) {
+    if (otherComponent.id === componentId || !otherComponent.position) continue
+    
+    const { width: otherWidth, height: otherHeight } = getComponentSize(otherComponent.type, otherComponent.props)
+    const otherX = otherComponent.position.x
+    const otherY = otherComponent.position.y
+    
+    // 水平吸附（左对齐、右对齐、中心线对齐）
+    if (Math.abs(x - otherX) < SNAP_THRESHOLD) {
+      snappedX = otherX // 左对齐
+    } else if (Math.abs((x + componentWidth) - (otherX + otherWidth)) < SNAP_THRESHOLD) {
+      snappedX = otherX + otherWidth - componentWidth // 右对齐
+    } else if (Math.abs((x + componentWidth / 2) - (otherX + otherWidth / 2)) < SNAP_THRESHOLD) {
+      snappedX = otherX + otherWidth / 2 - componentWidth / 2 // 中心线对齐
+    }
+    
+    // 垂直吸附（上对齐、下对齐、中心线对齐）
+    if (Math.abs(y - otherY) < SNAP_THRESHOLD) {
+      snappedY = otherY // 上对齐
+    } else if (Math.abs((y + componentHeight) - (otherY + otherHeight)) < SNAP_THRESHOLD) {
+      snappedY = otherY + otherHeight - componentHeight // 下对齐
+    } else if (Math.abs((y + componentHeight / 2) - (otherY + otherHeight / 2)) < SNAP_THRESHOLD) {
+      snappedY = otherY + otherHeight / 2 - componentHeight / 2 // 中心线对齐
+    }
+  }
+  
+  return { x: snappedX, y: snappedY }
+}
+const handleDragStart = (event: DragEvent, component: itemType) => {
   if (event.dataTransfer) {
     event.dataTransfer.effectAllowed = 'copy'
     event.dataTransfer.setData('application/json', JSON.stringify(component))
   }
-  emit('dragStart', component, event)
+  emit('dragStart', {...component,...componentTypeMap[component.id as keyof typeof componentTypeMap]}, event)
 }
 
 const handleDragEnd = () => {
@@ -157,6 +233,9 @@ const handleDragEnd = () => {
     cursor: grab;
     transition: all 0.2s ease;
     user-select: none;
+    margin-right:10px;
+    margin-top: 10px;
+    margin-bottom:10px;
 
     &:hover {
       border-color: #409eff;

@@ -126,14 +126,16 @@ const adjustCanvasSize = (size: keyof typeof presetSizes) => {
 
 // 处理拖拽放置
 const handleDrop = (event: DragEvent) => {
-  console.log(event,'eventeventeventeventevent')
+ 
   event.preventDefault()
   
   // 检查是否是组件移动
   const isComponentMove = event.dataTransfer?.getData('application/component-move') === 'true'
+  console.log(isComponentMove,'wefw')
   if (isComponentMove) {
     // 处理组件移动的放置
     const componentId = event.dataTransfer?.getData('text/plain')
+    
     if (componentId) {
       emit('componentDrop', componentId, event)
     }
@@ -268,6 +270,7 @@ const handleDragEnd = (id: string) => {
   height: 100%;
   position: relative;
   overflow: hidden;
+  cursor: default;
 }
 
 .empty-canvas {
@@ -303,6 +306,7 @@ const handleDragEnd = (id: string) => {
   height: 100%;
   position: relative;
   min-height: 400px;
+  user-select: none;
 }
 
 .canvas-grid {

@@ -70,6 +70,17 @@
           @drag="handleComponentDrag"
           @drag-end="handleComponentDragEnd"
         />
+        <!-- 吸附线 -->
+        <div 
+          v-for="(line, index) in snapLines" 
+          :key="index"
+          class="snap-line"
+          :class="line.type"
+          :style="{
+            [line.type === 'horizontal' ? 'top' : 'left']: `${line.position}px`,
+            color: line.color
+          }"
+        ></div>
       </div>
 
       <!-- 右侧属性区 -->
@@ -109,7 +120,7 @@
     <!-- 预览弹窗 -->
     <el-dialog
       title="预览"
-      :visible.sync="previewVisible"
+      :model-value="previewVisible"
       width="80%"
       :before-close="handlePreviewClose"
     >
@@ -160,9 +171,8 @@ const historyIndex = ref(-1)
 const historyDialogVisible = ref(false)
 const previewVisible = ref(false)
 const dragComponent = ref<any>(null)
-const draggingComponentId = ref<string>('')
-
-// 计算属性
+const draggingComponentId = ref<string>('')// 吸附线数据
+const snapLines = ref<Array<{ type: 'horizontal' | 'vertical'; position: number; color: string }>>([]) 
 const selectedComponent = computed(() => {
   return findComponentById(components.value, selectedId.value)
 })
@@ -285,7 +295,7 @@ const handleDrop = (event: DragEvent) => {
   const canvasContainer = event.currentTarget as HTMLElement
   const canvasContent = canvasContainer.querySelector('.canvas-content') as HTMLElement
   const rect = canvasContent.getBoundingClientRect()
-  
+  console.log(rect,event.clientX,event.clientY,'canvasContent')
   // 计算相对于画布的鼠标位置
   const mouseX = event.clientX - rect.left
   const mouseY = event.clientY - rect.top
@@ -305,7 +315,7 @@ const handleDrop = (event: DragEvent) => {
     children: [],
     position: { x, y }
   }
-  
+console.log(newComponent, 'newComponent')
   components.value.push(newComponent)
   selectedId.value = newComponent.id
   
@@ -391,6 +401,7 @@ const save = () => {
     version: '1.0.0'
   }
   
+  console.log(data, 'data')
   localStorage.setItem('lowcode_data', JSON.stringify(data))
   ElMessage.success('保存成功')
 }
@@ -425,14 +436,85 @@ const showHistory = () => {
 const handlePreviewClose = () => {
   previewVisible.value = false
 }
+// 吸附对齐辅助函数
+const applySnap = (x: number, y: number, componentId: string, componentWidth: number, componentHeight: number) => {
+  const SNAP_THRESHOLD = 8 // 吸附阈值（像素）
+  let snappedX = x
+  let snappedY = y
+  const newSnapLines: Array<{ type: 'horizontal' | 'vertical'; position: number; color: string }> = []
 
+  // 获取画布尺寸
+  const canvasContent = document.querySelector('.canvas-content') as HTMLElement
+  const canvasRect = canvasContent.getBoundingClientRect()
+  const canvasWidth = canvasRect.width
+  const canvasHeight = canvasRect.height
+
+  // 检查画布边界吸附
+  if (Math.abs(x) < SNAP_THRESHOLD) {
+    snappedX = 0 // 左边界
+    newSnapLines.push({ type: 'vertical', position: 0, color: '#409eff' })
+  } else if (Math.abs((x + componentWidth) - canvasWidth) < SNAP_THRESHOLD) {
+    snappedX = canvasWidth - componentWidth // 右边界
+    newSnapLines.push({ type: 'vertical', position: canvasWidth, color: '#409eff' })
+  }
+
+  if (Math.abs(y) < SNAP_THRESHOLD) {
+    snappedY = 0 // 上边界
+    newSnapLines.push({ type: 'horizontal', position: 0, color: '#409eff' })
+  } else if (Math.abs((y + componentHeight) - canvasHeight) < SNAP_THRESHOLD) {
+    snappedY = canvasHeight - componentHeight // 下边界
+    newSnapLines.push({ type: 'horizontal', position: canvasHeight, color: '#409eff' })
+  }
+
+  // 检查其他组件的吸附
+  for (const otherComponent of components.value) {
+    if (otherComponent.id === componentId || !otherComponent.position) continue
+    
+    const { width: otherWidth, height: otherHeight } = getComponentSize(otherComponent.type, otherComponent.props)
+    const otherX = otherComponent.position.x
+    const otherY = otherComponent.position.y
+    
+    // 水平吸附（左对齐、右对齐、中心线对齐）
+    if (Math.abs(x - otherX) < SNAP_THRESHOLD) {
+      snappedX = otherX // 左对齐
+      newSnapLines.push({ type: 'vertical', position: otherX, color: '#67c23a' })
+    } else if (Math.abs((x + componentWidth) - (otherX + otherWidth)) < SNAP_THRESHOLD) {
+      snappedX = otherX + otherWidth - componentWidth // 右对齐
+      newSnapLines.push({ type: 'vertical', position: otherX + otherWidth, color: '#67c23a' })
+    } else if (Math.abs((x + componentWidth / 2) - (otherX + otherWidth / 2)) < SNAP_THRESHOLD) {
+      snappedX = otherX + otherWidth / 2 - componentWidth / 2 // 中心线对齐
+      newSnapLines.push({ type: 'vertical', position: otherX + otherWidth / 2, color: '#e6a23c' })
+    }
+    
+    // 垂直吸附（上对齐、下对齐、中心线对齐）
+    if (Math.abs(y - otherY) < SNAP_THRESHOLD) {
+      snappedY = otherY // 上对齐
+      newSnapLines.push({ type: 'horizontal', position: otherY, color: '#67c23a' })
+    } else if (Math.abs((y + componentHeight) - (otherY + otherHeight)) < SNAP_THRESHOLD) {
+      snappedY = otherY + otherHeight - componentHeight // 下对齐
+      newSnapLines.push({ type: 'horizontal', position: otherY + otherHeight, color: '#67c23a' })
+    } else if (Math.abs((y + componentHeight / 2) - (otherY + otherHeight / 2)) < SNAP_THRESHOLD) {
+      snappedY = otherY + otherHeight / 2 - componentHeight / 2 // 中心线对齐
+      newSnapLines.push({ type: 'horizontal', position: otherY + otherHeight / 2, color: '#e6a23c' })
+    }
+  }
+  
+  // 结束函数时设置吸附线
+  snapLines.value = newSnapLines
+  
+  // 返回吸附后的位置
+  return { x: snappedX, y: snappedY }
+}
 // 处理组件拖拽移动
 const handleComponentDrag = (id: string, event: DragEvent) => {
-  console.log('envent','wefwf',event,id)
+  event.preventDefault()
+  
   draggingComponentId.value = id
   
   // 获取画布容器位置
   const canvasContent = document.querySelector('.canvas-content') as HTMLElement
+  if (!canvasContent) return
+  
   const rect = canvasContent.getBoundingClientRect()
   
   // 计算鼠标位置
@@ -445,17 +527,25 @@ const handleComponentDrag = (id: string, event: DragEvent) => {
     // 获取组件尺寸
     const { width: componentWidth, height: componentHeight } = getComponentSize(component.type, component.props)
     
-    // 计算组件左上角位置（让组件中心对准鼠标位置）
-    const x = mouseX - componentWidth / 2
-    const y = mouseY - componentHeight / 2
+    // 计算组件左上角位置
+    let x = mouseX - componentWidth / 2
+    let y = mouseY - componentHeight / 2
     
-    component.position = { x, y }
+    // 应用吸附对齐
+    const snappedPosition = applySnap(x, y, id, componentWidth, componentHeight)
+    
+    // 确保位置不为负
+    component.position = {
+      x: Math.max(0, snappedPosition.x),
+      y: Math.max(0, snappedPosition.y)
+    }
   }
 }
 
 // 处理组件拖拽结束
 const handleComponentDragEnd = (id: string) => {
   draggingComponentId.value = ''
+  snapLines.value = [] // 清除吸附线
   
   const component = findComponentById(components.value, id)
   if (component) {
@@ -468,25 +558,27 @@ const handleComponentDrop = (componentId: string, event: DragEvent) => {
   // 获取画布容器位置
   const canvasContent = event.currentTarget as HTMLElement
   const rect = canvasContent.getBoundingClientRect()
+  console.log(rect,event.clientX,event.clientY,event,'canvasContentjkq')
   
   // 计算鼠标位置
-  const mouseX = event.clientX - rect.left
-  const mouseY = event.clientY - rect.top
+  const mouseX = event.clientX - 570
+  const mouseY = event.clientY - 280
   
   // 更新组件位置
   const component = findComponentById(components.value, componentId)
   if (component) {
     // 获取组件尺寸
     const { width: componentWidth, height: componentHeight } = getComponentSize(component.type, component.props)
+    console.log(componentWidth,componentHeight,'componentWidthcomponentHeight',component)
     
     // 计算组件左上角位置（让组件中心对准鼠标位置）
-    const x = mouseX - componentWidth / 2
-    const y = mouseY - componentHeight / 2
+    const x = mouseX 
+    const y = mouseY 
+   console.log(x,y,'x,y')
     
-    component.position = { x, y }
     
-    // 添加到历史记录
-    addToHistory('移动组件', `移动了 ${component.type} 组件`)
+    // // 添加到历史记录
+    // addToHistory('移动组件', `移动了 ${component.type} 组件`)
   }
 }
 
@@ -563,6 +655,30 @@ onMounted(() => {
   background: #f5f7fa;
   overflow: hidden;
   position: relative;
+}
+
+/* 吸附线样式 */
+.snap-line {
+  position: absolute;
+  pointer-events: none;
+  z-index: 10000;
+  opacity: 0.8;
+  transform: translateZ(0);
+  background: none;
+  
+  &.horizontal {
+    left: 0;
+    right: 0;
+    height: 1px;
+    border-top: 1px dashed currentColor;
+  }
+  
+  &.vertical {
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    border-left: 1px dashed currentColor;
+  }
 }
 
 .right-panel {

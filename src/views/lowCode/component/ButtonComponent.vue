@@ -19,7 +19,8 @@ const props = defineProps<{
   size?: string
   backgroundColor?: string
   borderColor?: string
-  borderRadius?: number
+  borderRadius?: number,
+  onClick?: () => void
 }>()
 
 const buttonClass = computed(() => {
@@ -39,8 +40,38 @@ const buttonStyle = computed(() => {
 })
 
 const handleClick = () => {
-  // 可以在这里处理点击事件
-  console.log('Button clicked')
+  try {
+    // 确保onClick存在且是字符串类型或函数类型
+    console.log(props.onClick, 'onClick code')
+    
+    if (props.onClick) {
+      // 检查onClick是否为数组且有第一个元素
+      const clickHandler = Array.isArray(props.onClick) ? props.onClick[0] : props.onClick;
+      
+      if (typeof clickHandler === 'function') {
+        // 如果是函数类型，直接调用
+        clickHandler()
+      } else if (typeof clickHandler === 'string') {
+        // 如果是字符串类型，创建一个安全的函数执行环境
+        try {
+          // 使用立即执行函数表达式包装，避免函数声明需要名称的问题
+          new Function(`(${clickHandler})()`)()
+        } catch (execError) {
+          console.error('Error executing onClick code:', execError)
+          // 尝试直接执行，兼容非函数形式的代码
+          try {
+            new Function(clickHandler)()
+          } catch (fallbackError) {
+            console.error('Fallback execution also failed:', fallbackError)
+          }
+        }
+      }
+    }
+    
+    console.log('Button clicked')
+  } catch (error) {
+    console.error('Error executing click event:', error)
+  }
 }
 </script>
 

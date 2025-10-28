@@ -166,3 +166,4 @@ const handleComponentDrop = (componentId: string, event: DragEvent) => {
 - 避免重复的DOM查询
 - 优化拖拽事件处理逻辑
 - 减少不必要的数据传递
+
