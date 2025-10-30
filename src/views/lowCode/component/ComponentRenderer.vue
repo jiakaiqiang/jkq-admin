@@ -75,10 +75,12 @@ import SelectComponent from './SelectComponent.vue'
 import ContainerComponent from './ContainerComponent.vue'
 import DividerComponent from './DividerComponent.vue'
 
+
 interface Component {
   id: string
   type: string
-  props: Record<string, any>
+  props: Record<string, any>,
+  style: Record<string, any>
   children?: Component[]
   parent?: string
   position?: {
@@ -113,7 +115,8 @@ const componentMap: Record<string, any> = {
   Input: InputComponent,
   Select: SelectComponent,
   Container: ContainerComponent,
-  Divider: DividerComponent
+  Divider: DividerComponent,
+ 
 }
 
 // 当前组件类型
@@ -137,7 +140,12 @@ const wrapperStyle = computed(() => {
 
 // 组件样式
 const componentStyle = computed(() => {
-  const { props: componentProps } = props.component
+ 
+  const { props:attrs,style } = props.component
+  const componentProps: Record<string, any> = {
+    ...attrs,
+    ...style
+  }
   
   return {
     // 基础样式
@@ -164,7 +172,11 @@ const componentStyle = computed(() => {
 
 // 组件属性（排除样式属性）
 const componentProps = computed(() => {
-  const { props: componentProps } = props.component
+  const { props: attrs, style } = props.component
+  const componentProps: Record<string, any> = {
+    ...attrs,
+    ...style
+  }
   const styleProps = [
     'width', 'height', 'backgroundColor', 'border', 'borderRadius', 
     'padding', 'margin', 'display', 'fontSize', 'color', 'fontWeight', 
@@ -188,6 +200,7 @@ const handleClick = () => {
 
 // 处理组件内部点击
 const handleComponentClick = (event: Event) => {
+  console.log(event,'event')
   if (props.previewMode) {
     // 预览模式下可以处理组件事件
     event.stopPropagation()
@@ -195,8 +208,8 @@ const handleComponentClick = (event: Event) => {
     //出发选中
     emit('select', props.component.id)
     // 编辑模式下阻止默认行为，只选择组件
-    event.preventDefault()
-    event.stopPropagation()
+    // event.preventDefault()
+    // event.stopPropagation()
 
   }
 }

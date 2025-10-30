@@ -1,12 +1,12 @@
 <template>
   <div class="button-component">
-    <button 
+    <el-button 
       :class="buttonClass"
       :style="buttonStyle"
       @click="handleClick"
     >
       {{ text }}
-    </button>
+    </el-button>
   </div>
 </template>
 

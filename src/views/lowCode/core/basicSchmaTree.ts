@@ -24,6 +24,11 @@ export const schemaTree = {
           "name": "图片",
           "type": "Image",
           "icon": "el-icon-picture",
+    },{
+        "id": "jkq-select",
+          "name": "选择框",
+          "type": "Select",
+          "icon": "el-icon-arrow-down",
     }
 
     ]
@@ -52,7 +57,7 @@ export const componentTypeMap = {
     },
     "category": "basic",
     "defaultProps": {
-            "placeholder": "请输入内容",
+          
             "width": 200,
             "height": 40,
             "borderColor": "#DCDFE6",
@@ -78,14 +83,18 @@ export const componentTypeMap = {
     "icon": "el-icon-mouse",
     "category": "basic",
     "defaultProps": {
-      "text": "点击按钮",
-      "type": "primary",
-      "size": "medium",
+     
+     
       "width": "auto",
       "padding": 20,
       "backgroundColor": "#409EFF",
       "borderColor": "#409EFF",
       "borderRadius": 4
+    },
+    "props":{
+       "text": "点击按钮",
+        "type": "primary",
+       "size": "medium",
     },
     "schema": {
       "style": {
@@ -111,11 +120,15 @@ export const componentTypeMap = {
     "type": "Image",
     "icon": "el-icon-picture",
     "category": "basic",
+    "props":{
+      "src": "https://via.placeholder.com/200x150",
+      "objectFit": "cover",
+    },
     "defaultProps": {
       "src": "https://via.placeholder.com/200x150",
       "width": 200,
       "height": 150,
-      "objectFit": "cover",
+      
       "borderRadius": 4
     },
     "schema": {
@@ -136,16 +149,20 @@ export const componentTypeMap = {
     "type": "Select",
     "icon": "el-icon-arrow-down",
     "category": "form",
+     "props":{
+       "placeholder": "请选择",
+       "options": [
+        { "label": "选项1", "value": "option1" },
+        { "label": "选项2", "value": "option2" }
+      ]
+    },
     "defaultProps": {
-      "placeholder": "请选择",
+     
       "width": 200,
       "height": 40,
       "borderColor": "#DCDFE6",
       "borderRadius": 4,
-      "options": [
-        { "label": "选项1", "value": "option1" },
-        { "label": "选项2", "value": "option2" }
-      ]
+      
     },
     "schema": {
       "style": {
@@ -194,12 +211,15 @@ export const componentTypeMap = {
   },
   'jkq-text':{
     "defaultProps": {
-            "content": "这是一段文本",
+           
             "fontSize": 14,
             "color": "#333333",
             "fontWeight": "normal",
             "textAlign": "left",
             "lineHeight": 1.5
+          },
+          "props":{
+            "content": "这是一段文本",
           },
           "schema": {
             "style": {

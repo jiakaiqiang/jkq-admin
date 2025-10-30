@@ -4,26 +4,16 @@
     <div class="toolbar">
       <div class="toolbar-left">
         <el-button-group>
-          <el-button 
-            :disabled="historyIndex <= 0" 
-            @click="undo"
-            icon="el-icon-back"
-            size="small"
-          >
+          <el-button :disabled="historyIndex <= 0" @click="undo" icon="el-icon-back" size="small">
             撤销
           </el-button>
-          <el-button 
-            :disabled="historyIndex >= history.length - 1" 
-            @click="redo"
-            icon="el-icon-right"
-            size="small"
-          >
+          <el-button :disabled="historyIndex >= history.length - 1" @click="redo" icon="el-icon-right" size="small">
             恢复
           </el-button>
         </el-button-group>
-        
+
         <el-divider direction="vertical" />
-        
+
         <el-button-group>
           <el-button @click="save" icon="el-icon-document" size="small">
             保存
@@ -34,9 +24,12 @@
           <el-button @click="clear" icon="el-icon-delete" size="small">
             清空
           </el-button>
+          <el-button @click="exportPage" icon="el-icon-view" size="small">
+            导出页面
+          </el-button>
         </el-button-group>
       </div>
-      
+
       <div class="toolbar-right">
         <el-button @click="showHistory" icon="el-icon-time" size="small">
           历史记录 ({{ history.length }})
@@ -48,96 +41,59 @@
     <div class="main-content">
       <!-- 左侧物料区 -->
       <div class="left-panel">
-       <leftTool @change-active="changeActive"></leftTool>
-        <LeftSchema 
-        v-if="activeChange === 'component'"
-          :schema="schema" 
-          @drag-start="handleDragStart"
-          @drag-end="handleDragEnd"
-        />
+        <leftTool @change-active="changeActive"></leftTool>
+        <LeftSchema v-if="activeChange === 'component'" :schema="schema" @drag-start="handleDragStart"
+          @drag-end="handleDragEnd" />
       </div>
 
       <!-- 中间渲染区 -->
       <div class="center-panel">
-        <ContentDraw 
-          :components="components"
-          :selected-id="selectedId"
-          @select="handleSelect"
-          @update="handleUpdate"
-          @delete="handleDelete"
-          @drop="handleDrop"
-          @component-drop="handleComponentDrop"
-          @drag="handleComponentDrag"
-          @drag-end="handleComponentDragEnd"
-        />
+        <ContentDraw :components="components" :selected-id="selectedId" @select="handleSelect" @update="handleUpdate"
+          @delete="handleDelete" @drop="handleDrop" @component-drop="handleComponentDrop" @drag="handleComponentDrag"
+          @drag-end="handleComponentDragEnd" />
         <!-- 吸附线 -->
-        <div 
-          v-for="(line, index) in snapLines" 
-          :key="index"
-          class="snap-line"
-          :class="line.type"
-          :style="{
-            [line.type === 'horizontal' ? 'top' : 'left']: `${line.position}px`,
-            color: line.color
-          }"
-        ></div>
+        <div v-for="(line, index) in snapLines" :key="index" class="snap-line" :class="line.type" :style="{
+          [line.type === 'horizontal' ? 'top' : 'left']: `${line.position}px`,
+          color: line.color
+        }"></div>
       </div>
 
       <!-- 右侧属性区 -->
       <div class="right-panel">
-        <RightAttribute 
-          :component="selectedComponent"
-          @update="handlePropertyUpdate"
-        />
+        <RightAttribute :component="selectedComponent" @update="handlePropertyUpdate" />
       </div>
     </div>
 
     <!-- 历史记录弹窗 -->
-    <el-dialog
-      title="操作历史"
-      :visible.sync="historyDialogVisible"
-      width="600px"
-    >
+    <el-dialog title="操作历史" :visible.sync="historyDialogVisible" width="600px">
       <el-timeline>
-        <el-timeline-item
-          v-for="(record, index) in history"
-          :key="index"
-          :type="index === historyIndex ? 'primary' : 'info'"
-          :timestamp="record.timestamp"
-        >
+        <el-timeline-item v-for="(record, index) in history" :key="index"
+          :type="index === historyIndex ? 'primary' : 'info'" :timestamp="record.timestamp">
           <div class="history-item">
             <strong>{{ record.action }}</strong>
             <p class="history-desc">{{ record.description }}</p>
           </div>
         </el-timeline-item>
       </el-timeline>
-      
+
       <div slot="footer">
         <el-button @click="historyDialogVisible = false">关闭</el-button>
       </div>
     </el-dialog>
 
     <!-- 预览弹窗 -->
-    <el-dialog
-      title="预览"
-      :model-value="previewVisible"
-      width="80%"
-      :before-close="handlePreviewClose"
-    >
+    <el-dialog title="预览" :model-value="previewVisible" width="80%" :before-close="handlePreviewClose">
       <div class="preview-container">
-        <ContentDraw 
-          :components="components"
-          :selected-id="''"
-          :preview-mode="true"
-        />
+        <ContentDraw :components="components" :selected-id="''" :preview-mode="true" />
       </div>
     </el-dialog>
-</div>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
+
 import LeftSchema from './layout/leftSchmea.vue'
 import ContentDraw from './layout/contentDraw.vue'
 import RightAttribute from './layout/rightAttribute.vue'
@@ -147,7 +103,8 @@ import leftTool from './layout/leftTool.vue'
 interface Component {
   id: string
   type: string
-  props: Record<string, any>
+  props: Record<string, any>,
+  style: Record<string, any>,
   children?: Component[]
   parent?: string
   position?: {
@@ -172,13 +129,13 @@ const historyDialogVisible = ref(false)
 const previewVisible = ref(false)
 const dragComponent = ref<any>(null)
 const draggingComponentId = ref<string>('')// 吸附线数据
-const snapLines = ref<Array<{ type: 'horizontal' | 'vertical'; position: number; color: string }>>([]) 
+const snapLines = ref<Array<{ type: 'horizontal' | 'vertical'; position: number; color: string }>>([])
 const selectedComponent = computed(() => {
   return findComponentById(components.value, selectedId.value)
 })
-let activeChange =  ref('component')
-let  changeActive =  (val:string)=>{
-   activeChange.value = val
+let activeChange = ref('component')
+let changeActive = (val: string) => {
+  activeChange.value = val
 }
 // 查找组件
 const findComponentById = (components: Component[], id: string): Component | null => {
@@ -198,12 +155,98 @@ const findComponentById = (components: Component[], id: string): Component | nul
 const generateId = (): string => {
   return 'comp_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9)
 }
+const getPageConfig = () => {
+  return JSON.parse(localStorage.getItem('lowcode_data'))
+
+}
+const exportPage = () => {
+  //获取总体的配置
+  const pageConfig = getPageConfig()
+  const template = generateTemplate(pageConfig.components)
+  console.log(template,'template')
+
+}
+//style转成字符串
+const styleToString = (style: Record<string, any>): string => {
+  
+  return Object.entries(style)
+    .map(([key, value]) => `${key}: ${value}`)
+    .join('; ')
+}
+// prop转成字符串
+function propsToString(props = {}) {
+  return Object.entries(props)
+    .map(([k, v]) => {
+      if (k === "vModel") {
+        // v-model 特殊处理
+        return `v-model="${v}"`
+      }
+      if (typeof v === "string") return `${k}="${v}"`
+      return `:${k}='${JSON.stringify(v)}'`
+    })
+    .join(" ")
+}
+let tagMap = {
+  Text: 'el-text',
+  Button: 'el-button',
+  Image: 'el-image',
+  Input: 'el-input',
+  Select: 'el-select',
+  Container: 'el-container',
+  Divider: 'el-divider',
+}
+// 渲染单个组件（递归）
+function renderComponent(comp: any) {
+  console.log(comp, 'jkq')
+  const tag =tagMap[comp.type as keyof typeof tagMap]
+  const propsStr = propsToString(comp.props)
+  console.log(comp,'wefwfwfweff')
+  const styleStr = styleToString(comp.style)
+  const styleAttr = styleStr ? ` style="${styleStr}"` : ""
+ 
+  //组件内部显示内容
+  let content = ''
+  if(propsStr.includes('content')){
+    content = comp.props.content
+  }
+  // 事件绑定
+  const eventStr = comp.events
+    ? Object.entries(comp.events)
+      .map(([event, handler]) => `@${event.replace(/^on/, "").toLowerCase()}="${handler}"`)
+      .join(" ")
+    : ""
+
+  // 插槽渲染
+  let slotContent = ""
+  if (comp.slot) {
+    slotContent = `<template #${comp.slot.name}>${comp.slot.content}</template>`
+  }
+
+  // 子组件递归
+  let children = ""
+  if (comp.children && comp.children.length > 0) {
+    children = comp.children.map(renderComponent).join("\n")
+  } else if (comp.props?.text) {
+    children = comp.props.text
+  }
+
+  return `
+<${tag} ${propsStr} ${eventStr}${styleAttr}>
+  ${slotContent}
+${content}
+  ${children}
+</${tag}>`
+}
+// 生成 <template>
+function generateTemplate(components: any) {
+  return components.map(renderComponent).join("\n")
+}
 
 // 获取组件尺寸的辅助函数
 const getComponentSize = (componentType: string, props: Record<string, any>) => {
   let width = props.width
   let height = props.height
-  
+
   if (!width || !height) {
     switch (componentType) {
       case 'Text':
@@ -239,7 +282,7 @@ const getComponentSize = (componentType: string, props: Record<string, any>) => 
         height = 40
     }
   }
-  
+
   return { width, height }
 }
 
@@ -249,17 +292,17 @@ const addToHistory = (action: string, description: string) => {
   if (historyIndex.value < history.value.length - 1) {
     history.value = history.value.slice(0, historyIndex.value + 1)
   }
-  
+
   const record: HistoryRecord = {
     action,
     description,
     timestamp: new Date().toLocaleString(),
     data: JSON.parse(JSON.stringify(components.value))
   }
-  
+
   history.value.push(record)
   historyIndex.value = history.value.length - 1
-  
+
   // 限制历史记录数量
   if (history.value.length > 50) {
     history.value.shift()
@@ -280,47 +323,48 @@ const handleDragEnd = () => {
 // 处理拖拽放置
 const handleDrop = (event: DragEvent) => {
   event.preventDefault()
-  
+
   // 检查是否是组件拖拽移动
   const isComponentMove = event.dataTransfer?.getData('application/component-move') === 'true'
   if (isComponentMove) {
     // 这是组件移动，不需要在这里处理
     return
   }
-  
+
   // 检查是否有新组件要放置
   if (!dragComponent.value) return
-  
+
   // 获取画布容器位置
   const canvasContainer = event.currentTarget as HTMLElement
   const canvasContent = canvasContainer.querySelector('.canvas-content') as HTMLElement
   const rect = canvasContent.getBoundingClientRect()
-  console.log(rect,event.clientX,event.clientY,'canvasContent')
+  console.log(rect, event.clientX, event.clientY, 'canvasContent')
   // 计算相对于画布的鼠标位置
   const mouseX = event.clientX - rect.left
   const mouseY = event.clientY - rect.top
-  
+
   // 获取组件默认尺寸
   const defaultProps = dragComponent.value.defaultProps
   const { width: componentWidth, height: componentHeight } = getComponentSize(dragComponent.value.type, defaultProps)
-  
+
   // 计算组件左上角位置（让组件中心对准鼠标位置）
   const x = mouseX - componentWidth / 2
   const y = mouseY - componentHeight / 2
-  
+
   const newComponent: Component = {
     id: generateId(),
     type: dragComponent.value.type,
-    props: JSON.parse(JSON.stringify(defaultProps)),
+    style: JSON.parse(JSON.stringify(defaultProps)),
+    props: JSON.parse(JSON.stringify(dragComponent?.value?.props ?? {})),
     children: [],
     position: { x, y }
   }
-console.log(newComponent, 'newComponent')
+  console.log(newComponent, 'newComponent')
   components.value.push(newComponent)
   selectedId.value = newComponent.id
-  
+
   addToHistory('添加组件', `添加了 ${dragComponent.value.name} 组件`)
-  
+
   dragComponent.value = null
 }
 
@@ -400,7 +444,7 @@ const save = () => {
     timestamp: new Date().toISOString(),
     version: '1.0.0'
   }
-  
+
   console.log(data, 'data')
   localStorage.setItem('lowcode_data', JSON.stringify(data))
   ElMessage.success('保存成功')
@@ -469,11 +513,11 @@ const applySnap = (x: number, y: number, componentId: string, componentWidth: nu
   // 检查其他组件的吸附
   for (const otherComponent of components.value) {
     if (otherComponent.id === componentId || !otherComponent.position) continue
-    
+
     const { width: otherWidth, height: otherHeight } = getComponentSize(otherComponent.type, otherComponent.props)
     const otherX = otherComponent.position.x
     const otherY = otherComponent.position.y
-    
+
     // 水平吸附（左对齐、右对齐、中心线对齐）
     if (Math.abs(x - otherX) < SNAP_THRESHOLD) {
       snappedX = otherX // 左对齐
@@ -485,7 +529,7 @@ const applySnap = (x: number, y: number, componentId: string, componentWidth: nu
       snappedX = otherX + otherWidth / 2 - componentWidth / 2 // 中心线对齐
       newSnapLines.push({ type: 'vertical', position: otherX + otherWidth / 2, color: '#e6a23c' })
     }
-    
+
     // 垂直吸附（上对齐、下对齐、中心线对齐）
     if (Math.abs(y - otherY) < SNAP_THRESHOLD) {
       snappedY = otherY // 上对齐
@@ -498,42 +542,42 @@ const applySnap = (x: number, y: number, componentId: string, componentWidth: nu
       newSnapLines.push({ type: 'horizontal', position: otherY + otherHeight / 2, color: '#e6a23c' })
     }
   }
-  
+
   // 结束函数时设置吸附线
   snapLines.value = newSnapLines
-  
+
   // 返回吸附后的位置
   return { x: snappedX, y: snappedY }
 }
 // 处理组件拖拽移动
 const handleComponentDrag = (id: string, event: DragEvent) => {
   event.preventDefault()
-  
+
   draggingComponentId.value = id
-  
+
   // 获取画布容器位置
   const canvasContent = document.querySelector('.canvas-content') as HTMLElement
   if (!canvasContent) return
-  
+
   const rect = canvasContent.getBoundingClientRect()
-  
+
   // 计算鼠标位置
   const mouseX = event.clientX - rect.left
   const mouseY = event.clientY - rect.top
-  
+
   // 实时更新组件位置
   const component = findComponentById(components.value, id)
   if (component) {
     // 获取组件尺寸
     const { width: componentWidth, height: componentHeight } = getComponentSize(component.type, component.props)
-    
+
     // 计算组件左上角位置
     let x = mouseX - componentWidth / 2
     let y = mouseY - componentHeight / 2
-    
+
     // 应用吸附对齐
     const snappedPosition = applySnap(x, y, id, componentWidth, componentHeight)
-    
+
     // 确保位置不为负
     component.position = {
       x: Math.max(0, snappedPosition.x),
@@ -546,7 +590,7 @@ const handleComponentDrag = (id: string, event: DragEvent) => {
 const handleComponentDragEnd = (id: string) => {
   draggingComponentId.value = ''
   snapLines.value = [] // 清除吸附线
-  
+
   const component = findComponentById(components.value, id)
   if (component) {
     addToHistory('移动组件', `移动了 ${component.type} 组件`)
@@ -558,25 +602,25 @@ const handleComponentDrop = (componentId: string, event: DragEvent) => {
   // 获取画布容器位置
   const canvasContent = event.currentTarget as HTMLElement
   const rect = canvasContent.getBoundingClientRect()
-  console.log(rect,event.clientX,event.clientY,event,'canvasContentjkq')
-  
+  console.log(rect, event.clientX, event.clientY, event, 'canvasContentjkq')
+
   // 计算鼠标位置
   const mouseX = event.clientX - 570
   const mouseY = event.clientY - 280
-  
+
   // 更新组件位置
   const component = findComponentById(components.value, componentId)
   if (component) {
     // 获取组件尺寸
     const { width: componentWidth, height: componentHeight } = getComponentSize(component.type, component.props)
-    console.log(componentWidth,componentHeight,'componentWidthcomponentHeight',component)
-    
+    console.log(componentWidth, componentHeight, 'componentWidthcomponentHeight', component)
+
     // 计算组件左上角位置（让组件中心对准鼠标位置）
-    const x = mouseX 
-    const y = mouseY 
-   console.log(x,y,'x,y')
-    
-    
+    const x = mouseX
+    const y = mouseY
+    console.log(x, y, 'x,y')
+
+
     // // 添加到历史记录
     // addToHistory('移动组件', `移动了 ${component.type} 组件`)
   }
@@ -623,13 +667,14 @@ onMounted(() => {
   justify-content: space-between;
   padding: 0 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  
+
   .toolbar-left {
     display: flex;
     align-items: center;
     gap: 12px;
+    height: 34px;
   }
-  
+
   .toolbar-right {
     display: flex;
     align-items: center;
@@ -665,14 +710,14 @@ onMounted(() => {
   opacity: 0.8;
   transform: translateZ(0);
   background: none;
-  
+
   &.horizontal {
     left: 0;
     right: 0;
     height: 1px;
     border-top: 1px dashed currentColor;
   }
-  
+
   &.vertical {
     top: 0;
     bottom: 0;

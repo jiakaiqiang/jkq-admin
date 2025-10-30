@@ -62,7 +62,8 @@ import ComponentRenderer from '../component/ComponentRenderer.vue'
 interface Component {
   id: string
   type: string
-  props: Record<string, any>
+  props: Record<string, any>,
+  style: Record<string, any>
   children?: Component[]
   parent?: string
   position?: {

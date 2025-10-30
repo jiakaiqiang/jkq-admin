@@ -1,11 +1,11 @@
 <template>
   <div class="input-component">
-    <input 
+    <el-input 
       type="text"
       :value="value"
       :placeholder="placeholder"
       :style="inputStyle"
-      @input="handleInput"
+     
       @focus="handleFocus"
       @blur="handleBlur"
     />
