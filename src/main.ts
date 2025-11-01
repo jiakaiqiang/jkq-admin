@@ -5,7 +5,7 @@ import ElementPlus from "element-plus";
 import install from './install/index'
 // element css
 import "element-plus/dist/index.css";
-
+import * as Sentry from "@sentry/vue";
 import '@/common/style/elementReset.scss';
 import zhCn from 'element-plus/es/locale/lang/zh-cn';
 
@@ -21,6 +21,17 @@ import '@/common/style/light.scss';
 //添加默认主题模式
 document.documentElement.classList.add('light')
 const app  = createApp(App)
+Sentry.init({
+  app,
+  dsn: "https://3048882cbebd0f0fa5950cb5b4ef59e4@o4509684149518336.ingest.de.sentry.io/4509684151156816",
+  // Setting this option to true will send default PII data to Sentry.
+  // For example, automatic IP address collection on events
+  sendDefaultPii: true,
+  integrations:[Sentry.browserTracingIntegration(),Sentry.feedbackIntegration()],
+  //采样率
+  tracesSampleRate: 1.0
+});
+
 app.use(install)
 app.use(ElementPlus, {  
     locale: zhCn,  

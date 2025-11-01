@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#f8f8f8"/>
+  <text x="200" y="120" font-family="Arial, sans-serif" font-size="80" font-weight="bold" fill="#ff6b6b" text-anchor="middle">500</text>
+  <text x="200" y="180" font-family="Arial, sans-serif" font-size="24" fill="#333" text-anchor="middle">服务器内部错误</text>
+</svg>

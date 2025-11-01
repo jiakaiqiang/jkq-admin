@@ -1,3 +1,4 @@
+import { sentryVitePlugin } from "@sentry/vite-plugin";
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { fileURLToPath, URL } from 'url'
@@ -16,34 +17,42 @@ import {viteMockServe} from 'vite-plugin-mock'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue(),vueJsx(),
-     AutoImport({ imports: ['vue', 'vue-router','pinia'] ,dts:false}),
-     Components({ resolvers:[ElementPlusResolver()]}),
-     createHtmlPlugin({
-      minify: true,
-      inject: {
-        data: { title: SYSTEM_NAME } //注入htm 参数
-      }
+  plugins: [
+    vue(),
+    vueJsx(),
+    AutoImport({ imports: ['vue', 'vue-router','pinia'] ,dts:false}),
+    Components({ resolvers:[ElementPlusResolver()]}),
+    createHtmlPlugin({
+     minify: true,
+     inject: {
+       data: { title: SYSTEM_NAME } //注入htm 参数
+     }
+   }),
+    // 使用 svg 图标
+    // 使用 svg 图标
+    createSvgIconsPlugin({
+     iconDirs: [resolve(process.cwd(), "src/assets/icons")],
+     symbolId: "icon-[dir]-[name]"
+   }),
+    // name 可以写在 script 标签上
+    vueSetupExtend({}),
+    viteMockServe({
+   // supportTs: false, // 打开后，可以读取 ts 文件模块。 请注意，打开后将无法监视.ts 文件更改
+      mockPath: '@/mock', // 设置 mock 文件夹路径
     }),
-     // 使用 svg 图标
-     // 使用 svg 图标
-     createSvgIconsPlugin({
-      iconDirs: [resolve(process.cwd(), "src/assets/icons")],
-      symbolId: "icon-[dir]-[name]"
-    }),
-     // name 可以写在 script 标签上
-     vueSetupExtend({}),
-     viteMockServe({
-    // supportTs: false, // 打开后，可以读取 ts 文件模块。 请注意，打开后将无法监视.ts 文件更改
-       mockPath: '@/mock', // 设置 mock 文件夹路径
-     })
-    ],
+    sentryVitePlugin({
+      org: "bf24f2a860d4",
+      project: "jiakaiqiang-sentry"
+    })
+  ],
+
   //配置别名
   resolve: {
    alias:{
     '@': fileURLToPath(new URL('./src', import.meta.url))
    }
   },
+
   server:{
     open:true,
    
@@ -56,7 +65,9 @@ export default defineConfig({
   
       }
   }
-}
-  
+},
 
+  build: {
+    sourcemap: true
+  }
 })

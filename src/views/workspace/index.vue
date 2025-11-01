@@ -131,12 +131,26 @@ import { projectType } from "@/types/project";
 import { reactive, ref, onBeforeMount, onMounted, nextTick } from "vue";
 import { ElMessage } from 'element-plus'
 import { getWeather, getPoetry } from '@/request/api/modules/otherThreeSystem'
+// 城市类型定义
 type cityType = {
-    Country: string, Province: string, City: string
+    Country: string,
+    Province: string,
+    City: string
 }
+
+// 天气条件类型定义
+type conditionType = {
+    day_weather: string,
+    day_wind_direction: string,
+    max_degree: string,
+    min_degree: string,
+    [key: string]: any
+}
+
+// 天气数据类型定义
 type weatherType = {
     city: cityType,
-    condition: Object
+    condition: conditionType
 }
 //获取天气信息
 let weatherData = ref<weatherType>({
@@ -145,17 +159,23 @@ let weatherData = ref<weatherType>({
         Province: "",
         City: ""
     },
-    condition: {}
+    condition: {
+        day_weather: "",
+        day_wind_direction: "",
+        max_degree: "",
+        min_degree: ""
+    }
 })
 
 //古诗
 let poetryData = ref<any>({})
 onBeforeMount(async () => {
 
-    const data = await getWeather()
+    // 获取天气信息并进行类型断言
+    const data: any = await getWeather()
 
     if (data.code == 200) {
-        //weatherData = data.result
+        // 设置天气数据
         weatherData.value = data.result
     }
     //获取古诗

@@ -7,8 +7,8 @@
 import {ref} from 'vue'
 //定义表头
 let tableHead = 10
-let ctx =''
-let canvasRes = ref(null)
+let ctx: CanvasRenderingContext2D | null = null
+let canvasRes = ref<HTMLCanvasElement | null>(null)
 let  divRef= ref(null)
 let canvasWidth = 1000
 let canvasHeight = 800

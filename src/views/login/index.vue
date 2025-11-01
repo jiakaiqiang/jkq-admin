@@ -38,10 +38,9 @@
 </template>
 
 <script lang='ts' setup>
-  import { ElNotification } from 'element-plus'
+  import { ElNotification, ElMessage } from 'element-plus'
 import {  Message,UserFilled } from '@element-plus/icons-vue';
-import {Default_Login_Success_Redirect}from '@/config/index.ts'
-import { ElMessage } from 'element-plus'
+import {Default_Login_Success_Redirect}from '@/config/index'
 let codeUrl =  ref('')
 let formData = reactive({
   username: '',
