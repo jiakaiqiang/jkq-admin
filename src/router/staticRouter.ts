@@ -1,5 +1,6 @@
 import { customRouteRecordRaw } from '@/globalType/router.ts'
 import Layout from "@/layout/index.vue";
+import path from 'path';
 export const errorRouter = [
   {
     path: "/403",
@@ -305,6 +306,29 @@ export const staticRouter: Array<customRouteRecordRaw> = [
       }
     }]
   },
+  {
+    path:'/lowcode',
+    name:'lowcode',
+    isMenu: true,
+    component: Layout,
+    isShowChidren: false,
+    icon:'icon-gongzuotai',
+    meta: {
+      title: '低代码模块',
+      name: "lowcode",
+    },
+    redirect: '/lowcode/index',
+    children: [{
+      name: '低代码',
+      path: '/lowcode/index', 
+      icon:'icon-gongzuotai',
+      component: () => import('@/views/lowCode/index.vue'),
+      meta: {
+        title: '低代码',
+        name: "index"
+      }
+    }]
+  }
 
  
 ];

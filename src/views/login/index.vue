@@ -38,9 +38,10 @@
 </template>
 
 <script lang='ts' setup>
-  import { ElNotification, ElMessage } from 'element-plus'
+
 import {  Message,UserFilled } from '@element-plus/icons-vue';
-import {Default_Login_Success_Redirect}from '@/config/index'
+import {Default_Login_Success_Redirect}from '@/config/index.ts'
+
 let codeUrl =  ref('')
 let formData = reactive({
   username: '',
@@ -53,7 +54,7 @@ const $router =  getCurrentInstance().appContext.config.globalProperties.$router
 
 //获取验证码
 const getImage = ()=>{
-  $request.get('/auth/captchaImage').then(res=>{
+  $request.get('/auth/captchaImage').then((res:any)=>{
     console.log(res)
     if(res.success){
       codeUrl.value = res.data.img
@@ -65,7 +66,7 @@ const getImage = ()=>{
 getImage()
 //获取菜单列表
 const  getMenu=()=>{
-  $request.post('/menu').then(res=>{
+  $request.post('/menu').then((res:any)=>{
    if(res.success){
     //存储
      localStorage.setItem('menu',JSON.stringify(res.data))

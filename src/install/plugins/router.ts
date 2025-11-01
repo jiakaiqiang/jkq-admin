@@ -46,7 +46,7 @@ router.beforeEach((to, from, next) => {
       return next('/workspace')
     }
       //resetRouter();
-    return next();
+     return next();
     }
     
     if(to.path=='/'&&token){
