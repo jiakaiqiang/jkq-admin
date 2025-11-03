@@ -1,6 +1,6 @@
 <template>
-  <div class="text-component">
-    {{ content }}
+  <div class="text-component" v-text="content">
+ 
   </div>
 </template>
 

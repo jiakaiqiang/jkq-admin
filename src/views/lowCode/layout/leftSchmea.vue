@@ -11,41 +11,16 @@
          <div style="display: flex;flex-wrap: wrap;">
             <div v-for="item in group.children" :key="item.id" 
               class="component-item"
-              draggable="true"
-              @dragstart="handleDragStart($event, item)"
-              @dragend="handleDragEnd">
+              @mousedown="handleMouseDown($event, item)">
            <div class="component-icon">
                 <i :class="item.icon"></i>
               </div>
               <div class="component-name">{{ item.name }}</div>
+            </div>
          </div>
          </div>
       </div>
-      <!-- <el-collapse v-model="activeGroups" accordion>
-        <el-collapse-item 
-          v-for="group in schema.groups" 
-          :key="group.id"
-          :title="group.name"
-          :name="group.id"
-        >
-          <div class="component-grid">
-            <div
-              v-for="component in group.components"
-              :key="component.id"
-              class="component-item"
-              draggable="true"
-              @dragstart="handleDragStart($event, component)"
-              @dragend="handleDragEnd"
-            >
-              <div class="component-icon">
-                <i :class="component.icon"></i>
-              </div>
-              <div class="component-name">{{ component.name }}</div>
-            </div>
-          </div>
-        </el-collapse-item>
-      </el-collapse> -->
-    </div>
+      
   </div>
 </template>
 
@@ -54,107 +29,76 @@ import { ref, defineEmits } from 'vue'
 import {schemaTree,componentTypeMap} from '../core/basicSchmaTree.ts'
 
 
-interface Component {
-  id: string
- 
-  type: string
-  icon: string
- 
-  defaultProps: Record<string, any>
-  schema: Record<string, any>
-}
 interface itemType {
   icon:string,
       id: string,
       name: string,
       type: string
 }
-interface Group {
-  id: string
-  name: string
-  icon: string
-  components: Component[]
-}
-
-interface Schema {
-  version: string
-  groups: Group[]
-}
-
-defineProps<{
-  schema: Schema
-}>()
 
 const emit = defineEmits<{
-  dragStart: [component: Component, event: DragEvent]
-  dragEnd: []
+  addComponent: [component: Component, position: { x: number; y: number }]
 }>()
 2
 const activeGroups = ref<string[]>([])
-// 吸附对齐辅助函数
-const applySnap = (x: number, y: number, componentId: string, componentWidth: number, componentHeight: number) => {
-  const SNAP_THRESHOLD = 10 // 吸附阈值（像素）
-  let snappedX = x
-  let snappedY = y
+// 辅助线逻辑已删除
+const handleMouseDown = (event: MouseEvent, component: itemType) => {
+  event.preventDefault()
   
-  // 获取画布尺寸
+  // 存储选中的组件信息
+  const selectedComponent = { ...component, ...componentTypeMap[component.id as keyof typeof componentTypeMap] }
+  
+  // 创建一个临时的组件预览元素
   const canvasContent = document.querySelector('.canvas-content') as HTMLElement
-  const canvasRect = canvasContent.getBoundingClientRect()
-  const canvasWidth = canvasRect.width
-  const canvasHeight = canvasRect.height
+  if (!canvasContent) return
   
-  // 检查画布边界吸附
-  if (Math.abs(x) < SNAP_THRESHOLD) {
-    snappedX = 0 // 左边界
-  } else if (Math.abs((x + componentWidth) - canvasWidth) < SNAP_THRESHOLD) {
-    snappedX = canvasWidth - componentWidth // 右边界
-  }
+  const preview = document.createElement('div')
+  preview.className = 'component-preview'
+  preview.style.position = 'absolute'
+  preview.style.zIndex = '1000'
+  preview.style.pointerEvents = 'none'
+  preview.style.opacity = '0.7'
+  preview.style.width = '100px'
+  preview.style.height = '60px'
+  preview.style.backgroundColor = '#f0f9ff'
+  preview.style.border = '2px dashed #409eff'
+  preview.style.display = 'flex'
+  preview.style.alignItems = 'center'
+  preview.style.justifyContent = 'center'
+  preview.style.color = '#409eff'
+  preview.style.fontSize = '12px'
+  preview.textContent = component.name
   
-  if (Math.abs(y) < SNAP_THRESHOLD) {
-    snappedY = 0 // 上边界
-  } else if (Math.abs((y + componentHeight) - canvasHeight) < SNAP_THRESHOLD) {
-    snappedY = canvasHeight - componentHeight // 下边界
-  }
+  canvasContent.appendChild(preview)
   
-  // 检查其他组件的吸附
-  for (const otherComponent of components.value) {
-    if (otherComponent.id === componentId || !otherComponent.position) continue
+  // 处理鼠标移动
+  const handleMouseMove = (moveEvent: MouseEvent) => {
+    const rect = canvasContent.getBoundingClientRect()
+    const x = moveEvent.clientX - rect.left - 50 // 居中
+    const y = moveEvent.clientY - rect.top - 30 // 居中
     
-    const { width: otherWidth, height: otherHeight } = getComponentSize(otherComponent.type, otherComponent.props)
-    const otherX = otherComponent.position.x
-    const otherY = otherComponent.position.y
-    
-    // 水平吸附（左对齐、右对齐、中心线对齐）
-    if (Math.abs(x - otherX) < SNAP_THRESHOLD) {
-      snappedX = otherX // 左对齐
-    } else if (Math.abs((x + componentWidth) - (otherX + otherWidth)) < SNAP_THRESHOLD) {
-      snappedX = otherX + otherWidth - componentWidth // 右对齐
-    } else if (Math.abs((x + componentWidth / 2) - (otherX + otherWidth / 2)) < SNAP_THRESHOLD) {
-      snappedX = otherX + otherWidth / 2 - componentWidth / 2 // 中心线对齐
-    }
-    
-    // 垂直吸附（上对齐、下对齐、中心线对齐）
-    if (Math.abs(y - otherY) < SNAP_THRESHOLD) {
-      snappedY = otherY // 上对齐
-    } else if (Math.abs((y + componentHeight) - (otherY + otherHeight)) < SNAP_THRESHOLD) {
-      snappedY = otherY + otherHeight - componentHeight // 下对齐
-    } else if (Math.abs((y + componentHeight / 2) - (otherY + otherHeight / 2)) < SNAP_THRESHOLD) {
-      snappedY = otherY + otherHeight / 2 - componentHeight / 2 // 中心线对齐
-    }
+    preview.style.left = `${Math.max(0, x)}px`
+    preview.style.top = `${Math.max(0, y)}px`
   }
   
-  return { x: snappedX, y: snappedY }
-}
-const handleDragStart = (event: DragEvent, component: itemType) => {
-  if (event.dataTransfer) {
-    event.dataTransfer.effectAllowed = 'copy'
-    event.dataTransfer.setData('application/json', JSON.stringify(component))
+  // 处理鼠标释放
+  const handleMouseUp = (upEvent: MouseEvent) => {
+    const rect = canvasContent.getBoundingClientRect()
+    const x = upEvent.clientX - rect.left - 50 // 居中
+    const y = upEvent.clientY - rect.top - 30 // 居中
+    
+    // 发送组件添加事件
+    emit('addComponent', selectedComponent, { x: Math.max(0, x), y: Math.max(0, y) })
+    
+    // 清理
+    canvasContent.removeChild(preview)
+    document.removeEventListener('mousemove', handleMouseMove)
+    document.removeEventListener('mouseup', handleMouseUp)
   }
-  emit('dragStart', {...component,...componentTypeMap[component.id as keyof typeof componentTypeMap]}, event)
-}
-
-const handleDragEnd = () => {
-  emit('dragEnd')
+  
+  // 添加全局事件监听
+  document.addEventListener('mousemove', handleMouseMove)
+  document.addEventListener('mouseup', handleMouseUp)
 }
 </script>
 

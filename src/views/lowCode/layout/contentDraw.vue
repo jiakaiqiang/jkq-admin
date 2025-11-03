@@ -2,8 +2,6 @@
   <div 
     class="content-draw"
     :class="{ 'preview-mode': previewMode }"
-    @drop="handleDrop"
-    @dragover="handleDragOver"
     @click="handleCanvasClick"
   >
     <!-- 画布头部 -->
@@ -82,9 +80,7 @@ const emit = defineEmits<{
   select: [id: string]
   update: [id: string, updates: Partial<Component>]
   delete: [id: string]
-  drop: [event: DragEvent]
-  componentDrop: [componentId: string, event: DragEvent]
-  drag: [id: string, event: DragEvent]
+  drag: [id: string, event: MouseEvent, offset: {x: number, y: number}]
   dragEnd: [id: string]
 }>()
 
@@ -125,41 +121,9 @@ const adjustCanvasSize = (size: keyof typeof presetSizes) => {
   }
 }
 
-// 处理拖拽放置
-const handleDrop = (event: DragEvent) => {
- 
-  event.preventDefault()
-  
-  // 检查是否是组件移动
-  const isComponentMove = event.dataTransfer?.getData('application/component-move') === 'true'
-  console.log(isComponentMove,'wefw')
-  if (isComponentMove) {
-    // 处理组件移动的放置
-    const componentId = event.dataTransfer?.getData('text/plain')
-    
-    if (componentId) {
-      emit('componentDrop', componentId, event)
-    }
-    return
-  }
-  
-  // 处理新组件的放置
-  emit('drop', event)
-}
-
-// 处理拖拽悬停
-const handleDragOver = (event: DragEvent) => {
-  event.preventDefault()
-  
-  // 检查拖拽类型
-  const dragTypes = event.dataTransfer?.types || []
-  const isComponentMove = dragTypes.includes('application/component-move')
-  
-  if (isComponentMove) {
-    event.dataTransfer!.dropEffect = 'move'
-  } else {
-    event.dataTransfer!.dropEffect = 'copy'
-  }
+// 处理组件拖拽
+const handleDrag = (id: string, event: MouseEvent, offset: {x: number, y: number}) => {
+  emit('drag', id, event, offset)
 }
 
 // 处理画布点击
@@ -183,11 +147,6 @@ const handleDelete = (id: string) => {
 // 更新组件
 const handleUpdate = (id: string, updates: Partial<Component>) => {
   emit('update', id, updates)
-}
-
-// 处理组件拖拽
-const handleDrag = (id: string, event: DragEvent) => {
-  emit('drag', id, event)
 }
 
 // 处理组件拖拽结束

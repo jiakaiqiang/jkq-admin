@@ -42,20 +42,15 @@
       <!-- 左侧物料区 -->
       <div class="left-panel">
         <leftTool @change-active="changeActive"></leftTool>
-        <LeftSchema v-if="activeChange === 'component'" :schema="schema" @drag-start="handleDragStart"
-          @drag-end="handleDragEnd" />
+        <LeftSchema v-if="activeChange === 'component'" :schema="schema" @add-component="handleAddComponent" />
       </div>
 
       <!-- 中间渲染区 -->
       <div class="center-panel">
         <ContentDraw :components="components" :selected-id="selectedId" @select="handleSelect" @update="handleUpdate"
-          @delete="handleDelete" @drop="handleDrop" @component-drop="handleComponentDrop" @drag="handleComponentDrag"
-          @drag-end="handleComponentDragEnd" />
-        <!-- 吸附线 -->
-        <div v-for="(line, index) in snapLines" :key="index" class="snap-line" :class="line.type" :style="{
-          [line.type === 'horizontal' ? 'top' : 'left']: `${line.position}px`,
-          color: line.color
-        }"></div>
+        @delete="handleDelete" @drag="handleComponentDrag"
+            @drag-end="handleComponentDragEnd" />
+        
       </div>
 
       <!-- 右侧属性区 -->
@@ -127,9 +122,7 @@ const history = ref<HistoryRecord[]>([])
 const historyIndex = ref(-1)
 const historyDialogVisible = ref(false)
 const previewVisible = ref(false)
-const dragComponent = ref<any>(null)
-const draggingComponentId = ref<string>('')// 吸附线数据
-const snapLines = ref<Array<{ type: 'horizontal' | 'vertical'; position: number; color: string }>>([])
+const draggingComponentId = ref<string>('')
 const selectedComponent = computed(() => {
   return findComponentById(components.value, selectedId.value)
 })
@@ -177,12 +170,32 @@ const styleToString = (style: Record<string, any>): string => {
 function propsToString(props = {}) {
   return Object.entries(props)
     .map(([k, v]) => {
-      if (k === "vModel") {
+      // 处理Vue指令
+      if (k.startsWith('v-')) {
+        // 标准v-指令如v-if, v-show等
+        if (typeof v === 'boolean') {
+          return k // 对于布尔值指令，只需要指令名即可
+        }
+        return `${k}="${v}"`
+      } else if (k === "vModel") {
         // v-model 特殊处理
         return `v-model="${v}"`
+      } else if (k.startsWith(':')) {
+        // 已绑定的属性
+        return typeof v === "string" ? `${k}="${v}"` : `${k}='${JSON.stringify(v)}'`
+      } else if (k.startsWith('@')) {
+        // 事件处理
+        return `${k}="${v}"`
+      } else if (typeof v === "string" && v.includes('{{') && v.includes('}}')) {
+        // 包含插值表达式的字符串，需要使用绑定
+        return `:${k}="${v.replace(/{{|}}/g, '')}"`
+      } else if (typeof v === "string") {
+        // 普通字符串属性
+        return `${k}="${v}"`
+      } else {
+        // 非字符串属性，需要使用绑定
+        return `:${k}='${JSON.stringify(v)}'`
       }
-      if (typeof v === "string") return `${k}="${v}"`
-      return `:${k}='${JSON.stringify(v)}'`
     })
     .join(" ")
 }
@@ -197,25 +210,27 @@ let tagMap = {
 }
 // 渲染单个组件（递归）
 function renderComponent(comp: any) {
-  console.log(comp, 'jkq')
-  const tag =tagMap[comp.type as keyof typeof tagMap]
-  const propsStr = propsToString(comp.props)
-  console.log(comp,'wefwfwfweff')
-  const styleStr = styleToString(comp.style)
-  const styleAttr = styleStr ? ` style="${styleStr}"` : ""
- 
-  //组件内部显示内容
-  let content = ''
-  if(propsStr.includes('content')){
-    content = comp.props.content
+  const tag = tagMap[comp.type as keyof typeof tagMap] || 'div'
+  
+  // 合并props和style，确保指令能够正确处理
+  const mergedProps = { ...comp.props }
+  
+  // 如果有style属性，将其转换为字符串并添加到mergedProps中
+  if (comp.style) {
+    mergedProps.style = styleToString(comp.style)
   }
-  // 事件绑定
-  const eventStr = comp.events
-    ? Object.entries(comp.events)
-      .map(([event, handler]) => `@${event.replace(/^on/, "").toLowerCase()}="${handler}"`)
-      .join(" ")
-    : ""
-
+  
+  // 处理事件绑定，确保与propsToString兼容
+  if (comp.events) {
+    Object.entries(comp.events).forEach(([event, handler]) => {
+      const eventName = `@${event.replace(/^on/, "").toLowerCase()}`
+      mergedProps[eventName] = handler
+    })
+  }
+  
+  // 生成属性字符串
+  const propsStr = propsToString(mergedProps)
+  
   // 插槽渲染
   let slotContent = ""
   if (comp.slot) {
@@ -227,13 +242,18 @@ function renderComponent(comp: any) {
   if (comp.children && comp.children.length > 0) {
     children = comp.children.map(renderComponent).join("\n")
   } else if (comp.props?.text) {
-    children = comp.props.text
+    // 检查text是否包含插值表达式
+    if (typeof comp.props.text === 'string' && comp.props.text.includes('{{') && comp.props.text.includes('}}')) {
+      // 对于包含插值的文本，使用v-html或保持原样
+      children = comp.props.text
+    } else {
+      children = comp.props.text
+    }
   }
 
   return `
-<${tag} ${propsStr} ${eventStr}${styleAttr}>
+<${tag} ${propsStr}>
   ${slotContent}
-${content}
   ${children}
 </${tag}>`
 }
@@ -310,63 +330,33 @@ const addToHistory = (action: string, description: string) => {
   }
 }
 
-// 拖拽开始
-const handleDragStart = (component: any) => {
-  dragComponent.value = component
-}
-
-// 拖拽结束
-const handleDragEnd = () => {
-  dragComponent.value = null
-}
-
-// 处理拖拽放置
-const handleDrop = (event: DragEvent) => {
-  event.preventDefault()
-
-  // 检查是否是组件拖拽移动
-  const isComponentMove = event.dataTransfer?.getData('application/component-move') === 'true'
-  if (isComponentMove) {
-    // 这是组件移动，不需要在这里处理
-    return
-  }
-
-  // 检查是否有新组件要放置
-  if (!dragComponent.value) return
-
-  // 获取画布容器位置
-  const canvasContainer = event.currentTarget as HTMLElement
-  const canvasContent = canvasContainer.querySelector('.canvas-content') as HTMLElement
-  const rect = canvasContent.getBoundingClientRect()
-  console.log(rect, event.clientX, event.clientY, 'canvasContent')
-  // 计算相对于画布的鼠标位置
-  const mouseX = event.clientX - rect.left
-  const mouseY = event.clientY - rect.top
-
+// 处理添加组件
+const handleAddComponent = (component: any, position: { x: number; y: number }) => {
   // 获取组件默认尺寸
-  const defaultProps = dragComponent.value.defaultProps
-  const { width: componentWidth, height: componentHeight } = getComponentSize(dragComponent.value.type, defaultProps)
-
-  // 计算组件左上角位置（让组件中心对准鼠标位置）
-  const x = mouseX - componentWidth / 2
-  const y = mouseY - componentHeight / 2
+  const defaultProps = component.defaultProps
+  const { width: componentWidth, height: componentHeight } = getComponentSize(component.type, defaultProps)
 
   const newComponent: Component = {
     id: generateId(),
-    type: dragComponent.value.type,
+    type: component.type,
     style: JSON.parse(JSON.stringify(defaultProps)),
-    props: JSON.parse(JSON.stringify(dragComponent?.value?.props ?? {})),
+    props: JSON.parse(JSON.stringify(component?.props ?? {})),
     children: [],
-    position: { x, y }
+    position: {
+      x: position.x,
+      y: position.y
+    }
   }
-  console.log(newComponent, 'newComponent')
+  
   components.value.push(newComponent)
   selectedId.value = newComponent.id
-
-  addToHistory('添加组件', `添加了 ${dragComponent.value.name} 组件`)
-
-  dragComponent.value = null
+  
+  addToHistory('添加组件', `添加了 ${component.name} 组件`)
 }
+
+// 不再需要dragComponent和handleDragEnd
+
+// 不再需要handleDrop函数
 
 // 选择组件
 const handleSelect = (id: string) => {
@@ -464,6 +454,7 @@ const clear = () => {
   }).then(() => {
     components.value = []
     selectedId.value = ''
+    localStorage.removeItem('lowcode_data')
     addToHistory('清空画布', '清空了所有组件')
     ElMessage.success('已清空')
   }).catch(() => {
@@ -480,77 +471,9 @@ const showHistory = () => {
 const handlePreviewClose = () => {
   previewVisible.value = false
 }
-// 吸附对齐辅助函数
-const applySnap = (x: number, y: number, componentId: string, componentWidth: number, componentHeight: number) => {
-  const SNAP_THRESHOLD = 8 // 吸附阈值（像素）
-  let snappedX = x
-  let snappedY = y
-  const newSnapLines: Array<{ type: 'horizontal' | 'vertical'; position: number; color: string }> = []
-
-  // 获取画布尺寸
-  const canvasContent = document.querySelector('.canvas-content') as HTMLElement
-  const canvasRect = canvasContent.getBoundingClientRect()
-  const canvasWidth = canvasRect.width
-  const canvasHeight = canvasRect.height
-
-  // 检查画布边界吸附
-  if (Math.abs(x) < SNAP_THRESHOLD) {
-    snappedX = 0 // 左边界
-    newSnapLines.push({ type: 'vertical', position: 0, color: '#409eff' })
-  } else if (Math.abs((x + componentWidth) - canvasWidth) < SNAP_THRESHOLD) {
-    snappedX = canvasWidth - componentWidth // 右边界
-    newSnapLines.push({ type: 'vertical', position: canvasWidth, color: '#409eff' })
-  }
-
-  if (Math.abs(y) < SNAP_THRESHOLD) {
-    snappedY = 0 // 上边界
-    newSnapLines.push({ type: 'horizontal', position: 0, color: '#409eff' })
-  } else if (Math.abs((y + componentHeight) - canvasHeight) < SNAP_THRESHOLD) {
-    snappedY = canvasHeight - componentHeight // 下边界
-    newSnapLines.push({ type: 'horizontal', position: canvasHeight, color: '#409eff' })
-  }
-
-  // 检查其他组件的吸附
-  for (const otherComponent of components.value) {
-    if (otherComponent.id === componentId || !otherComponent.position) continue
-
-    const { width: otherWidth, height: otherHeight } = getComponentSize(otherComponent.type, otherComponent.props)
-    const otherX = otherComponent.position.x
-    const otherY = otherComponent.position.y
-
-    // 水平吸附（左对齐、右对齐、中心线对齐）
-    if (Math.abs(x - otherX) < SNAP_THRESHOLD) {
-      snappedX = otherX // 左对齐
-      newSnapLines.push({ type: 'vertical', position: otherX, color: '#67c23a' })
-    } else if (Math.abs((x + componentWidth) - (otherX + otherWidth)) < SNAP_THRESHOLD) {
-      snappedX = otherX + otherWidth - componentWidth // 右对齐
-      newSnapLines.push({ type: 'vertical', position: otherX + otherWidth, color: '#67c23a' })
-    } else if (Math.abs((x + componentWidth / 2) - (otherX + otherWidth / 2)) < SNAP_THRESHOLD) {
-      snappedX = otherX + otherWidth / 2 - componentWidth / 2 // 中心线对齐
-      newSnapLines.push({ type: 'vertical', position: otherX + otherWidth / 2, color: '#e6a23c' })
-    }
-
-    // 垂直吸附（上对齐、下对齐、中心线对齐）
-    if (Math.abs(y - otherY) < SNAP_THRESHOLD) {
-      snappedY = otherY // 上对齐
-      newSnapLines.push({ type: 'horizontal', position: otherY, color: '#67c23a' })
-    } else if (Math.abs((y + componentHeight) - (otherY + otherHeight)) < SNAP_THRESHOLD) {
-      snappedY = otherY + otherHeight - componentHeight // 下对齐
-      newSnapLines.push({ type: 'horizontal', position: otherY + otherHeight, color: '#67c23a' })
-    } else if (Math.abs((y + componentHeight / 2) - (otherY + otherHeight / 2)) < SNAP_THRESHOLD) {
-      snappedY = otherY + otherHeight / 2 - componentHeight / 2 // 中心线对齐
-      newSnapLines.push({ type: 'horizontal', position: otherY + otherHeight / 2, color: '#e6a23c' })
-    }
-  }
-
-  // 结束函数时设置吸附线
-  snapLines.value = newSnapLines
-
-  // 返回吸附后的位置
-  return { x: snappedX, y: snappedY }
-}
+// 移除了吸附线功能
 // 处理组件拖拽移动
-const handleComponentDrag = (id: string, event: DragEvent) => {
+const handleComponentDrag = (id: string, event: MouseEvent, offset: {x: number, y: number}) => {
   event.preventDefault()
 
   draggingComponentId.value = id
@@ -568,20 +491,15 @@ const handleComponentDrag = (id: string, event: DragEvent) => {
   // 实时更新组件位置
   const component = findComponentById(components.value, id)
   if (component) {
-    // 获取组件尺寸
-    const { width: componentWidth, height: componentHeight } = getComponentSize(component.type, component.props)
-
-    // 计算组件左上角位置
-    let x = mouseX - componentWidth / 2
-    let y = mouseY - componentHeight / 2
-
-    // 应用吸附对齐
-    const snappedPosition = applySnap(x, y, id, componentWidth, componentHeight)
+    // 使用拖拽偏移量计算组件左上角位置
+    // 这样组件会从鼠标按下的位置开始移动，而不是从组件中心
+    let x = mouseX - offset.x
+    let y = mouseY - offset.y
 
     // 确保位置不为负
     component.position = {
-      x: Math.max(0, snappedPosition.x),
-      y: Math.max(0, snappedPosition.y)
+      x: Math.max(0, x),
+      y: Math.max(0, y)
     }
   }
 }
@@ -589,7 +507,6 @@ const handleComponentDrag = (id: string, event: DragEvent) => {
 // 处理组件拖拽结束
 const handleComponentDragEnd = (id: string) => {
   draggingComponentId.value = ''
-  snapLines.value = [] // 清除吸附线
 
   const component = findComponentById(components.value, id)
   if (component) {
@@ -597,34 +514,7 @@ const handleComponentDragEnd = (id: string) => {
   }
 }
 
-// 处理组件拖拽放置
-const handleComponentDrop = (componentId: string, event: DragEvent) => {
-  // 获取画布容器位置
-  const canvasContent = event.currentTarget as HTMLElement
-  const rect = canvasContent.getBoundingClientRect()
-  console.log(rect, event.clientX, event.clientY, event, 'canvasContentjkq')
-
-  // 计算鼠标位置
-  const mouseX = event.clientX - 570
-  const mouseY = event.clientY - 280
-
-  // 更新组件位置
-  const component = findComponentById(components.value, componentId)
-  if (component) {
-    // 获取组件尺寸
-    const { width: componentWidth, height: componentHeight } = getComponentSize(component.type, component.props)
-    console.log(componentWidth, componentHeight, 'componentWidthcomponentHeight', component)
-
-    // 计算组件左上角位置（让组件中心对准鼠标位置）
-    const x = mouseX
-    const y = mouseY
-    console.log(x, y, 'x,y')
-
-
-    // // 添加到历史记录
-    // addToHistory('移动组件', `移动了 ${component.type} 组件`)
-  }
-}
+// 组件移动逻辑现在通过handleComponentDrag实时更新，不需要单独的drop处理
 
 // 监听组件变化，自动保存到本地存储
 watch(components, () => {
@@ -702,29 +592,7 @@ onMounted(() => {
   position: relative;
 }
 
-/* 吸附线样式 */
-.snap-line {
-  position: absolute;
-  pointer-events: none;
-  z-index: 10000;
-  opacity: 0.8;
-  transform: translateZ(0);
-  background: none;
-
-  &.horizontal {
-    left: 0;
-    right: 0;
-    height: 1px;
-    border-top: 1px dashed currentColor;
-  }
-
-  &.vertical {
-    top: 0;
-    bottom: 0;
-    width: 1px;
-    border-left: 1px dashed currentColor;
-  }
-}
+// 移除了吸附线样式
 
 .right-panel {
   width: 300px;

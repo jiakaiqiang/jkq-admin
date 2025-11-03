@@ -9,10 +9,7 @@
     :style="wrapperStyle"
     @click.stop="handleClick"
     @contextmenu="handleContextMenu"
-    draggable="true"
-    @dragstart="handleDragStart"
-    @drag="handleDrag"
-    @dragend="handleDragEnd"
+    @mousedown="handleMouseDown"
   >
     <!-- 组件渲染 -->
     <div class="component-content" :style="componentStyle">
@@ -99,7 +96,7 @@ const emit = defineEmits<{
   select: [id: string]
   delete: [id: string]
   update: [id: string, updates: Partial<Component>]
-  drag: [id: string, event: DragEvent]
+  drag: [id: string, event: MouseEvent, offset: {x: number, y: number}]
   dragEnd: [id: string]
 }>()
 
@@ -245,44 +242,46 @@ const handleDelete = () => {
   emit('delete', props.component.id)
 }
 
-// 处理拖拽开始
-const handleDragStart = (event: DragEvent) => {
-  if (props.previewMode) {
-    event.preventDefault()
-    return
-  }
+// 处理鼠标按下
+const handleMouseDown = (event: MouseEvent) => {
+  if (props.previewMode) return
+  
+  // 阻止默认行为，避免文本选择
+  event.preventDefault()
   
   isDragging.value = true
   
   // 计算拖拽偏移量
-  const rect = (event.target as HTMLElement).getBoundingClientRect()
+  const rect = (event.currentTarget as HTMLElement).getBoundingClientRect()
   
   dragOffset.value = {
     x: event.clientX - rect.left,
     y: event.clientY - rect.top
   }
   
-  // 设置拖拽效果
-  if (event.dataTransfer) {
-    event.dataTransfer.effectAllowed = 'move'
-    event.dataTransfer.setData('text/plain', props.component.id)
-    event.dataTransfer.setData('application/component-move', 'true') // 标识这是组件移动
-  }
+  // 添加全局鼠标移动和释放事件监听
+  document.addEventListener('mousemove', handleMouseMove)
+  document.addEventListener('mouseup', handleMouseUp)
 }
 
-// 处理拖拽中
-const handleDrag = (event: DragEvent) => {
-  if (props.previewMode) return
+// 处理鼠标移动
+const handleMouseMove = (event: MouseEvent) => {
+  if (!isDragging.value || props.previewMode) return
   
-  event.preventDefault()
-  emit('drag', props.component.id, event)
+  // 传递组件ID、鼠标事件和拖拽偏移量
+  emit('drag', props.component.id, event, dragOffset.value)
 }
 
-// 处理拖拽结束
-const handleDragEnd = () => {
-  if (props.previewMode) return
+// 处理鼠标释放
+const handleMouseUp = () => {
+  if (!isDragging.value || props.previewMode) return
   
   isDragging.value = false
+  
+  // 移除全局事件监听
+  document.removeEventListener('mousemove', handleMouseMove)
+  document.removeEventListener('mouseup', handleMouseUp)
+  
   emit('dragEnd', props.component.id)
 }
 </script>
