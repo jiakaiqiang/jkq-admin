@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#f8f9fa"/>
+  <circle cx="200" cy="120" r="80" fill="#e9ecef"/>
+  <text x="200" y="100" font-family="Arial" font-size="80" font-weight="bold" text-anchor="middle" fill="#dc3545">403</text>
+  <text x="200" y="170" font-family="Arial" font-size="20" text-anchor="middle" fill="#6c757d">禁止访问</text>
+  <text x="200" y="200" font-family="Arial" font-size="16" text-anchor="middle" fill="#6c757d">抱歉，您无权访问该页面</text>
+</svg>
