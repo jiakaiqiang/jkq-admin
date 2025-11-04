@@ -402,7 +402,8 @@ const removeComponent = (components: Component[], id: string): boolean => {
 const handlePropertyUpdate = (props: Record<string, any>) => {
   const component = selectedComponent.value
   if (component) {
-    Object.assign(component.props, props)
+    console.log('props', props,component,)
+    Object.assign(component.style, props)
     addToHistory('修改属性', `修改了 ${component.type} 组件的属性`)
   }
 }

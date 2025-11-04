@@ -315,11 +315,7 @@ const handleMouseUp = () => {
     cursor: default;
   }
 
-  &.dragging {
-    opacity: 0.5;
-    transform: rotate(2deg);
-    cursor: move;
-  }
+  
 }
 
 .component-content {
