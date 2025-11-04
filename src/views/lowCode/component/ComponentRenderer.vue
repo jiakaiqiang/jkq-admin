@@ -62,7 +62,7 @@
 import { computed, defineEmits, defineProps, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { CloseBold, DocumentCopy } from '@element-plus/icons-vue'
-
+import { dragline,clearDragLines } from '@/hooks/dragline'
 // 导入组件
 import TextComponent from './TextComponent.vue'
 import ButtonComponent from './ButtonComponent.vue'
@@ -90,6 +90,7 @@ const props = defineProps<{
   component: Component
   selected: boolean
   previewMode?: boolean
+  allComponents: Component[]
 }>()
 
 const emit = defineEmits<{
@@ -258,7 +259,7 @@ const handleMouseDown = (event: MouseEvent) => {
     x: event.clientX - rect.left,
     y: event.clientY - rect.top
   }
-  
+  dragline(event,props.allComponents)
   // 添加全局鼠标移动和释放事件监听
   document.addEventListener('mousemove', handleMouseMove)
   document.addEventListener('mouseup', handleMouseUp)

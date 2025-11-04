@@ -36,6 +36,7 @@
             v-for="component in components"
             :key="component.id"
             :component="component"
+            :all-components="components"
             :selected="component.id === selectedId"
             :preview-mode="previewMode"
             @select="handleSelect"
