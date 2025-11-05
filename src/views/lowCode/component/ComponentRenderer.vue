@@ -10,12 +10,14 @@
     @click.stop="handleClick"
     @contextmenu="handleContextMenu"
     @mousedown="handleMouseDown"
+    :id="component.id"
   >
     <!-- 组件渲染 -->
     <div class="component-content" :style="componentStyle">
       <component 
         :is="componentType" 
         v-bind="componentProps"
+       
         @click="handleComponentClick"
       />
     </div>
@@ -259,7 +261,7 @@ const handleMouseDown = (event: MouseEvent) => {
     x: event.clientX - rect.left,
     y: event.clientY - rect.top
   }
-  dragline(event,props.allComponents)
+  dragline(event,props.allComponents,rect)
   // 添加全局鼠标移动和释放事件监听
   document.addEventListener('mousemove', handleMouseMove)
   document.addEventListener('mouseup', handleMouseUp)
