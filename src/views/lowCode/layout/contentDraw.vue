@@ -46,12 +46,12 @@
             @drag-end="handleDragEnd"
           />
           <!-- 添加拖拽线 -->
-           <div v-for="item in dargLines" :key="item.x+item.y+item.type" class="canvas-grid-line" :style="{
-            left:`${item.x}px`,
-            top: `${item.y}px`,
-            width: item.type === 'vertical' ? '1px' : '100px',
-            height: item.type === 'horizontal' ? '1px' : '100px'
-          }"></div>
+           <template v-for="item in dargLines" :key="item.x+item.y+item.type" >
+         <div v-show="item.type === 'vertical'" class="es-markline-left" :style="{ left: item.x + 'px' }"></div>
+       <div v-show="item.type === 'horizontal'" class="es-markline-top" :style="{ top: item.y + 'px' }"></div>
+
+
+        </template>
         </div>
       </div>
     </div>
@@ -168,6 +168,23 @@ const handleDragEnd = (id: string) => {
 </script>
 
 <style scoped lang="scss">
+  [class^=es-markline] {
+    position: absolute;
+    z-index: 9999;
+    background-color: #3a7afe;
+  }
+.es-markline-left {
+    height: 100%;
+    width: 1px;
+    top: 0;
+  }
+  .es-markline-top {
+    width: 100%;
+    height: 1px;
+    left: 0;
+  }
+
+
 .content-draw {
   height: 100%;
   background: #f5f7fa;

@@ -270,24 +270,28 @@ const handleMouseDown = (event: MouseEvent) => {
 // 处理鼠标移动
 const handleMouseMove = (event: MouseEvent) => {
   if (!isDragging.value || props.previewMode) return
+   // 清除吸附线
+    clearDragLines()
     dragline(event,props.allComponents,props.component)
   // 传递组件ID、鼠标事件和拖拽偏移量
   emit('drag', props.component.id, event, dragOffset.value)
 }
 
 // 处理鼠标释放
-const handleMouseUp = () => {
-  clearDragLines()
-  if (!isDragging.value || props.previewMode) return
-  
-  isDragging.value = false
-  
-  // 移除全局事件监听
-  document.removeEventListener('mousemove', handleMouseMove)
-  document.removeEventListener('mouseup', handleMouseUp)
-  
-  emit('dragEnd', props.component.id)
-}
+  const handleMouseUp = () => {
+    if (!isDragging.value || props.previewMode) return
+    
+    isDragging.value = false
+    
+    // 移除全局事件监听
+    document.removeEventListener('mousemove', handleMouseMove)
+    document.removeEventListener('mouseup', handleMouseUp)
+    
+    // 清除吸附线
+    clearDragLines()
+    
+    emit('dragEnd', props.component.id)
+  }
 </script>
 
 <style scoped lang="scss">
