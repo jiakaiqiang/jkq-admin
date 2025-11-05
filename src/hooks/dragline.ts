@@ -47,11 +47,12 @@ export const getCurrentComponent =(id:string)=>{
 }
 
 const hanldeDragLine = (item:Component,component:Component) => {
+ 
   // 如果已经找到吸附线，则不再检查其他元素
   if (foundLine) return
   
   // 排除自身
-  if (item.id === component.id) return
+  if (item?.id === component?.id) return
   
   const {width, height} = getCurrentComponent(component.id)
   const {width: originWidth, height: originHeight} = getCurrentComponent(item.id)

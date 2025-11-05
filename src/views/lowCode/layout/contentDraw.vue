@@ -65,9 +65,7 @@
 import { ref, computed, defineEmits, defineProps } from 'vue'
 import ComponentRenderer from '../component/ComponentRenderer.vue'
 import { dargLines } from '@/hooks/dragline'
-watch(dargLines, (newVal, oldVal) => {
-  console.log(newVal, oldVal,'jkq')
-})
+
 
 interface Component {
   id: string

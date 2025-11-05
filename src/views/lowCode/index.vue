@@ -42,7 +42,7 @@
       <!-- 左侧物料区 -->
       <div class="left-panel">
         <leftTool @change-active="changeActive"></leftTool>
-        <LeftSchema v-if="activeChange === 'component'" :schema="schema" @add-component="handleAddComponent" />
+        <LeftSchema v-if="activeChange === 'component'" :schema="schema" @add-component="handleAddComponent"  />
       </div>
 
       <!-- 中间渲染区 -->
@@ -350,6 +350,7 @@ const handleAddComponent = (component: any, position: { x: number; y: number }) 
   
   components.value.push(newComponent)
   selectedId.value = newComponent.id
+
   
   addToHistory('添加组件', `添加了 ${component.name} 组件`)
 }
