@@ -1,3 +1,4 @@
+import {ref} from 'vue'
 interface Component {
   id: string
   type: string
@@ -11,69 +12,99 @@ interface Component {
   }
 }
 
-//吸附对其的指示线垂直水平
-let dargLines = []
+
 //目标元素距离拖动元素的距离
-let CANVAS_GRID_SIZE= 5
+let CANVAS_GRID_SIZE=2
 
 interface lineType{
     x: number,
     y: number
     type:'vertical'|'horizontal'
 }
+//吸附对其的指示线垂直水平
+export let dargLines = ref<lineType[]>([])
 export const addDragLine = (x: number, y: number,type:'vertical'|'horizontal') => {
-  dargLines.push({ x, y,type })
+  dargLines.value.push({ x, y,type })
 }   
-//计算鼠标点和拖动元素上下左右的位置
-export const computedComponentPosition =(rect:DOMRect,mouse:{x:number,y:number})=>{
-    console.log(rect,mouse)
-
+export const getCurrentComponent =(id:string)=>{
+ let documentRect =  document.getElementById(id).getBoundingClientRect()
+ return {
+    x:documentRect.left,
+    y:documentRect.top,
+    width:documentRect.width,
+    height:documentRect.height
+ }
 }
-const hanldeDragLine = (item:Component,x:number,y:number,canvasContentLeft:number,canvasContentTop:number,rect:DOMRect) => {
-    let position = computedComponentPosition(rect,{x,y})
-    //获取当前参考元素的数据
-   let  documentDom =  document.getElementById(item.id) as HTMLElement
-   const { width, height } = documentDom.getBoundingClientRect()
+const hanldeDragLine = (item:Component,component:Component) => {
+  const  {width,height} = getCurrentComponent(component.id)
+  const {width:originWidth,height:originHeight} = getCurrentComponent(item.id)
+     
+
   
-    //相对于画布的距离
-    let offsetX = x-canvasContentLeft
-    let offsetY = y-canvasContentTop
+   
   //新top 旧top
-    if(Math.abs(offsetY-item.position.y)<CANVAS_GRID_SIZE&&Math.abs(offsetY-item.position.y)>(height/2)){
-        addDragLine(offsetX -item.position.x,offsetY-item.position.y,'vertical')
+    if(Math.abs(component.position.y-item.position.y)< CANVAS_GRID_SIZE){
+      //添加吸附线
+        addDragLine(item.position.x,item.position.y,'vertical')
     }
   
-  //新top 旧bottom
-    if(Math.abs(offsetY-item.position.y-height)<CANVAS_GRID_SIZE&&Math.abs(offsetY-item.position.y-height)>(height/2)){
-        addDragLine(offsetX -item.position.x,offsetY-item.position.y-height,'vertical')
+  //新top 旧bottom    主要对于拖动元素的x,y偏移
+    if(Math.abs(component.position.y-item.position.y-originHeight)< CANVAS_GRID_SIZE){
+      //添加吸附线
+        addDragLine(item.position.x,item.position.y+originHeight,'vertical')
     }
+    
   //新bottom 旧bottom  
+    if(Math.abs((item.position.y + originHeight)-(item.position.y + height) )< CANVAS_GRID_SIZE){ 
+       addDragLine(item.position.x,item.position.y+originHeight,'vertical')
+    }
+
   
   //新bottom  旧 top
+    if(Math.abs(component.position.y-item.position.y-height) < CANVAS_GRID_SIZE){ 
+       addDragLine(item.position.x,item.position.y,'vertical')
+    }
+
   //新left 旧left
+  if(Math.abs(component.position.x-item.position.y) < CANVAS_GRID_SIZE){
+    addDragLine(item.position.x,item.position.y,'horizontal')
+  }
   //新left 旧right
+  if(Math.abs(component.position.x-item.position.x-originWidth) < CANVAS_GRID_SIZE){
+    addDragLine(item.position.x+originWidth,item.position.y,'horizontal')
+  }
+  
   //新right 旧right
+  if(Math.abs(component.position.x+width-item.position.x-originWidth) < CANVAS_GRID_SIZE){
+    addDragLine(item.position.x+originWidth,item.position.y,'horizontal')
+  }
   //新right 旧left
+  if(Math.abs((component.position.x+width)-(item.position.x+originWidth)) < CANVAS_GRID_SIZE){
+    addDragLine(item.position.x+originWidth,item.position.y,'horizontal')
+  }
 }  
-export const dragline = (event: MouseEvent,AllComponent:Component[],rect:DOMRect) => {
+/**
+ * 拖动元素时 计算元素的位置 并添加吸附线
+ * @param event 鼠标事件
+ * @param AllComponent 所有组件
+ * @param componets 当前拖动的组件
+ */
+export const dragline = (event: MouseEvent,AllComponent:Component[],componets:Component) => {
+    clearDragLines()
      // 获取画布容器位置
   const canvasContent = document.querySelector('.canvas-content') as HTMLElement
   if (!canvasContent) return
 
   const canvasRect = canvasContent.getBoundingClientRect()
-  const canvasContentLeft = canvasRect.left
-  const canvasContentTop = canvasRect.top
-    //拖动之前删除之前的吸附线
-    if(dargLines.length>0){
-        clearDragLines()
-    }
-    console.log(event,'eventjkq')
-  const { clientX, clientY } = event
+
+    
+  
+  
  //遍历所有的元素并 查找最近的吸附元素
 
  for(let i=0;i<AllComponent.length;i++){
     let item =  AllComponent[i]
-    hanldeDragLine(item,clientX,clientY,canvasContentLeft,canvasContentTop,rect)
+    hanldeDragLine(item,componets)
 
 
  }
@@ -87,5 +118,5 @@ export const dragline = (event: MouseEvent,AllComponent:Component[],rect:DOMRect
 //清楚所有指示线
 export const clearDragLines = () => {
   
-  dargLines = []
+  dargLines.value = []
 }

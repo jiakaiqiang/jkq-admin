@@ -261,7 +261,7 @@ const handleMouseDown = (event: MouseEvent) => {
     x: event.clientX - rect.left,
     y: event.clientY - rect.top
   }
-  dragline(event,props.allComponents,rect)
+
   // 添加全局鼠标移动和释放事件监听
   document.addEventListener('mousemove', handleMouseMove)
   document.addEventListener('mouseup', handleMouseUp)
@@ -270,13 +270,14 @@ const handleMouseDown = (event: MouseEvent) => {
 // 处理鼠标移动
 const handleMouseMove = (event: MouseEvent) => {
   if (!isDragging.value || props.previewMode) return
-  
+    dragline(event,props.allComponents,props.component)
   // 传递组件ID、鼠标事件和拖拽偏移量
   emit('drag', props.component.id, event, dragOffset.value)
 }
 
 // 处理鼠标释放
 const handleMouseUp = () => {
+  clearDragLines()
   if (!isDragging.value || props.previewMode) return
   
   isDragging.value = false

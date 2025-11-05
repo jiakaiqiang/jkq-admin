@@ -45,6 +45,13 @@
             @drag="handleDrag"
             @drag-end="handleDragEnd"
           />
+          <!-- 添加拖拽线 -->
+           <div v-for="item in dargLines" :key="item.x+item.y+item.type" class="canvas-grid-line" :style="{
+            left:`${item.x}px`,
+            top: `${item.y}px`,
+            width: item.type === 'vertical' ? '1px' : '100px',
+            height: item.type === 'horizontal' ? '1px' : '100px'
+          }"></div>
         </div>
       </div>
     </div>
@@ -57,6 +64,10 @@
 <script setup lang="ts">
 import { ref, computed, defineEmits, defineProps } from 'vue'
 import ComponentRenderer from '../component/ComponentRenderer.vue'
+import { dargLines } from '@/hooks/dragline'
+watch(dargLines, (newVal, oldVal) => {
+  console.log(newVal, oldVal,'jkq')
+})
 
 interface Component {
   id: string
@@ -177,6 +188,12 @@ const handleDragEnd = (id: string) => {
       border: none;
     }
   }
+}
+// 拖拽线样式
+.canvas-grid-line {
+  position: absolute;
+  background-color: #ff0000;
+  z-index: 1000;
 }
 
 .canvas-header {
