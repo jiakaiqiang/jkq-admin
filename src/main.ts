@@ -8,6 +8,9 @@ import "element-plus/dist/index.css";
 import * as Sentry from "@sentry/vue";
 import '@/common/style/elementReset.scss';
 import zhCn from 'element-plus/es/locale/lang/zh-cn';
+import enUs from 'element-plus/es/locale/lang/en';
+import i18n from './lang';
+import { useI18n } from 'vue-i18n';
 
 //引入字体图标库
 import '@/styles/iconfont.css';
@@ -32,10 +35,17 @@ Sentry.init({
   tracesSampleRate: 1.0
 });
 
+// 根据i18n设置Element Plus的语言
+const getElementLocale = () => {
+  const locale = i18n.global.locale.value;
+  return locale === 'en-US' ? enUs : zhCn;
+};
+
 app.use(install)
 app.use(ElementPlus, {  
-    locale: zhCn,  
+    locale: getElementLocale(),  
   }); 
+app.use(i18n)
 
 app.mount('#app')
 

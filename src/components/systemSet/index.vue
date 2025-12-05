@@ -24,6 +24,12 @@
     <el-divider content-position="center">布局设置</el-divider>
     <el-divider content-position="center">全局主题</el-divider>
     <el-divider content-position="center">界面设置</el-divider>
+    <el-form-item label="语言设置">
+        <el-select v-model="language" size="small" @change="languageChange">
+          <el-option label="简体中文" value="zh-CN"></el-option>
+          <el-option label="English" value="en-US"></el-option>
+        </el-select>
+    </el-form-item>
     <el-form-item label="备案信息">
         <el-switch
     v-model="icp"
@@ -41,15 +47,22 @@
 </template>
 
 <script lang='ts' setup >
-import {ref,defineModel} from 'vue';
+import {ref,defineModel,watch} from 'vue';
 import {useSystemStore} from '@/store/modules/system'
+import {useI18n} from 'vue-i18n'
+import ElementPlus from 'element-plus'
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
+import enUs from 'element-plus/es/locale/lang/en'
+
 const systemStore = useSystemStore()
+const {locale} = useI18n()
 let  drawerValue  =  defineModel<boolean>({
   default:false});
 
   let color = ref('#409eff');
   let theme = ref(false);
   let  icp =  ref(true)
+  let language = ref(locale.value)
   const  colorChange =(e:string)=>{
  const el = document.documentElement
 // const el = document.getElementById('xxx')
@@ -73,6 +86,18 @@ el.style.setProperty('--el-color-primary', e)
       document.documentElement.classList.add('light')
     }
   }
+
+  const languageChange =(value:string)=>{
+    locale.value = value
+    localStorage.setItem('language', value)
+    // 重新加载页面以确保Element Plus语言完全更新
+    location.reload()
+  }
+
+  // 监听语言变化
+  watch(() => locale.value, (newValue) => {
+    language.value = newValue
+  })
 </script>
 
 <style scoped lang='scss' >

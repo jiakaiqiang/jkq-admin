@@ -7,28 +7,28 @@ export const schemaTree = {
     id: 'group1',
     type: 'container',
     "name": "基础组件",
-    
+
     children: [{
-        "name": "文本",
-          "type": "Text",
-          "icon": "el-icon-document",
-         "id": 'jkq-text'
-    },{
+      "name": "文本",
+      "type": "Text",
+      "icon": "el-icon-document",
+      "id": 'jkq-text'
+    }, {
       "name": "输入框",
       "type": "Input",
       "icon": "el-icon-edit",
       "id": 'jkq-input'
     },
     {
-        "id": "jkq-image",
-          "name": "图片",
-          "type": "Image",
-          "icon": "el-icon-picture",
-    },{
-        "id": "jkq-select",
-          "name": "选择框",
-          "type": "Select",
-          "icon": "el-icon-arrow-down",
+      "id": "jkq-image",
+      "name": "图片",
+      "type": "Image",
+      "icon": "el-icon-picture",
+    }, {
+      "id": "jkq-select",
+      "name": "选择框",
+      "type": "Select",
+      "icon": "el-icon-arrow-down",
     }
 
     ]
@@ -42,6 +42,50 @@ export const schemaTree = {
       id: 'jkq-button',
       type: "button"
     }]
+  }, {
+    id: "group3",
+    type: "container",
+    name: "布局",
+    children: [{
+      "id": "jkq-row",
+      "name": "行",
+      "type": "Row",
+      "icon": "el-icon-menu",
+    }, {
+      "id": "jkq-col",
+      "name": "列",
+      "type": "Col",
+      "icon": "el-icon-menu",
+    }, {
+      id: "jkq-container",
+      name: "容器",
+      type: "flex",
+      icon: "el-icon-menu",
+
+
+    }, {
+      id: "jkq-line",
+      name: "分割线",
+      type: "line",
+      icon: "el-icon-menu",
+
+
+    }, {
+      id: "jkq-card",
+      name: "卡片",
+      type: "card",
+      icon: "el-icon-menu",
+
+
+    }, {
+      id: "jkq-tabs",
+      name: "标签页",
+      type: "tabs",
+      icon: "el-icon-menu",
+    }
+
+    ]
+
   }]
 }
 
@@ -57,12 +101,11 @@ export const componentTypeMap = {
     },
     "category": "basic",
     "defaultProps": {
-          
-            "width": 200,
-            "height": 40,
-            "borderColor": "#DCDFE6",
-            "borderRadius": 4
-          },
+      "width": 200,
+      "height": 40,
+      "borderColor": "#DCDFE6",
+      "borderRadius": 4
+    },
     "schema": {
       "style": {
         "fontSize": { "type": "number", "label": "字体大小", "min": 12, "max": 72 },
@@ -75,7 +118,7 @@ export const componentTypeMap = {
         "content": { "type": "textarea", "label": "文本内容" }
       }
     },
-   
+
   },
   'jkq-button': {
 
@@ -83,18 +126,18 @@ export const componentTypeMap = {
     "icon": "el-icon-mouse",
     "category": "basic",
     "defaultProps": {
-     
-     
+
+
       "width": "auto",
       "padding": 20,
       "backgroundColor": "#409EFF",
       "borderColor": "#409EFF",
       "borderRadius": 4
     },
-    "props":{
-       "text": "点击按钮",
-        "type": "primary",
-       "size": "medium",
+    "props": {
+      "text": "点击按钮",
+      "type": "primary",
+      "size": "medium",
     },
     "schema": {
       "style": {
@@ -120,7 +163,7 @@ export const componentTypeMap = {
     "type": "Image",
     "icon": "el-icon-picture",
     "category": "basic",
-    "props":{
+    "props": {
       "src": "https://via.placeholder.com/200x150",
       "objectFit": "cover",
     },
@@ -128,7 +171,7 @@ export const componentTypeMap = {
       "src": "https://via.placeholder.com/200x150",
       "width": 200,
       "height": 150,
-      
+
       "borderRadius": 4
     },
     "schema": {
@@ -149,20 +192,20 @@ export const componentTypeMap = {
     "type": "Select",
     "icon": "el-icon-arrow-down",
     "category": "form",
-     "props":{
-       "placeholder": "请选择",
-       "options": [
+    "props": {
+      "placeholder": "请选择",
+      "options": [
         { "label": "选项1", "value": "option1" },
         { "label": "选项2", "value": "option2" }
       ]
     },
     "defaultProps": {
-     
+
       "width": 200,
       "height": 40,
       "borderColor": "#DCDFE6",
       "borderRadius": 4,
-      
+
     },
     "schema": {
       "style": {
@@ -209,30 +252,37 @@ export const componentTypeMap = {
       }
     }
   },
-  'jkq-text':{
+  'jkq-text': {
     "defaultProps": {
-           
-            "fontSize": 14,
-            "color": "#333333",
-            "fontWeight": "normal",
-            "textAlign": "left",
-            "lineHeight": 1.5
-          },
-          "props":{
-            "content": "这是一段文本",
-          },
-          "schema": {
-            "style": {
-              "fontSize": { "type": "number", "label": "字体大小", "min": 12, "max": 72 },
-              "color": { "type": "color", "label": "文字颜色" },
-              "fontWeight": { "type": "select", "label": "字体粗细", "options": ["normal", "bold"] },
-              "textAlign": { "type": "select", "label": "对齐方式", "options": ["left", "center", "right"] },
-              "lineHeight": { "type": "number", "label": "行高", "min": 1, "max": 3, "step": 0.1 }
-            },
-            "data": {
-              "content": { "type": "textarea", "label": "文本内容" }
-            }
-          }
+
+      "fontSize": 14,
+      "color": "#333333",
+      "fontWeight": "normal",
+      "textAlign": "left",
+      "lineHeight": 1.5
+    },
+    "props": {
+      "content": "这是一段文本",
+    },
+    "schema": {
+      "style": {
+        "fontSize": { "type": "number", "label": "字体大小", "min": 12, "max": 72 },
+        "color": { "type": "color", "label": "文字颜色" },
+        "fontWeight": { "type": "select", "label": "字体粗细", "options": ["normal", "bold"] },
+        "textAlign": { "type": "select", "label": "对齐方式", "options": ["left", "center", "right"] },
+        "lineHeight": { "type": "number", "label": "行高", "min": 1, "max": 3, "step": 0.1 }
+      },
+      "data": {
+        "content": { "type": "textarea", "label": "文本内容" }
+      }
+    }
+  },
+  'jkq-row':{
+    "id": "jkq-row",
+    "name": "行",
+    "type": "Row",
+    "icon": "el-icon-menu",
+    
   }
 
 

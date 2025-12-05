@@ -43,6 +43,7 @@
       <div class="left-panel">
         <leftTool @change-active="changeActive"></leftTool>
         <LeftSchema v-if="activeChange === 'component'" :schema="schema" @add-component="handleAddComponent"  />
+        <component-tree v-if="activeChange === 'list'" :components="components"></component-tree>
       </div>
 
       <!-- 中间渲染区 -->
@@ -91,6 +92,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 
 import LeftSchema from './layout/leftSchmea.vue'
 import ContentDraw from './layout/contentDraw.vue'
+import componentTree from './layout/componentTree.vue'
 import RightAttribute from './layout/rightAttribute.vue'
 import schema from './core/schma.json'
 import leftTool from './layout/leftTool.vue'
