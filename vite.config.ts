@@ -13,6 +13,7 @@ import { createHtmlPlugin } from "vite-plugin-html";
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 import vueSetupExtend from "unplugin-vue-setup-extend-plus/vite";
 import {viteMockServe} from 'vite-plugin-mock'
+import transformLanage from './plugins/transformLanage.ts'
 
 import vueJsx from '@vitejs/plugin-vue-jsx'
 // https://vitejs.dev/config/
@@ -43,7 +44,8 @@ export default defineConfig({
     sentryVitePlugin({
       org: "bf24f2a860d4",
       project: "jiakaiqiang-sentry"
-    })
+    }),
+    transformLanage()
   ],
 
   //配置别名
