@@ -1,6 +1,6 @@
 // vite-plugin-full-demo.ts
 import { Plugin } from 'vite'
-
+import fs from 'fs'
 export default function transformLanagePlugin(): Plugin {
   return {
     name: 'transform-lanage-plugin',   // 插件名称，必须
@@ -83,6 +83,12 @@ export default function transformLanagePlugin(): Plugin {
           if (chineseMatches.length > 0) {
             // 去重并排序中文字符串
             const uniqueChinese = [...new Set(chineseMatches)].sort();
+             // 将生成的中文字符 写入本地文件中 采用合并方式  合并已存在的中文字符
+             const existingChinese = JSON.parse(fs.readFileSync('./src/assets/lang/zh-CN.json', 'utf-8')) || [];
+             const mergedChinese = [...new Set([...existingChinese, ...uniqueChinese])].sort();
+             fs.writeFileSync('./src/assets/lang/zh-CN.json', JSON.stringify(mergedChinese, null, 2), 'utf-8');
+
+
             console.log(`📄 文件 ${id} 中除去注释外包含 ${uniqueChinese.length} 个中文词组`);
             console.log(`中文词组：${uniqueChinese}`);
           } else {
