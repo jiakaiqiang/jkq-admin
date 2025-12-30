@@ -13,7 +13,7 @@ import { createHtmlPlugin } from "vite-plugin-html";
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 import vueSetupExtend from "unplugin-vue-setup-extend-plus/vite";
 import {viteMockServe} from 'vite-plugin-mock'
-import transformLanage from './plugins/transformLanage.ts'
+import transformLanage from './plugins/transformLanage'
 
 import vueJsx from '@vitejs/plugin-vue-jsx'
 // https://vitejs.dev/config/
@@ -56,7 +56,6 @@ export default defineConfig({
   },
 
   server:{
-    open:true,
    
     proxy:{
       '/api':{

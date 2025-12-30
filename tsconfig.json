@@ -18,7 +18,7 @@
 
     /* Bundler mode */
    
-    "allowImportingTsExtensions": true,
+    "allowImportingTsExtensions": false,
     "resolveJsonModule": true,
     "noEmit": true,
     "jsx": "preserve",

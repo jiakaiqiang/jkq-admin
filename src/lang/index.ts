@@ -1,10 +1,9 @@
 import { createI18n } from 'vue-i18n';
-import zhCN from './zh-CN';
-import enUS from './en-US';
+import indexJson from './index.json';
 
 const messages = {
-  'zh-CN': zhCN,
-  'en-US': enUS
+  'zh-CN': indexJson['zh-CN'],
+  'en-US': indexJson['en-US']
 };
 
 // 从本地存储获取语言设置，如果没有则使用浏览器语言

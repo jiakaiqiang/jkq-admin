@@ -1,6 +1,8 @@
 // vite-plugin-full-demo.ts
 import { Plugin } from 'vite'
 import fs from 'fs'
+import { handleVueCode ,extractChineseFromVue, handleChinese} from './pluginsUtils'
+import { aiTransolteForm } from './postAiTransolteForm'
 export default function transformLanagePlugin(): Plugin {
   return {
     name: 'transform-lanage-plugin',   // 插件名称，必须
@@ -48,45 +50,22 @@ export default function transformLanagePlugin(): Plugin {
       // 匹配id中包含.vue的文件，并且排除虚拟文件
       if (id.includes('.vue') && !id.startsWith('\0')) {
         try {
-          // 处理Vue文件内容，提取非注释部分的中文
-          function extractChineseFromVue(content: string): string[] {
-            // 1. 移除HTML注释 <!-- ... -->
-            let processedContent = content.replace(/<!--[\s\S]*?-->/g, '');
-            
-            // 2. 处理script标签内容
-            processedContent = processedContent.replace(/(<script[\s\S]*?>)([\s\S]*?)(<\/script>)/g, (match, openTag, scriptContent, closeTag) => {
-              // 移除script中的单行注释
-              scriptContent = scriptContent.replace(/\/\/.*$/gm, '');
-              // 移除script中的多行注释
-              scriptContent = scriptContent.replace(/\/\*[\s\S]*?\*\//g, '');
-              return openTag + scriptContent + closeTag;
-            });
-            
-            // 3. 处理style标签内容
-            processedContent = processedContent.replace(/(<style[\s\S]*?>)([\s\S]*?)(<\/style>)/g, (match, openTag, styleContent, closeTag) => {
-              // 移除style中的单行注释
-              styleContent = styleContent.replace(/\/\/.*$/gm, '');
-              // 移除style中的多行注释
-              styleContent = styleContent.replace(/\/\*[\s\S]*?\*\//g, '');
-              // 移除CSS特殊注释 /*! ... */
-              styleContent = styleContent.replace(/\/\*![\s\S]*?\*\//g, '');
-              return openTag + styleContent + closeTag;
-            });
-            
-            // 4. 提取所有连续的中文字符串
-            const chineseRegex = /[\u4e00-\u9fa5]+/g;
-            return processedContent.match(chineseRegex) || [];
-          }
-          
           const chineseMatches = extractChineseFromVue(code);
-          
+    
+         console.log(chineseMatches ,'chineseMatches')
+
+
           if (chineseMatches.length > 0) {
+            let fileContent =  fs.readFileSync('./src/assets/lang/zh-CN.json', 'utf-8')
+            //  
             // 去重并排序中文字符串
-            const uniqueChinese = [...new Set(chineseMatches)].sort();
+            const uniqueChinese = Array.from(new Set(chineseMatches)).sort();
+             console.log(uniqueChinese,'uniqueChinese')
              // 将生成的中文字符 写入本地文件中 采用合并方式  合并已存在的中文字符
-             const existingChinese = JSON.parse(fs.readFileSync('./src/assets/lang/zh-CN.json', 'utf-8')) || [];
-             const mergedChinese = [...new Set([...existingChinese, ...uniqueChinese])].sort();
-             fs.writeFileSync('./src/assets/lang/zh-CN.json', JSON.stringify(mergedChinese, null, 2), 'utf-8');
+             const existingChinese = fileContent? JSON.parse(fileContent) : [];
+             console.log(existingChinese,'existingChinese')
+             const mergedChinese = Array.from(new Set([...existingChinese, ...uniqueChinese])).sort();
+            fs.writeFileSync('./src/assets/lang/zh-CN.json', JSON.stringify(mergedChinese, null, 2), 'utf-8');
 
 
             console.log(`📄 文件 ${id} 中除去注释外包含 ${uniqueChinese.length} 个中文词组`);
@@ -95,16 +74,16 @@ export default function transformLanagePlugin(): Plugin {
             console.log(`📄 文件 ${id} 中除去注释外不包含中文字符`);
           }
           
-          return code;
+          return handleVueCode(code);
         } catch (error) {
           console.error(`❌ 处理文件 ${id} 时出错:`, error);
-          return code;
+          return handleVueCode(code);
         }
       }
-      
-      return code;
-    },
+      //处理js里面的中文
 
+      return handleVueCode(code);
+    },
     /**
      * buildStart：构建开始（build）
      */
@@ -116,6 +95,10 @@ export default function transformLanagePlugin(): Plugin {
      * closeBundle：构建结束（build）
      */
     closeBundle() {
+      // //读取src/assets/lang/zh-CN.json文件
+      const existingChinese = JSON.parse(fs.readFileSync('./src/assets/lang/zh-CN.json', 'utf-8')) || [];
+     console.log(existingChinese,'existingChinese')
+     handleChinese(existingChinese)
       console.log('🔚 构建完成 closeBundle')
     }
   }

@@ -56,7 +56,7 @@ import enUs from 'element-plus/es/locale/lang/en'
 
 const systemStore = useSystemStore()
 const {locale} = useI18n()
-let  drawerValue  =  defineModel<boolean>({
+const  drawerValue  =  defineModel<boolean>({
   default:false});
 
   let color = ref('#409eff');
