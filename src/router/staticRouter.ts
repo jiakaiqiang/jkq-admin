@@ -78,7 +78,7 @@ export const staticRouter: Array<customRouteRecordRaw> = [
     component: Layout,
     meta: {
       name: 'components',
-      title:$t('常用组件'),
+      title: "常用组件",
     },
     icon:"icon-zujian",
     redirect: '/components/Form',

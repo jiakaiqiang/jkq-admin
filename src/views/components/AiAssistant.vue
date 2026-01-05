@@ -9,7 +9,7 @@
 
     <div class="chat-window" ref="chatWindowRef">
       <div v-for="(message, index) in messages" :key="index" class="message-item" :class="message.role">
-        <div class="avatar">{{ message.role === 'user' ? '我' : 'AI' }}</div>
+        <!-- <div class="avatar">{{ message.role === 'user' ? '我' : 'AI' }}</div> -->
         <div class="message-body">
           <div class="message-content" v-html="renderMessage(message.content)"></div>
           <div class="message-tools" v-if="message.role === 'assistant'">
