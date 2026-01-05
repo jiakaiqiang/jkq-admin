@@ -4,35 +4,23 @@
   </div>
 </template>
 
-<script>
-export default {
-name:'itemtextarea',
-data(){
-return {
-  textValue:''
-}
-},
-props:{
-  value:{
-    type:String,
-    default:""
+<script lang='ts' setup >
+import { ref, watch } from 'vue'
+
+const props = defineProps({
+  value: {
+    type: String,
+    default: ''
   }
-},
-watch:{
-//监听数据双项修改
-inputValue(value){
-  this.$emit('update:value',value)
-}
-},
-created(){
- this.textValue=this.value
-},
-methods:{
-  none(){
-    return false
-  }
-}
-}
+})
+
+const emit = defineEmits(['update:value'])
+
+const textValue = ref(props.value)
+
+watch(textValue, (newVal) => {
+  emit('update:value', newVal)
+})
 </script>
 <style>
 .form-textarea{

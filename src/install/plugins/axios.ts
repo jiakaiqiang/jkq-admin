@@ -64,7 +64,7 @@ export class Axios {
          console.log(status,'-wefwfe000')
          ElMessage({
             type:'error',
-            message:status==401?'登录已过期':status==500 ? '服务器内部错误': response.data.message
+            message:status==401?"登录已过期":status==500 ? "服务器内部错误": response.data.message
          })
 
 

@@ -30,9 +30,9 @@
     </div>
 </template>
 
-<script lang='ts' setup name='Dialog'>
+<script lang='ts' setup >
 import {CloseBold} from '@element-plus/icons-vue'
-import {defineProps, defineEmits,defineModel, ref} from "vue";
+
 let visible =  defineModel<boolean>({
     default:false
 })

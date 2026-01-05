@@ -67,7 +67,7 @@ export async function aiTransolteForm(content: any) {
     
     console.log('API 响应成功:', responseData);
     return responseData;
-  } catch (error) {
+  } catch (error:any) {
     console.error('AI 翻译请求失败:', error);
     
     // 根据错误类型提供不同的处理建议

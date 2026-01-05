@@ -47,15 +47,13 @@
 </template>
 
 <script lang='ts' setup >
-import {ref,defineModel,watch} from 'vue';
+import {ref,watch} from 'vue';
 import {useSystemStore} from '@/store/modules/system'
-import {useI18n} from 'vue-i18n'
-import ElementPlus from 'element-plus'
-import zhCn from 'element-plus/es/locale/lang/zh-cn'
-import enUs from 'element-plus/es/locale/lang/en'
+
+
 
 const systemStore = useSystemStore()
-const {locale} = useI18n()
+
 const  drawerValue  =  defineModel<boolean>({
   default:false});
 

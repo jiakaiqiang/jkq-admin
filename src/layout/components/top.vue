@@ -26,7 +26,7 @@
   </div>
 </template>
 
-<script lang='ts' setup name="Top">
+<script lang='ts' setup >
 import Settng from '@/layout/components/Settng.vue';
 import Avatar from '@/layout/components/Avatar.vue';
 import Refresh from '@/layout/components/Refresh.vue';
@@ -44,7 +44,7 @@ function handleCollapse(){
 
 let routerList =computed(()=>{
   
-  return route.meta.title=='工作台' ? [{path:'/',meta:{title:'工作台'}}] : route.matched
+  return route.meta.title=="工作台" ? [{path:'/',meta:{title:"工作台"}}] : route.matched
 })  
 
   

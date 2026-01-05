@@ -10,7 +10,7 @@ import '@/common/style/elementReset.scss';
 import zhCn from 'element-plus/es/locale/lang/zh-cn';
 import enUs from 'element-plus/es/locale/lang/en';
 import i18n from './lang';
-import { useI18n } from 'vue-i18n';
+
 
 //引入字体图标库
 import '@/styles/iconfont.css';

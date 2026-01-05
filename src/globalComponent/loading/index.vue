@@ -17,11 +17,7 @@
 
 </template>
 
-<script>
-export default {
-  name: "Load",
-};
-</script>
+
 
 <style lang="scss">
 .loading-box{

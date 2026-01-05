@@ -6,46 +6,36 @@
     </div>
 </template>
 
-<script>
-    export default {
-        name: "raido",
-        props: {
-            value: {
-                type: [String,Number],
-                default: () => {
-                    return []
-                }
-            },
-            selectList: {
-                type: Array,
-                default: () => {
-                    return []
-                }
-            }
-        },
-        data() {
-            return {
-                checkList: []
-            }
-        },
-        watch: {
-            checkList: {
-                handler(val) {
-                    this.$emit('update:value', val)
-                },
-                deep: true
-            }
-        },
-        created() {
-            this.checkList = this.value
-        },
-        methods:{
-            handleEvent(data){
-                this.$emit('handleEvent','changeRadio',data)
-            }
-        }
-    }
+<script setup lang="ts">
+import { ref, watch } from 'vue'
 
+// 定义 props
+const props = defineProps({
+  value: {
+    type: [String, Number],
+    default: ''
+  },
+  selectList: {
+    type: Array,
+    default: () => []
+  }
+})
+
+// 定义 emit
+const emit = defineEmits(['update:value', 'handleEvent'])
+
+// 响应式数据
+const checkList = ref(props.value)
+
+// 监听 checkList 变化并同步到父组件
+watch(checkList, (val) => {
+  emit('update:value', val)
+})
+
+// 处理 change 事件
+const handleEvent = (data) => {
+  emit('handleEvent', 'changeRadio', data)
+}
 </script>
 
 <style>

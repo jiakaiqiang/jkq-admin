@@ -1,7 +1,7 @@
 // vite-plugin-full-demo.ts
 import { Plugin } from 'vite'
 import fs from 'fs'
-import { handleVueCode ,extractChineseFromVue, handleChinese} from './pluginsUtils'
+import { handleVueCode ,extractChineseFromVue,extractChineseFromTS,handleVueScriptCode,handleTransformJSCode, handleChinese} from './pluginsUtils'
 import { aiTransolteForm } from './postAiTransolteForm'
 export default function transformLanagePlugin(): Plugin {
   return {
@@ -41,18 +41,27 @@ export default function transformLanagePlugin(): Plugin {
     configResolved(resolvedConfig) {
       console.log('⚙️ 最终配置已解析')
     },
+    // resolveId(source, importer, options) {
+    //   console.log('🔍 resolveId 钩子执行，source:', source, 'importer:', importer, 'options:', options)
+    // },
 
     /**
      * transform：对某些文件的源码进行处理
      * serve + build 都可执行
      */
     transform(code: string, id: string): string | void {
+      // 排除node_modules目录下的文件
+      if (id.includes('node_modules')) {
+        return code;
+      }
       // 匹配id中包含.vue的文件，并且排除虚拟文件
       if (id.includes('.vue') && !id.startsWith('\0')) {
         try {
-          const chineseMatches = extractChineseFromVue(code);
+           //匹配script 并且引入i18n
+           const transformedScript = handleVueScriptCode(code)
+          const chineseMatches = extractChineseFromVue(transformedScript);
     
-         console.log(chineseMatches ,'chineseMatches')
+        
 
 
           if (chineseMatches.length > 0) {
@@ -60,10 +69,10 @@ export default function transformLanagePlugin(): Plugin {
             //  
             // 去重并排序中文字符串
             const uniqueChinese = Array.from(new Set(chineseMatches)).sort();
-             console.log(uniqueChinese,'uniqueChinese')
+          
              // 将生成的中文字符 写入本地文件中 采用合并方式  合并已存在的中文字符
              const existingChinese = fileContent? JSON.parse(fileContent) : [];
-             console.log(existingChinese,'existingChinese')
+         
              const mergedChinese = Array.from(new Set([...existingChinese, ...uniqueChinese])).sort();
             fs.writeFileSync('./src/assets/lang/zh-CN.json', JSON.stringify(mergedChinese, null, 2), 'utf-8');
 
@@ -74,15 +83,66 @@ export default function transformLanagePlugin(): Plugin {
             console.log(`📄 文件 ${id} 中除去注释外不包含中文字符`);
           }
           
-          return handleVueCode(code);
+          return handleVueCode(transformedScript,id);
         } catch (error) {
+           
           console.error(`❌ 处理文件 ${id} 时出错:`, error);
-          return handleVueCode(code);
+          return handleVueCode( handleVueScriptCode(code),id);
         }
       }
       //处理js里面的中文
+       //排除json文件
+ 
+      if (id.includes('.ts') && !id.startsWith('\0')) {
 
-      return handleVueCode(code);
+        try {
+          
+        //处理js 文件中的国际化
+        const transformJSCode = handleTransformJSCode(code,id)
+          const chineseMatches = extractChineseFromTS(transformJSCode);
+    
+        
+
+
+          if (chineseMatches.length > 0) {
+            let fileContent =  fs.readFileSync('./src/assets/lang/zh-CN.json', 'utf-8')
+            //  
+            // 去重并排序中文字符串
+            const uniqueChinese = Array.from(new Set(chineseMatches)).sort();
+          
+             // 将生成的中文字符 写入本地文件中 采用合并方式  合并已存在的中文字符
+             const existingChinese = fileContent? JSON.parse(fileContent) : [];
+         
+             const mergedChinese = Array.from(new Set([...existingChinese, ...uniqueChinese])).sort();
+            fs.writeFileSync('./src/assets/lang/zh-CN.json', JSON.stringify(mergedChinese, null, 2), 'utf-8');
+
+
+            console.log(`📄 文件 ${id} 中除去注释外包含 ${uniqueChinese.length} 个中文词组`);
+            console.log(`中文词组：${uniqueChinese}`);
+          } else {
+            console.log(`📄 文件 ${id} 中除去注释外不包含中文字符`);
+          }
+          
+          return handleVueCode(transformJSCode,id)
+        } catch (error) {
+           
+          console.error(`❌ 处理文件 ${id} 时出错:`, error);
+          return handleVueCode( handleTransformJSCode(code,id),id);
+        }
+
+
+
+
+
+
+
+
+
+
+       
+     
+      }
+    
     },
     /**
      * buildStart：构建开始（build）

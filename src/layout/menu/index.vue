@@ -15,7 +15,7 @@ import MenuItem from './menu-item.vue';
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { staticRouter } from '@/router/staticRouter';
-import { useSystemStore } from '@/store/modules/system.ts'
+import { useSystemStore } from '@/store/modules/system'
 //刷新后动态的设置激活的路由地址
 const route = useRoute();
 let menuRef = ref(null)

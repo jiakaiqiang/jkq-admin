@@ -1,6 +1,6 @@
-import { customRouteRecordRaw } from '@/globalType/router.ts'
+import { customRouteRecordRaw } from '@/globalType/router'
 import Layout from "@/layout/index.vue";
-import path from 'path';
+
 export const errorRouter = [
   {
     path: "/403",
@@ -55,7 +55,7 @@ export const staticRouter: Array<customRouteRecordRaw> = [
     isShowChidren: false,
     icon:'icon-gongzuotai',
     meta: {
-      title: '工作台',
+      title: "工作台",
       name: "workspace",
     },
    
@@ -78,7 +78,7 @@ export const staticRouter: Array<customRouteRecordRaw> = [
     component: Layout,
     meta: {
       name: 'components',
-      title: "常用组件",
+      title:$t('常用组件'),
     },
     icon:"icon-zujian",
     redirect: '/components/Form',
@@ -175,7 +175,7 @@ export const staticRouter: Array<customRouteRecordRaw> = [
     component: Layout,
     redirect: '/dashboard/echarts',
     meta: {
-      title: '可视化数据',
+      title: "可视化数据",
       name: 'dashboard',
     },
     icon:"icon-keshihua",
@@ -187,7 +187,7 @@ export const staticRouter: Array<customRouteRecordRaw> = [
         component: () => import('@/views/dashboard/echarts.vue'),
         icon:'icon-echartstat',
         meta: {
-          title: '可视化数据',
+          title: "可视化数据",
           name: 'dashboard'
         }
       },
@@ -197,7 +197,7 @@ export const staticRouter: Array<customRouteRecordRaw> = [
         icon:"icon-sanweishujujianmo",
         component: () => import('@/views/dashboard/threeJs.vue'),
         meta: {
-          title: '三维数据可视化',
+          title: "三维数据可视化",
           name: 'threeJs'
 
         }
@@ -208,7 +208,7 @@ export const staticRouter: Array<customRouteRecordRaw> = [
         icon:'icon-WebGIS',
         component: () => import('@/views/dashboard/cesium.vue'),
         meta: {
-          title: 'webgis',
+          title: "webgis",
           name: 'cesium'
 
         }
@@ -219,7 +219,7 @@ export const staticRouter: Array<customRouteRecordRaw> = [
         icon:'icon-rtc',
         component: () => import('@/views/dashboard/webRTC.vue'),
         meta: {
-          title: 'webRTC',
+          title: "webRTC",
           name: 'webRTC'
 
         }
@@ -232,7 +232,7 @@ export const staticRouter: Array<customRouteRecordRaw> = [
     component: Layout,
     redirect: '/about/index',
     meta: {
-      title: '关于',
+      title: "关于",
       name: 'about',
     },
     isMenu: true,
@@ -244,7 +244,7 @@ export const staticRouter: Array<customRouteRecordRaw> = [
         icon:'icon-guanyuxiangmu',
         component: () => import('@/views/about/project.vue'),
         meta: {
-          title: '关于项目',
+          title: "关于项目",
           name: 'project'
         }
       },
@@ -254,7 +254,7 @@ export const staticRouter: Array<customRouteRecordRaw> = [
         icon:'icon-guanyuzuozhe',
         component: () => import('@/views/about/person.vue'),
         meta: {
-          title: '关于作者',
+          title: "关于作者",
           name: 'person'
         }
       }
@@ -268,7 +268,7 @@ export const staticRouter: Array<customRouteRecordRaw> = [
     isShowChidren: false,
     icon:'icon-gongzuotai',
     meta: {
-      title: 'ppt幻灯片',
+      title: "ppt幻灯片", 
       name: "ppt",
     },
    
@@ -291,7 +291,7 @@ export const staticRouter: Array<customRouteRecordRaw> = [
     isShowChidren: false,
     icon:'icon-gongzuotai',
     meta: {
-      title: '思维导图',
+      title: "思维导图",
       name: "mindMap",
     },
    
@@ -314,17 +314,17 @@ export const staticRouter: Array<customRouteRecordRaw> = [
     isShowChidren: false,
     icon:'icon-gongzuotai',
     meta: {
-      title: '低代码模块',
+      title: "低代码模块",
       name: "lowcode",
     },
     redirect: '/lowcode/index',
     children: [{
-      name: '低代码',
+      name: "低代码",
       path: '/lowcode/index', 
       icon:'icon-gongzuotai',
       component: () => import('@/views/lowCode/index.vue'),
       meta: {
-        title: '低代码',
+        title: "低代码",
         name: "index"
       }
     }]

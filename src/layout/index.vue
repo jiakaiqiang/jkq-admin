@@ -39,7 +39,7 @@ import Menu  from './menu/index.vue';
 import Top  from './components/top.vue';
 import Nav  from './components/nav.vue';
 import { useDebounceFn } from "@vueuse/core";
-import {useSystemStore} from '@/store/modules/system.ts'
+import {useSystemStore} from '@/store/modules/system'
 let aiDialogInfo = ref({
   title:"智能助手"
 })
