@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": " vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "getChinese": "node plugins/index.js"
   },
   "dependencies": {
     "@sentry/vite-plugin": "^3.6.1",

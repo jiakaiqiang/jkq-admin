@@ -32,7 +32,8 @@ export function handleVueCode(code: string,filePath: string) {
     // code = code.replace(/(["'])([\u4e00-\u9fa5]+)\1/g, (match, p1, p2) => {
     //   return `${p1}${p2}${p1}`;
     // });
-const regex = /(?<=>)(?![^{]*}})([^<>\n]*[\u4e00-\u9fa5]+[^<>\n]*)(?=<)/g;
+// 只匹配纯中文文本，不包含{{ }}的内容
+const regex = /(?<=>)(?![\s\S]*\{\{)([^<>\n]*[\u4e00-\u9fa5]+[^<>\n]*)(?=<)/g;
  code = code.replace(regex, (match) => {
     // 再次双重检查，防止首尾有残留空格的特殊情况
     const text = match.trim();

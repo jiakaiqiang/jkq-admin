@@ -59,29 +59,7 @@ export default function transformLanagePlugin(): Plugin {
         try {
            //匹配script 并且引入i18n
            const transformedScript = handleVueScriptCode(code)
-          const chineseMatches = extractChineseFromVue(transformedScript);
-    
-        
-
-
-          if (chineseMatches.length > 0) {
-            let fileContent =  fs.readFileSync('./src/assets/lang/zh-CN.json', 'utf-8')
-            //  
-            // 去重并排序中文字符串
-            const uniqueChinese = Array.from(new Set(chineseMatches)).sort();
-          
-             // 将生成的中文字符 写入本地文件中 采用合并方式  合并已存在的中文字符
-             const existingChinese = fileContent? JSON.parse(fileContent) : [];
          
-             const mergedChinese = Array.from(new Set([...existingChinese, ...uniqueChinese])).sort();
-            fs.writeFileSync('./src/assets/lang/zh-CN.json', JSON.stringify(mergedChinese, null, 2), 'utf-8');
-
-
-            console.log(`📄 文件 ${id} 中除去注释外包含 ${uniqueChinese.length} 个中文词组`);
-            console.log(`中文词组：${uniqueChinese}`);
-          } else {
-            console.log(`📄 文件 ${id} 中除去注释外不包含中文字符`);
-          }
           
           return handleVueCode(transformedScript,id);
         } catch (error) {
@@ -99,47 +77,12 @@ export default function transformLanagePlugin(): Plugin {
           
         //处理js 文件中的国际化
         const transformJSCode = handleTransformJSCode(code,id)
-          const chineseMatches = extractChineseFromTS(transformJSCode);
-    
-        
-
-
-          if (chineseMatches.length > 0) {
-            let fileContent =  fs.readFileSync('./src/assets/lang/zh-CN.json', 'utf-8')
-            //  
-            // 去重并排序中文字符串
-            const uniqueChinese = Array.from(new Set(chineseMatches)).sort();
-          
-             // 将生成的中文字符 写入本地文件中 采用合并方式  合并已存在的中文字符
-             const existingChinese = fileContent? JSON.parse(fileContent) : [];
-         
-             const mergedChinese = Array.from(new Set([...existingChinese, ...uniqueChinese])).sort();
-            fs.writeFileSync('./src/assets/lang/zh-CN.json', JSON.stringify(mergedChinese, null, 2), 'utf-8');
-
-
-            console.log(`📄 文件 ${id} 中除去注释外包含 ${uniqueChinese.length} 个中文词组`);
-            console.log(`中文词组：${uniqueChinese}`);
-          } else {
-            console.log(`📄 文件 ${id} 中除去注释外不包含中文字符`);
-          }
-          
           return handleVueCode(transformJSCode,id)
         } catch (error) {
            
           console.error(`❌ 处理文件 ${id} 时出错:`, error);
           return handleVueCode( handleTransformJSCode(code,id),id);
         }
-
-
-
-
-
-
-
-
-
-
-       
      
       }
     
@@ -155,10 +98,7 @@ export default function transformLanagePlugin(): Plugin {
      * closeBundle：构建结束（build）
      */
     closeBundle() {
-      // //读取src/assets/lang/zh-CN.json文件
-      const existingChinese = JSON.parse(fs.readFileSync('./src/assets/lang/zh-CN.json', 'utf-8')) || [];
-     console.log(existingChinese,'existingChinese')
-     handleChinese(existingChinese)
+    
       console.log('🔚 构建完成 closeBundle')
     }
   }
