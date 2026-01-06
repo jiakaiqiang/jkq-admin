@@ -19,6 +19,8 @@ export function handleTransformJSCode(code: string,filePath:string) {
     return transformedCode +  code
 }
 
+
+
 export function handleVueCode(code: string,filePath: string) {
   if (filePath.includes(path.sep + excludeDir + path.sep) || filePath.endsWith('.json')) {
         return;
@@ -31,17 +33,11 @@ export function handleVueCode(code: string,filePath: string) {
     // 2. 处理""中的中文
     // code = code.replace(/(["'])([\u4e00-\u9fa5]+)\1/g, (match, p1, p2) => {
     //   return `${p1}${p2}${p1}`;
+
     // });
-// 只匹配纯中文文本，不包含{{ }}的内容
-const regex = /(?<=>)(?![\s\S]*\{\{)([^<>\n]*[\u4e00-\u9fa5]+[^<>\n]*)(?=<)/g;
- code = code.replace(regex, (match) => {
-    // 再次双重检查，防止首尾有残留空格的特殊情况
-    const text = match.trim();
-    if (!text) return match; 
-    
-    return `{{ $t('${text}') }}`;
-});
-    
+      code = code.replace(/>\s*([\u4e00-\u9fa5]+)\s*</g, (match, p1) => {
+        return `>{{ $t('${p1}') }}<`;
+    });
     // 获取标签中的中文并将中文替换成"$t("")" 并且属性采用vue的属性绑定
     code =code.replace(/([a-zA-Z]+)="([^"]*[\u4e00-\u9fa5][^"]*)"/g, ':$1="$t(\'$2\')"');
 
@@ -70,17 +66,6 @@ export function extractChineseFromVue(content: string): string[] {
    
     // 1. 移除HTML注释 <!-- ... -->
     let processedContent = content.replace(/<!--[\s\S]*?-->/g, '');
-    // 1.获取template标签中的中文内容
-     processedContent = processedContent.replace(/(<template[\s\S]*?>)([\s\S]*?)(<\/template>)/g, (match, openTag, scriptContent, closeTag) => {
-        // 移除script中的单行注释
-        scriptContent = scriptContent.replace(/\/\/.*$/gm, '');
-        // 移除script中的多行注释
-        scriptContent = scriptContent.replace(/\/\*[\s\S]*?\*\//g, '');
-        //添加代码片段
-       
-        return openTag +  scriptContent + closeTag;
-    });
-
 
     // 2. 处理script标签内容
     processedContent = processedContent.replace(/(<script[\s\S]*?>)([\s\S]*?)(<\/script>)/g, (match, openTag, scriptContent, closeTag) => {
